@@ -1,0 +1,6 @@
+@Hope.Api_HostAddress = http://localhost:5186
+
+GET {{Hope.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
