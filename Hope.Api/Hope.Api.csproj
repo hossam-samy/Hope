@@ -32,4 +32,8 @@
     <ProjectReference Include="..\Hope.Infrastructure\Hope.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

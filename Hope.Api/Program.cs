@@ -20,10 +20,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 {//maping
+    builder.Services.AddMapster();
     var config = TypeAdapterConfig.GlobalSettings;
     config.Scan(Assembly.GetExecutingAssembly());
     builder.Services.AddSingleton(config);
-
     builder.Services.AddScoped<IMapper, ServiceMapper>();
 }
 // Add services to the container.

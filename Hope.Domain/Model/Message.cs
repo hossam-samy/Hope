@@ -14,7 +14,6 @@ namespace Hope.Domain.Model
         public DateTime Date { get; set; }
         public string ReciverEmail { get; set; }
         public string SenderEmail { get; set; }
-        public string UserId { get; set; }
-        public virtual User user { get; set; }
+        
     }
 }

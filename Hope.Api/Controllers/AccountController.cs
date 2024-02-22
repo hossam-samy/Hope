@@ -22,6 +22,8 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> UserRegister(UserDto dto) { 
              
+            if(!ModelState.IsValid) { return BadRequest(ModelState); }  
+
              return Ok(await authService.UserRegister(dto)); 
         }
 
@@ -38,6 +40,7 @@ namespace Hope.Api.Controllers
         //[Authorize(Roles ="User")]
         public async Task<IActionResult> Login( LoginRequest dto)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             return Ok(await authService.Login(dto));
         }

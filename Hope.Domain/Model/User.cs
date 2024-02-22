@@ -4,12 +4,18 @@ namespace Hope.Domain.Model
 {
     public class User:IdentityUser
     {
-        public string ConfirmPassword { get; set; }
+
         public string City { get; set; }
-        public virtual List<PostOfLostThings>  lostThings { get; set; }
-        public virtual List<PostOfLostPeople>  lostPeople { get; set; }
-        public virtual List<Message> Messages   { get; set; }
-        public virtual List<Notification> Notifications   { get; set; }
+        public string? UserImage { get; set; }
+        public virtual List<PostOfLostThings>?  lostThings { get; set; }
+        
+        public virtual List<PostOfLostPeople>?  lostPeople { get; set; }
+
+        public virtual List<PostOfLostPeople> HiddingPeoples { get; set; }
+        public virtual List<PostOfLostThings> HiddingThings { get; set; }
+
+        public virtual List<PostOfLostPeople> PinningPeoples { get; set; }
+        public virtual List<PostOfLostThings> PinningThings { get; set; }
 
     }
 }

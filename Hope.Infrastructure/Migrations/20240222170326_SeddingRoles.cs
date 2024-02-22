@@ -5,7 +5,7 @@
 namespace Hope.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class seedingRoles : Migration
+    public partial class SeddingRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

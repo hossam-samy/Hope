@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hope.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240219053143_seedingRoles")]
-    partial class seedingRoles
+    [Migration("20240222170314_FIrst")]
+    partial class FIrst
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,67 +28,7 @@ namespace Hope.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Hope.Core.Model.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReciverEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Message");
-                });
-
-            modelBuilder.Entity("Hope.Core.Model.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notification");
-                });
-
-            modelBuilder.Entity("Hope.Core.Model.PostOfLostPeople", b =>
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostPeople", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,6 +43,9 @@ namespace Hope.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -111,7 +54,7 @@ namespace Hope.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -136,7 +79,7 @@ namespace Hope.Infrastructure.Migrations
                     b.ToTable("postOfLostPeoples");
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.PostOfLostThings", b =>
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostThings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,11 +87,14 @@ namespace Hope.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -173,7 +119,7 @@ namespace Hope.Infrastructure.Migrations
                     b.ToTable("postOfLostthings");
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.User", b =>
+            modelBuilder.Entity("Hope.Domain.Model.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -187,10 +133,6 @@ namespace Hope.Infrastructure.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -228,6 +170,9 @@ namespace Hope.Infrastructure.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UserImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -379,48 +324,86 @@ namespace Hope.Infrastructure.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.Message", b =>
+            modelBuilder.Entity("PostOfLostPeopleUser", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", "user")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("HiddenPeoplesId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("user");
+                    b.Property<int>("HiddingPeoplesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HiddenPeoplesId", "HiddingPeoplesId");
+
+                    b.HasIndex("HiddingPeoplesId");
+
+                    b.ToTable("HiddenPeoplePost", (string)null);
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.Notification", b =>
+            modelBuilder.Entity("PostOfLostPeopleUser1", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", "user")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("PinnedPeoplesId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("user");
+                    b.Property<int>("PinningPeoplesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PinnedPeoplesId", "PinningPeoplesId");
+
+                    b.HasIndex("PinningPeoplesId");
+
+                    b.ToTable("PinnedPeoplePost", (string)null);
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.PostOfLostPeople", b =>
+            modelBuilder.Entity("PostOfLostThingsUser", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", "user")
+                    b.Property<string>("HiddenThingsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("HiddingThingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HiddenThingsId", "HiddingThingsId");
+
+                    b.HasIndex("HiddingThingsId");
+
+                    b.ToTable("HiddenThingsPost", (string)null);
+                });
+
+            modelBuilder.Entity("PostOfLostThingsUser1", b =>
+                {
+                    b.Property<string>("PinnedThingsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PinningThingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PinnedThingsId", "PinningThingsId");
+
+                    b.HasIndex("PinningThingsId");
+
+                    b.ToTable("PinnedThingsPost", (string)null);
+                });
+
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostPeople", b =>
+                {
+                    b.HasOne("Hope.Domain.Model.User", "User")
                         .WithMany("lostPeople")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.PostOfLostThings", b =>
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostThings", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", "user")
+                    b.HasOne("Hope.Domain.Model.User", "User")
                         .WithMany("lostThings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -434,7 +417,7 @@ namespace Hope.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", null)
+                    b.HasOne("Hope.Domain.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -443,7 +426,7 @@ namespace Hope.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", null)
+                    b.HasOne("Hope.Domain.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -458,7 +441,7 @@ namespace Hope.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hope.Core.Model.User", null)
+                    b.HasOne("Hope.Domain.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,19 +450,75 @@ namespace Hope.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Hope.Core.Model.User", null)
+                    b.HasOne("Hope.Domain.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hope.Core.Model.User", b =>
+            modelBuilder.Entity("PostOfLostPeopleUser", b =>
                 {
-                    b.Navigation("Messages");
+                    b.HasOne("Hope.Domain.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("HiddenPeoplesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Notifications");
+                    b.HasOne("Hope.Domain.Model.PostOfLostPeople", null)
+                        .WithMany()
+                        .HasForeignKey("HiddingPeoplesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
+            modelBuilder.Entity("PostOfLostPeopleUser1", b =>
+                {
+                    b.HasOne("Hope.Domain.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("PinnedPeoplesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hope.Domain.Model.PostOfLostPeople", null)
+                        .WithMany()
+                        .HasForeignKey("PinningPeoplesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PostOfLostThingsUser", b =>
+                {
+                    b.HasOne("Hope.Domain.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("HiddenThingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hope.Domain.Model.PostOfLostThings", null)
+                        .WithMany()
+                        .HasForeignKey("HiddingThingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PostOfLostThingsUser1", b =>
+                {
+                    b.HasOne("Hope.Domain.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("PinnedThingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hope.Domain.Model.PostOfLostThings", null)
+                        .WithMany()
+                        .HasForeignKey("PinningThingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hope.Domain.Model.User", b =>
+                {
                     b.Navigation("lostPeople");
 
                     b.Navigation("lostThings");
