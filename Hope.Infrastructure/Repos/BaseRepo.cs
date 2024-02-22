@@ -12,38 +12,42 @@ namespace Hope.Infrastructure.Repos
             this.dbContext = dbContext;
         }
 
-        public async Task AddAsync(T item)
+        public async  Task AddAsync(T item)
         {
-            Task.CompletedTask.Wait();  
-            dbContext.Add(item);
-            dbContext.SaveChanges();    
+             
+            await dbContext.AddAsync(item);
+             await dbContext.SaveChangesAsync();  
+
+            
         }
 
-        public async Task Delete(T item)
+        public  async Task Delete(T item)
         {
             
-            Task.CompletedTask.Wait();  
+            
             dbContext.Set<T>().Remove(item);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
+
         }
 
-        public async Task<IEnumerable<TResult>> Get<TResult>(Func<T, bool> match, Func<T, TResult> selector )
+        public async  Task<IEnumerable<TResult>> Get<TResult>(Func<T, bool> match, Func<T, TResult> selector )
         {
+            
             return dbContext.Set<T>().Where(match).Select(selector);
         }
-        public async Task<IEnumerable<TResult>> Get<TResult>( Func<T, TResult> selector)
+        public async Task<List<TResult>> Get<TResult>( Func<T, TResult> selector)
         {
-            var x = dbContext.Set<T>().Select(selector);
-            return x;
+           
+            return dbContext.Set<T>().Select(selector).ToList();
         }
         public async Task<IEnumerable<TResult>> Get<TResult>(Func<T, TResult> selector,string include)
         {
             return dbContext.Set<T>().Include(include).Select(selector);
         }
 
-        public async Task<IEnumerable<T>> Get(Func<T, bool> match)
+        public async Task<List<T>> Get(Func<T, bool> match)
         {
-                return dbContext.Set<T>().Where(match);   
+                return dbContext.Set<T>().Where(match).ToList();   
         }
         public async Task<IEnumerable<T>> Get(Func<T, bool> match, string[] includes)
         {
@@ -58,13 +62,14 @@ namespace Hope.Infrastructure.Repos
 
         public async Task<IEnumerable<T>> GetAll()
         {
+           
            return dbContext.Set<T>().ToList();  
         }
 
         public async Task<T> Update(T item)
         {
             dbContext.Set<T>().Update(item);
-            dbContext.SaveChanges();    
+            await dbContext.SaveChangesAsync();    
             return item;
         }
     }

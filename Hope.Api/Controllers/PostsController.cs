@@ -7,7 +7,7 @@ namespace Hope.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles ="User")]
+   // [Authorize(Roles ="User")]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService; 
@@ -17,14 +17,16 @@ namespace Hope.Api.Controllers
         }
 
         [HttpPost]
-        public async  Task<IActionResult> AddPostPeople (PostPeopleDto dto)
+        public async  Task<IActionResult> AddPostPeople ([FromForm]PostPeopleRequest dto)
         {
             if(!ModelState.IsValid) { return BadRequest(ModelState); }
-              
+            
+            
+
             return Ok(await _postService.AddPostPeople(dto));
         }
         [HttpPost]
-        public async Task<IActionResult> AddPostThings(PostThingsDto dto)
+        public async Task<IActionResult> AddPostThings([FromForm]PostThingsRequest dto)
         {
             if(!ModelState.IsValid) { return BadRequest(ModelState); }
             

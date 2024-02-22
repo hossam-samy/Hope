@@ -32,8 +32,10 @@ namespace Hope.Core.Service
         public async Task<Response> Login(LoginRequest model)
         {
             
-            var user = await userManager.FindByEmailAsync(model.Email);
-            if (user is null || !await userManager.CheckPasswordAsync(user, model.Password))
+            var user = await userManager.FindByEmailAsync(model.Email!);
+
+            
+            if (user is null || !await userManager.CheckPasswordAsync(user, model.Password!))
             {
                 return await Response.FailureAsync(localizer["InvalidLogin"].Value);
             }
@@ -55,19 +57,32 @@ namespace Hope.Core.Service
         }
 
         public async Task<Response> UserRegister(UserDto model){
-           
+
             if(model.Password!=model.ConfirmPassword)
                 return await Response.FailureAsync(localizer["PasswordDidntMatch"].Value);
 
             if (await userManager.FindByEmailAsync(model.Email) is not null)
                 return await Response.FailureAsync(localizer["EmailExist"].Value);
-
-            var user=mapper.Map<User>(model);    
             
-            await userManager.CreateAsync(user,model.Password);
-            
-            await userManager.AddToRoleAsync(user, "User");
+            if (await userManager.FindByNameAsync(model.UserName) is not null)
+                return await Response.FailureAsync(localizer["EmailExist"].Value);
 
+
+            var user =mapper.Map<User>(model);    
+            
+            var result=await userManager.CreateAsync(user,model.Password);
+            
+            if (!result.Succeeded)
+            {
+                return await Response.FailureAsync(result.Errors, localizer["Faild"].Value);
+            }
+            
+            var res=await userManager.AddToRoleAsync(user, "User");
+            
+            if (!res.Succeeded)
+            {
+                return await Response.FailureAsync(result.Errors, localizer["Faild"].Value);
+            }
             var jwtsecuritytoken = await CreateJwtToken(user);
 
 
@@ -93,9 +108,9 @@ namespace Hope.Core.Service
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim("uid", user.Id)
             }
             .Union(userClaims)

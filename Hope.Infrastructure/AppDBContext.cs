@@ -20,23 +20,27 @@ namespace Hope.Infrastructure
             builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 
-            // builder.Entity<PostOfLostPeople>().ToTable("PostsOLostPeople");
-            //builder.Entity<PostOfLostThings>().ToTable("PostsOLostThings");
+            
 
-             builder.Entity<User>().HasMany(b=>b.lostPeople).WithOne(b=>b.user).HasForeignKey(b=>b.UserId);    
-             builder.Entity<User>().HasMany(b=>b.lostThings).WithOne(b=>b.user).HasForeignKey(b=>b.UserId);    
+
+             builder.Entity<User>().HasMany(b=>b.lostPeople).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);
+             builder.Entity<User>().HasMany(b=>b.lostThings).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);
+            builder.Entity<User>().HasMany(b => b.HiddingPeoples).WithMany(i => i.HiddenPeoples).UsingEntity(i => i.ToTable("HiddenPeoplePost"));
+            builder.Entity<User>().HasMany(b => b.HiddingThings).WithMany(i => i.HiddenThings).UsingEntity(i => i.ToTable("HiddenThingsPost"));
+
+            builder.Entity<User>().HasMany(b => b.PinningPeoples).WithMany(i => i.PinnedPeoples).UsingEntity(i => i.ToTable("PinnedPeoplePost"));
+            builder.Entity<User>().HasMany(b => b.PinningThings).WithMany(i => i.PinnedThings).UsingEntity(i => i.ToTable("PinnedThingsPost"));
+            
+
+             //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
 
 
         }
 
-        virtual public DbSet<User> Users { get; set; }
-        //virtual public DbSet<Admin> Admins { get; set; }
-        //virtual public DbSet<Post> Posts { get; set; }
-        virtual public DbSet<PostOfLostPeople> postOfLostPeoples { get; set; }
-        virtual public DbSet<PostOfLostThings> postOfLostthings { get; set; }
-        //virtual public DbSet<Message> Messages { get; set; }
-        //virtual public DbSet<Notification> Notifications { get; set; }
-
+         public DbSet<User> Users { get; set; }
+         public DbSet<PostOfLostPeople> postOfLostPeoples { get; set; }
+         public DbSet<PostOfLostThings> postOfLostthings { get; set; }
+        
     }
     
 }

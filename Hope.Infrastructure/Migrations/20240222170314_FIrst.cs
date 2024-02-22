@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hope.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class EditUser : Migration
+    public partial class FIrst : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,8 +30,8 @@ namespace Hope.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -70,51 +70,7 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Message",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReciverEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SenderEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Message_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notification",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notification", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notification_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,8 +84,9 @@ namespace Hope.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gendre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsFound = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -141,7 +98,7 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,8 +109,9 @@ namespace Hope.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsFound = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -165,7 +123,7 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,7 +144,7 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,7 +164,7 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,13 +182,13 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -250,18 +208,124 @@ namespace Hope.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HiddenPeoplePost",
+                columns: table => new
+                {
+                    HiddenPeoplesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HiddingPeoplesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HiddenPeoplePost", x => new { x.HiddenPeoplesId, x.HiddingPeoplesId });
+                    table.ForeignKey(
+                        name: "FK_HiddenPeoplePost_Users_HiddenPeoplesId",
+                        column: x => x.HiddenPeoplesId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HiddenPeoplePost_postOfLostPeoples_HiddingPeoplesId",
+                        column: x => x.HiddingPeoplesId,
+                        principalTable: "postOfLostPeoples",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PinnedPeoplePost",
+                columns: table => new
+                {
+                    PinnedPeoplesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PinningPeoplesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PinnedPeoplePost", x => new { x.PinnedPeoplesId, x.PinningPeoplesId });
+                    table.ForeignKey(
+                        name: "FK_PinnedPeoplePost_Users_PinnedPeoplesId",
+                        column: x => x.PinnedPeoplesId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PinnedPeoplePost_postOfLostPeoples_PinningPeoplesId",
+                        column: x => x.PinningPeoplesId,
+                        principalTable: "postOfLostPeoples",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HiddenThingsPost",
+                columns: table => new
+                {
+                    HiddenThingsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HiddingThingsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HiddenThingsPost", x => new { x.HiddenThingsId, x.HiddingThingsId });
+                    table.ForeignKey(
+                        name: "FK_HiddenThingsPost_Users_HiddenThingsId",
+                        column: x => x.HiddenThingsId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HiddenThingsPost_postOfLostthings_HiddingThingsId",
+                        column: x => x.HiddingThingsId,
+                        principalTable: "postOfLostthings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PinnedThingsPost",
+                columns: table => new
+                {
+                    PinnedThingsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PinningThingsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PinnedThingsPost", x => new { x.PinnedThingsId, x.PinningThingsId });
+                    table.ForeignKey(
+                        name: "FK_PinnedThingsPost_Users_PinnedThingsId",
+                        column: x => x.PinnedThingsId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PinnedThingsPost_postOfLostthings_PinningThingsId",
+                        column: x => x.PinningThingsId,
+                        principalTable: "postOfLostthings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_UserId",
-                table: "Message",
-                column: "UserId");
+                name: "IX_HiddenPeoplePost_HiddingPeoplesId",
+                table: "HiddenPeoplePost",
+                column: "HiddingPeoplesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notification_UserId",
-                table: "Notification",
-                column: "UserId");
+                name: "IX_HiddenThingsPost_HiddingThingsId",
+                table: "HiddenThingsPost",
+                column: "HiddingThingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PinnedPeoplePost_PinningPeoplesId",
+                table: "PinnedPeoplePost",
+                column: "PinningPeoplesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PinnedThingsPost_PinningThingsId",
+                table: "PinnedThingsPost",
+                column: "PinningThingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_postOfLostPeoples_UserId",
@@ -317,16 +381,16 @@ namespace Hope.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "HiddenPeoplePost");
 
             migrationBuilder.DropTable(
-                name: "Notification");
+                name: "HiddenThingsPost");
 
             migrationBuilder.DropTable(
-                name: "postOfLostPeoples");
+                name: "PinnedPeoplePost");
 
             migrationBuilder.DropTable(
-                name: "postOfLostthings");
+                name: "PinnedThingsPost");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
@@ -342,6 +406,12 @@ namespace Hope.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "postOfLostPeoples");
+
+            migrationBuilder.DropTable(
+                name: "postOfLostthings");
 
             migrationBuilder.DropTable(
                 name: "Roles");
