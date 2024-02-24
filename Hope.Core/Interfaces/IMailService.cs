@@ -1,7 +1,10 @@
-﻿namespace Hope.Core.Interfaces
+﻿using Hope.Domain.Common;
+
+namespace Hope.Core.Interfaces
 {
     public interface IMailService
     {
-        Task SendEmailAsync(string mailto, string subject,string body);
+        Task SendEmailAsync(string UserEmail);
+        Task<Response> GetConfirmationNumber(string num);
     }
 }

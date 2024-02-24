@@ -7,6 +7,9 @@ namespace Hope.Core.Interfaces
     {
         Task<Response> UserRegister(UserDto member);
         //Task<AuthModel> AdminRegister(UserDto member);
-        Task<Response> Login(LoginRequest model);    
+        Task<Response> Login(LoginRequest model);
+
+        Task<Response> ChangePassword(string UserEmail, string password);
+
     }
 }

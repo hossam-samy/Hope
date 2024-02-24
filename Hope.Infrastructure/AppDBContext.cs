@@ -20,8 +20,6 @@ namespace Hope.Infrastructure
             builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 
-            
-
 
              builder.Entity<User>().HasMany(b=>b.lostPeople).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);
              builder.Entity<User>().HasMany(b=>b.lostThings).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);

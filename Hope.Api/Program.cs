@@ -37,15 +37,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 
+builder.Services.AddScoped<IMediaService, MediaService>();
+
 builder.Services.AddScoped<IPostService, PostService>();
 
 builder.Services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
 
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["GoogleAuth:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
-});
 
 builder.Services.AddTransient<IMailService, MailService>();
 
@@ -126,6 +123,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture: supportedCultures[0]);
     options.SupportedCultures = supportedCultures;
 });
+builder.Services.AddCors();
 
 //builder.Services.AddTransient<GlobleErrorHandlerMiddleware>();
 
@@ -145,6 +143,8 @@ var localizationOptions = new RequestLocalizationOptions().
     SetDefaultCulture(supportedCultures[0]).
     AddSupportedCultures(supportedCultures);
 app.UseRequestLocalization(localizationOptions);
+app.UseRouting();
+app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

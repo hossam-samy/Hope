@@ -15,12 +15,14 @@ namespace Hope.Core.Dtos
         [Required]
         public string City { get; set; }
         [Required]
-        //[RegularExpression("01[125][0-9]{8}",ErrorMessage ="Invalid Phone Number")]
+        [RegularExpression("01[0125][0-9]{8}",ErrorMessage ="Invalid Phone Number")]
         public string PhoneNumber { get; set; }
         [Required]
-        //[EmailAddress]
+        [RegularExpression("@gmail\\.com$",ErrorMessage ="Invalid Email")]
+        
         public string Email { get; set; }
         [Required]
+        [MinLength(8,ErrorMessage ="Password should be at least 8 chars")]
         public string Password { get; set; }
         [Required]
         public string ConfirmPassword { get; set; }
