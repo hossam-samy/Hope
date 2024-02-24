@@ -10,9 +10,9 @@ namespace Hope.Domain.Model
     public class PostOfLostPeople:Post
     {
         
-        public int Age { get; set; }
+        public int? Age { get; set; }
         public string Condition { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public string Gendre { get; set; }
 
         [ForeignKey("User")]

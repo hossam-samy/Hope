@@ -29,6 +29,31 @@ namespace Hope.Core.Service
             this.localizer = localizer;
         }
 
+        public async Task<Response> ChangePassword(string UserEmail,string password)
+        {
+            var user=await userManager.FindByEmailAsync(UserEmail);
+            
+
+            if (user is null) 
+                return await Response.FailureAsync(localizer["UserNotExist"]);
+            
+            
+            var result= await userManager.RemovePasswordAsync(user);
+
+            
+            if (!result.Succeeded) 
+                return await Response.FailureAsync(localizer["Faild"]);
+
+            
+            var identityResult = await userManager.AddPasswordAsync(user, password);
+            
+            
+            if (!identityResult.Succeeded) 
+                return await Response.FailureAsync(localizer["Faild"]);
+           
+            return await Response.SuccessAsync("good");  
+        }
+
         public async Task<Response> Login(LoginRequest model)
         {
             
@@ -63,13 +88,13 @@ namespace Hope.Core.Service
 
             if (await userManager.FindByEmailAsync(model.Email) is not null)
                 return await Response.FailureAsync(localizer["EmailExist"].Value);
-            
-            if (await userManager.FindByNameAsync(model.UserName) is not null)
-                return await Response.FailureAsync(localizer["EmailExist"].Value);
 
+           
 
             var user =mapper.Map<User>(model);    
             
+            
+
             var result=await userManager.CreateAsync(user,model.Password);
             
             if (!result.Succeeded)

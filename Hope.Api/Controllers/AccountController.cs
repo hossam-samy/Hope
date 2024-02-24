@@ -2,6 +2,7 @@
 using Hope.Core.Interfaces;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Hope.Api.Controllers
 {
@@ -11,13 +12,11 @@ namespace Hope.Api.Controllers
     {
         private readonly IAuthService authService;
         private readonly IMailService mailService;
-        private readonly IMapper mapper;
 
-        public AccountController(IAuthService authService, IMailService mailService, IMapper mapper)
+        public AccountController(IAuthService authService, IMailService mailService)
         {
             this.authService = authService;
             this.mailService = mailService;
-            this.mapper = mapper;
         }
         [HttpPost]
         public async Task<IActionResult> UserRegister(UserDto dto) { 
@@ -25,7 +24,8 @@ namespace Hope.Api.Controllers
             if(!ModelState.IsValid) { return BadRequest(ModelState); }  
 
              return Ok(await authService.UserRegister(dto)); 
-        }
+            
+         }
 
 
         //[HttpPost]
@@ -46,13 +46,27 @@ namespace Hope.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmEmail( MailRequestDto dto)
+        public async Task<IActionResult> SendEmail( string userEmail )
         {
-            await mailService.SendEmailAsync(dto.ToEmail, dto.Subject, dto.Body);
+            await mailService.SendEmailAsync(userEmail);
 
             return Ok("good");
 
         }
+        [HttpGet]
+        public async Task<IActionResult> GetConfirmationNumber(string num)
+        {
+                 return Ok( await mailService.GetConfirmationNumber(num));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string userEmail,string password)
+        {
+            await authService.ChangePassword(userEmail,password);
+
+            return Ok("good");
+
+        }
+
 
 
     }
