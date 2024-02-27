@@ -9,9 +9,7 @@ namespace Hope.Domain.Model
         public string UserId { get; set; }
 
         public virtual User User { get; set; }
-        //public virtual List<HiddenThingsPost> HiddenThings { get; set; }
-        //public virtual List<PinnedThingsPost> PinnedThings { get; set; }
-
+        
         public virtual List<User> HiddenThings { get; set; }
         public virtual List<User> PinnedThings { get; set; }
 

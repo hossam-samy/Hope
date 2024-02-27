@@ -19,20 +19,35 @@ namespace Hope.Core.Service
             _host = host;
         }
 
-        public async Task AddFileAsync(IFormFile file)
+        public async Task AddFileAsync(IFormFile file, string name)
         {
             if (file.Length > 0)
             {
-
-                string filepath = Path.Combine(_host.WebRootPath, file.FileName);
-                using (var fileStream = new FileStream(filepath, FileMode.OpenOrCreate))
+               
+                string filepath = Path.Combine(_host.WebRootPath, @"PostsImages");
+                using (var fileStream = new FileStream(Path.Combine(filepath,name), FileMode.OpenOrCreate))
                 {
                     await file.CopyToAsync(fileStream);
+                    
                 }
+
             }
         }
 
+        public Task DeleteFileAsync(string url)
+        {
+            File.Delete(url);   
+
+            return Task.CompletedTask;  
+        }
+
         public string GetUrl() =>  _host.WebRootPath;
-       
+
+        public Task UpdateDeleteFileAsync(string url, IFormFile file, string name)
+        {
+            DeleteFileAsync(url);
+            AddFileAsync(file, name);   
+            return Task.CompletedTask;  
+        }
     }
 }

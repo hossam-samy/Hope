@@ -1,5 +1,5 @@
-﻿using Hope.Core.Dtos;
-using Hope.Domain.Common;
+﻿using Hope.Core.Common;
+using Hope.Core.Dtos;
 
 namespace Hope.Core.Interfaces
 {
@@ -12,5 +12,6 @@ namespace Hope.Core.Interfaces
         public Task<Response> GetPostOfShelters();
         public Task<Response> GetPostOfAccidents();
         public Task<Response> GetPostOfLosties();
+        public  Task<Response> DeleteFileAsync(string url);
     }
 }

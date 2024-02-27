@@ -3,7 +3,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 
 
-namespace Hope.Domain.Services.Localization
+namespace Hope.Infrastructure.Services.Localization
 {
     public class JsonStringLocalizer : IStringLocalizer
     {

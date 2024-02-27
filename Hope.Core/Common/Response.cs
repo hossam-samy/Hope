@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Hope.Domain.Common
+namespace Hope.Core.Common
 {
     public class Response
         {

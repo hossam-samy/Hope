@@ -28,12 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hope.Core\Hope.Core.csproj" />
-    <ProjectReference Include="..\Hope.Infrastructure\Hope.Infrastructure.csproj" />
+    <Folder Include="wwwroot\UsersImages\" />
+    <Folder Include="wwwroot\PostsImages\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <ProjectReference Include="..\Hope.Core\Hope.Core.csproj" />
+    <ProjectReference Include="..\Hope.Infrastructure\Hope.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -38,6 +38,9 @@ namespace Hope.Infrastructure
          public DbSet<User> Users { get; set; }
          public DbSet<PostOfLostPeople> postOfLostPeoples { get; set; }
          public DbSet<PostOfLostThings> postOfLostthings { get; set; }
+         public DbSet<Message>  Messages { get; set; }
+         public DbSet<Notification>  Notifications  { get; set; }
+         public DbSet<Comment>  Comments  { get; set; }
         
     }
     

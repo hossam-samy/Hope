@@ -13,7 +13,11 @@ namespace Hope.Domain.Model
         public string Content { get; set; }
         public DateTime Date { get; set; }
         public string ReciverEmail { get; set; }
-        public string SenderEmail { get; set; }
+        //public string SenderEmail { get; set; }
+
+        public string UserId { get; set; }
+
+        public virtual User User { get; set; } 
         
     }
 }

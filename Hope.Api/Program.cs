@@ -1,53 +1,17 @@
-using Hope.Core.Interfaces;
-using Hope.Core.Service;
-using Hope.Domain.Helpers;
-using Hope.Domain.Model;
-using Hope.Domain.Services.Localization;
-using Hope.Infrastructure;
-using Hope.Infrastructure.Middlewares;
-using Hope.Infrastructure.Repos;
-using Mapster;
-using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Globalization;
-using System.Reflection;
 using System.Text;
+using Hope.Api.Middlewares;
+using Hope.Infrastructure.Extensions;
+using Hope.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-{//maping
-    builder.Services.AddMapster();
-    var config = TypeAdapterConfig.GlobalSettings;
-    config.Scan(Assembly.GetExecutingAssembly());
-    builder.Services.AddSingleton(config);
-    builder.Services.AddScoped<IMapper, ServiceMapper>();
-}
+
 // Add services to the container.
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
-
-builder.Services.AddDbContext<AppDBContext>(option => option.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("defstr")));
-
-builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-builder.Services.AddScoped<IUnitofWork, UnitofWork>();
-
-builder.Services.AddScoped<IMediaService, MediaService>();
-
-builder.Services.AddScoped<IPostService, PostService>();
-
-builder.Services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+builder.Services.AddInfrastructure(builder.Configuration).AddCore(builder.Configuration);
 
 
-builder.Services.AddTransient<IMailService, MailService>();
-
-
-builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 
 builder.Services.AddControllers();
@@ -97,35 +61,13 @@ builder.Services.AddAuthentication(options =>
                        ValidateLifetime = true,
                        ValidIssuer = builder.Configuration["JWT:Issuer"],
                        ValidAudience = builder.Configuration["JWT:Audience"],
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
                    };
                });
 
 
-builder.Services.AddLocalization();
-builder.Services.
-    AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
 
-builder.Services.AddMvc().AddDataAnnotationsLocalization(op =>
-{
-    op.DataAnnotationLocalizerProvider = (type, factory) =>
-    factory.Create(typeof(JsonStringLocalizerFactory));
-});
-
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-
-    var supportedCultures = new[] {
-      new CultureInfo("en-US"),
-      new CultureInfo("ar-EG")
-
-    };
-    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture: supportedCultures[0]);
-    options.SupportedCultures = supportedCultures;
-});
 builder.Services.AddCors();
-
-//builder.Services.AddTransient<GlobleErrorHandlerMiddleware>();
 
 var app = builder.Build();
 
@@ -137,16 +79,25 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseMiddleware<GlobleErrorHandlerMiddleware>();
+
 var supportedCultures = new[] { "en-US", "ar-EG" };
+
 var localizationOptions = new RequestLocalizationOptions().
     SetDefaultCulture(supportedCultures[0]).
     AddSupportedCultures(supportedCultures);
+
 app.UseRequestLocalization(localizationOptions);
+
 app.UseRouting();
+
 app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

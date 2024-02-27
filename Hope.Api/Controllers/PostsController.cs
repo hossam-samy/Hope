@@ -62,5 +62,6 @@ namespace Hope.Api.Controllers
         {
             return Ok(await _postService.GetPostOfLosties());
         }
+       
     }
 }
