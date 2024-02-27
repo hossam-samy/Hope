@@ -16,10 +16,13 @@ namespace Hope.Core.Dtos
         [Required]
         public string Type { get; set; }
         [Required]
-        public DateTime MissigDate  { get; set; }
+        public DateTime? MissigDate  { get; set; }
         [Required]
         [RegularExpression("01[0125][0-9]{8}", ErrorMessage = "Invalid Phone Number")]
-        public string PhoneNumber  { get; set; }
+        public string? PhoneNumber  { get; set; }
+        [Required]
+
+        public string Town  { get; set; }
         [Required]
         public string City  { get; set; }
         [Required]

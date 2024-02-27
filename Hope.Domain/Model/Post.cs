@@ -15,6 +15,7 @@ namespace Hope.Domain.Model
         public DateTime CreationDate { get; set; }= DateTime.Now;   
         public bool IsDeleted { get; set; }=false;  
         public bool IsFound { get; set; }=false;
+        public string Town { get; set; }
         public DateTime MissigDate { get; set; }
         public string? PhoneNumber { get; set; }
         public string? City { get; set; }

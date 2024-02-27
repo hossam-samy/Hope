@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hope.Domain.Common.Consts
+namespace Hope.Core.Common.Consts
 {
     public class Condition
     {

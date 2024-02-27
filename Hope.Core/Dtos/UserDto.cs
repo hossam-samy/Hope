@@ -18,7 +18,7 @@ namespace Hope.Core.Dtos
         [RegularExpression("01[0125][0-9]{8}",ErrorMessage ="Invalid Phone Number")]
         public string PhoneNumber { get; set; }
         [Required]
-        [RegularExpression("@gmail\\.com$",ErrorMessage ="Invalid Email")]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@gmail\.com$", ErrorMessage ="Invalid Email")]
         
         public string Email { get; set; }
         [Required]

@@ -1,10 +1,10 @@
-﻿using Hope.Core.Dtos;
+﻿using Hope.Core.Common;
+using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
-using Hope.Domain.Common;
-using Hope.Domain.Helpers;
 using Hope.Domain.Model;
 using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,16 +17,16 @@ namespace Hope.Core.Service
     public class AuthService:IAuthService
     {
         private readonly UserManager<User> userManager;
-        private readonly JWT jwt;
+        private readonly IConfiguration configuration;  
         private readonly IMapper mapper;
         private readonly IStringLocalizer<AuthService> localizer;
 
-        public AuthService(UserManager<User> userManager, IOptions<JWT> jwt, IMapper mapper, IStringLocalizer<AuthService> localizer)
+        public AuthService(UserManager<User> userManager, IMapper mapper, IStringLocalizer<AuthService> localizer, IConfiguration configuration)
         {
             this.userManager = userManager;
-            this.jwt = jwt.Value;
             this.mapper = mapper;
             this.localizer = localizer;
+            this.configuration = configuration;
         }
 
         public async Task<Response> ChangePassword(string UserEmail,string password)
@@ -121,7 +121,6 @@ namespace Hope.Core.Service
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtsecuritytoken)
             }, localizer["Success"].Value);
         }
-        
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {
             var userClaims = await userManager.GetClaimsAsync(user);
@@ -141,19 +140,19 @@ namespace Hope.Core.Service
             .Union(userClaims)
             .Union(roleClaims);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: jwt.Issuer,
-                audience: jwt.Audience,
+                issuer: configuration["JWT:Issuer"],
+                audience: configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(jwt.DurationInDay),
+                expires: DateTime.Now.AddDays(double.Parse(configuration["JWT:DurationInDay"]!)),
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
         }
 
-       
+
     }
 }

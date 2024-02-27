@@ -1,5 +1,5 @@
-﻿using Hope.Core.Dtos;
-using Hope.Domain.Common;
+﻿using Hope.Core.Common;
+using Hope.Core.Dtos;
 
 namespace Hope.Core.Interfaces
 {

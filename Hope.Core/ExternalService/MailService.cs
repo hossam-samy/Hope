@@ -1,11 +1,12 @@
 ﻿using Hope.Core.Interfaces;
-using Hope.Domain.Common;
-using Hope.Domain.Helpers;
+using Hope.Core.Common;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Hope.Core.Service
 {
@@ -13,12 +14,13 @@ namespace Hope.Core.Service
     {
         private readonly IDistributedCache cache;
         private readonly IStringLocalizer<MailService> localizer;
-        private readonly MailSettings mailSettings;
-        public MailService(IOptions<MailSettings> mailSettings, IDistributedCache cache, IStringLocalizer<MailService> localizer)
+        private readonly IConfiguration configuration;
+
+        public MailService(IDistributedCache cache, IStringLocalizer<MailService> localizer, IConfiguration configuration)
         {
-            this.mailSettings = mailSettings.Value;
             this.cache = cache;
             this.localizer = localizer;
+            this.configuration = configuration;
         }
 
         public async Task SendEmailAsync(string UserEmail)
@@ -28,7 +30,7 @@ namespace Hope.Core.Service
             await  cache.SetStringAsync("key",key.ToString());
             var email = new MimeMessage();
 
-            email.From.Add(new MailboxAddress(mailSettings.DisplayName,mailSettings.Email ));
+            email.From.Add(new MailboxAddress(configuration["MailSettings:DisplayName"], configuration["MailSettings:Email"]));
             email.To.Add(new MailboxAddress("User", UserEmail));
 
             email.Subject = "Confirmation of Email Address";
@@ -39,9 +41,9 @@ namespace Hope.Core.Service
 
             using (var smtp = new SmtpClient())
             {
-                smtp.Connect(mailSettings.Host, mailSettings.Port, false);
+                smtp.Connect(configuration["MailSettings:Host"], int.Parse(configuration["MailSettings:Port"]!), false);
 
-                smtp.Authenticate(mailSettings.UserName,mailSettings.Password );
+                smtp.Authenticate(configuration["MailSettings:UserName"], configuration["MailSettings:Password"]);
 
                 smtp.Send(email);
                 smtp.Disconnect(true);

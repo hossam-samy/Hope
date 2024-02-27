@@ -1,4 +1,4 @@
-﻿using Hope.Domain.Common;
+﻿using Hope.Core.Common;
 
 namespace Hope.Core.Interfaces
 {

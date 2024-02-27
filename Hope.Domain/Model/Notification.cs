@@ -12,6 +12,8 @@ namespace Hope.Domain.Model
 
         public string Content { get; set; }
         public DateTime Date { get; set; }
+
+        public virtual List<User> Users { get; set; }   
        
 
 

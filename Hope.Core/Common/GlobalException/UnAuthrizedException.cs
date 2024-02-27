@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hope.Domain.Common.GlobalException
+namespace Hope.Core.Common.GlobalException
 {
     public class UnAuthrizedException:Exception
     {

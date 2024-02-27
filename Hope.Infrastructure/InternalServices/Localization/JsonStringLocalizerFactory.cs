@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 
-namespace Hope.Domain.Services.Localization
+namespace Hope.Infrastructure.Services.Localization
 {
     public class JsonStringLocalizerFactory : IStringLocalizerFactory
     {
