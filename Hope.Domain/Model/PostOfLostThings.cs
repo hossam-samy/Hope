@@ -9,10 +9,7 @@ namespace Hope.Domain.Model
         public string UserId { get; set; }
 
 
-        public override Post Clone()
-        {
-            return this;
-        }
+       
         public virtual User User { get; set; }
 
         public virtual List<User> HiddenThings { get; set; }

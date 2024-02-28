@@ -23,7 +23,7 @@ namespace Hope.Domain.Model
         public string? City { get; set; }
         public bool IsSearcher { get; set; }=true;
 
-        public abstract Post Clone(); 
+      
 
     }
 }
