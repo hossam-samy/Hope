@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Hope.Domain.Model
 {
+   
     public abstract class Post
     {
         public int Id { get; set; }
@@ -19,8 +21,9 @@ namespace Hope.Domain.Model
         public DateTime MissigDate { get; set; }
         public string? PhoneNumber { get; set; }
         public string? City { get; set; }
-        public bool IsSearcher { get; set; }=true;  
+        public bool IsSearcher { get; set; }=true;
 
+        public abstract Post Clone(); 
 
     }
 }

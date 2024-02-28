@@ -4,10 +4,10 @@ using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MapsterMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Net.Http;
+using System.Text.Json;
+
 
 namespace Hope.Core.Service
 {
@@ -59,15 +59,18 @@ namespace Hope.Core.Service
 
         }
 
-        public async Task<Response> GetPostsOfAllPeople()
+        public async Task<Response> GetAllPosts()
         {
-            var posts = await work.Repository<PostOfLostPeople>().Get(i=>i);
+            var Peopleposts = await work.Repository<PostOfLostPeople>().Get(i=>i);
+            var Thingsposts = await work.Repository<PostOfLostThings>().Get(i => i);
 
+            
+            var Peoplepostsoutput = mapper.Map<IEnumerable<PostPeopleResponse>>(Peopleposts);
+            var Thingspostsoutput = mapper.Map<IEnumerable<PostThingResponse>>(Thingsposts);
 
-            var output = mapper.Map<IEnumerable<PostPeopleResponse>>(posts);
-
-            return await Response.SuccessAsync(output, localizer["Success"].Value);
-
+            PostDto posts= new PostDto() { PeopleResponses= Peoplepostsoutput.ToList(), ThingResponses=Thingspostsoutput.ToList() };    
+           
+            return await Response.SuccessAsync(posts , localizer["Success"]);
         }
         public async Task<Response> GetPostOfAccidents()
         {

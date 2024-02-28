@@ -21,21 +21,21 @@ namespace Hope.Infrastructure
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 
 
-             builder.Entity<User>().HasMany(b=>b.lostPeople).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);
-             builder.Entity<User>().HasMany(b=>b.lostThings).WithOne(b=>b.User).HasForeignKey(i=>i.UserId);
+            builder.Entity<User>().HasMany(b => b.lostPeople).WithOne(b => b.User).HasForeignKey(i => i.UserId);
+            builder.Entity<User>().HasMany(b => b.lostThings).WithOne(b => b.User).HasForeignKey(i => i.UserId);
             builder.Entity<User>().HasMany(b => b.HiddingPeoples).WithMany(i => i.HiddenPeoples).UsingEntity(i => i.ToTable("HiddenPeoplePost"));
             builder.Entity<User>().HasMany(b => b.HiddingThings).WithMany(i => i.HiddenThings).UsingEntity(i => i.ToTable("HiddenThingsPost"));
 
             builder.Entity<User>().HasMany(b => b.PinningPeoples).WithMany(i => i.PinnedPeoples).UsingEntity(i => i.ToTable("PinnedPeoplePost"));
             builder.Entity<User>().HasMany(b => b.PinningThings).WithMany(i => i.PinnedThings).UsingEntity(i => i.ToTable("PinnedThingsPost"));
-            
 
-             //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
+
+            //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
 
 
         }
 
-         public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
          public DbSet<PostOfLostPeople> postOfLostPeoples { get; set; }
          public DbSet<PostOfLostThings> postOfLostthings { get; set; }
          public DbSet<Message>  Messages { get; set; }

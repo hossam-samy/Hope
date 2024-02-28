@@ -1,7 +1,9 @@
 ﻿using Hope.Core.Interfaces;
 using Hope.Core.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using Hope.Domain.Model;
+using System.Text.Json;
+
 
 namespace Hope.Api.Controllers
 {
@@ -41,11 +43,10 @@ namespace Hope.Api.Controllers
             return Ok(await _postService.GetPostThings());
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostsOfAllPeople()
+       
+        public async Task<IActionResult> GetAllPosts()
         {
-
-
-            return Ok(await _postService.GetPostsOfAllPeople());
+            return Ok(await _postService.GetAllPosts());
         }
         [HttpGet]
         public async Task<IActionResult> GetPostOfShelters()
@@ -55,6 +56,7 @@ namespace Hope.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPostOfAccidents()
         {
+          
             return Ok(await _postService.GetPostOfAccidents());
         }
         [HttpGet]

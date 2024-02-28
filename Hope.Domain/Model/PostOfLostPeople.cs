@@ -17,7 +17,12 @@ namespace Hope.Domain.Model
 
         [ForeignKey("User")]
         public string UserId { get; set; }
-        public virtual User  User { get; set; }
+
+        public override Post Clone()
+        {
+            return this;
+        }
+        public virtual User User { get; set; }
 
         public virtual List<User> HiddenPeoples { get; set; }
 

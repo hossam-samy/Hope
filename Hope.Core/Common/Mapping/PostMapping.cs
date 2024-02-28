@@ -13,9 +13,9 @@ namespace Hope.Core.Common.Mapping
             config.NewConfig<PostPeopleRequest, PostOfLostPeople>();
 
 
-            config.NewConfig<PostOfLostPeople, PostThingResponse>().Map(dest => dest.UserName, src => src.User.UserName);
+            config.NewConfig<PostOfLostPeople, PostPeopleResponse>().Map(dest => dest.UserName, src => src.User.UserName);
 
-            config.NewConfig<PostOfLostThings,PostThingResponse>().Map(dest=>dest.UserName,src=>src.User.UserName);
+            config.NewConfig<PostOfLostThings, PostThingResponse>().Map(dest => dest.UserName, src => src.User.UserName);
 
 
             config.NewConfig<PostThingsRequest, PostOfLostThings>();
