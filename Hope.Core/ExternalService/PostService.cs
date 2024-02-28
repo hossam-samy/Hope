@@ -17,47 +17,43 @@ namespace Hope.Core.Service
         private readonly IMapper mapper;
         private readonly IStringLocalizer<PostService> localizer;
         private readonly IMediaService mediaService;
-        private readonly HttpContext httpContext;
-        public PostService(IUnitofWork work, IMapper mapper, IStringLocalizer<PostService> localizer, IMediaService mediaService, IHttpContextAccessor httpContextAccessor)
+        public PostService(IUnitofWork work, IMapper mapper, IStringLocalizer<PostService> localizer, IMediaService mediaService)
         {
             this.work = work;
             this.mapper = mapper;
             this.localizer = localizer;
             this.mediaService = mediaService;
-            this.httpContext = httpContextAccessor.HttpContext;
         }
         public async Task<Response> AddPostPeople([FromForm]PostPeopleRequest dto)
         {
 
-            var extension = dto.ImageFile.FileName.Split('.')[1];
-
-            if (dto.ImageFile!=null)
-                await mediaService.AddFileAsync(dto.ImageFile,$"{dto.Name}.{extension}");
-
-            
 
             var post = mapper.Map<PostOfLostPeople>(dto);
-            if (dto.ImageFile != null) 
-           post.ImageUrl= @$"{httpContext.Request.Scheme}://{httpContext.Request.Host}/PostsImages/" + $"{dto.Name}.{extension}";
-
+            
             await work.Repository<PostOfLostPeople>().AddAsync(post);
+
+            
+            var result= await mediaService.AddFileAsync(dto.ImageFile,post.GetType().Name,post.Id.ToString());
+            
+            post.ImageUrl = result;
+
+            await work.Repository<PostOfLostPeople>().Update(post);
 
             return await Response.SuccessAsync(localizer["Success"].Value);
         }
 
         public async Task<Response> AddPostThings([FromForm]PostThingsRequest dto)
         {
-            var extension = dto.ImageFile.FileName.Split('.')[1];
-
-            if (dto.ImageFile != null)
-                await mediaService.AddFileAsync(dto.ImageFile, $"{dto.Type}.{extension}");
-
-
+           
             var post = mapper.Map<PostOfLostThings>(dto);
-            if (dto.ImageFile != null)
-                post.ImageUrl = @$"{httpContext.Request.Scheme}://{httpContext.Request.Host}/PostsImages/" + $"{dto.Type}.{extension}";
 
             await work.Repository<PostOfLostThings>().AddAsync(post);
+
+            var result = await mediaService.AddFileAsync(dto.ImageFile,post.GetType().Name, post.Id.ToString());
+
+            post.ImageUrl = result;
+
+            await work.Repository<PostOfLostThings>().Update(post);
 
             return await Response.SuccessAsync(localizer["Success"].Value);
 
@@ -68,7 +64,7 @@ namespace Hope.Core.Service
             var posts = await work.Repository<PostOfLostPeople>().Get(i=>i);
 
 
-            var output = mapper.Map<IEnumerable<PostThingResponse>>(posts);
+            var output = mapper.Map<IEnumerable<PostPeopleResponse>>(posts);
 
             return await Response.SuccessAsync(output, localizer["Success"].Value);
 
@@ -78,7 +74,7 @@ namespace Hope.Core.Service
             var posts = await work.Repository<PostOfLostPeople>().Get(i=>i.Condition==Condition.accidents);
 
 
-            var output = mapper.Map<IEnumerable<PostThingResponse>>(posts);
+            var output = mapper.Map<IEnumerable<PostPeopleResponse>>(posts);
 
 
 
@@ -90,7 +86,7 @@ namespace Hope.Core.Service
             var posts = await work.Repository<PostOfLostPeople>().Get(i => i.Condition == Condition.losties);
 
 
-            var output = mapper.Map<IEnumerable<PostThingResponse>>(posts);
+            var output = mapper.Map<IEnumerable<PostPeopleResponse>>(posts);
 
             return await Response.SuccessAsync(output, localizer["Success"].Value);
         }
@@ -100,7 +96,7 @@ namespace Hope.Core.Service
             var posts = await work.Repository<PostOfLostPeople>().Get(i => i.Condition == Condition.shelters);
 
 
-            var output = mapper.Map<IEnumerable<PostThingResponse>>(posts);
+            var output = mapper.Map<IEnumerable<PostPeopleResponse>>(posts);
 
             return await Response.SuccessAsync(output, localizer["Success"].Value);
         }

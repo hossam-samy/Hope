@@ -1,53 +1,68 @@
 ﻿using Hope.Core.Interfaces;
-using Humanizer;
+using Hope.Domain.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hope.Core.Service
 {
     public class MediaService : IMediaService
     {
         private readonly IWebHostEnvironment _host;
+        private readonly HttpContext _httpContext;
 
-        public MediaService(IWebHostEnvironment host)
+        public MediaService(IWebHostEnvironment host, IHttpContextAccessor httpContext)
         {
             _host = host;
+            _httpContext = httpContext.HttpContext;
         }
 
-        public async Task AddFileAsync(IFormFile file, string name)
+
+        public async Task<string> AddFileAsync(IFormFile media,string dest,string name)
         {
-            if (file.Length > 0)
-            {
-               
-                string filepath = Path.Combine(_host.WebRootPath, @"PostsImages");
-                using (var fileStream = new FileStream(Path.Combine(filepath,name), FileMode.OpenOrCreate))
-                {
-                    await file.CopyToAsync(fileStream);
-                    
-                }
-
+            if(media == null || media.Length == 0) { 
+              
+                return string.Empty;    
             }
+
+            var extension = Path.GetExtension(media.FileName);
+
+            var uniqueFileName = name + extension;
+
+            
+
+            var uploadsFolder = Path.Combine("wwwroot", $"{dest}Images");
+
+
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
+            {
+                media.CopyTo(stream);
+            }
+
+            var baseUrl = @$"{_httpContext.Request.Scheme}://{_httpContext.Request.Host}/{dest}Images/";
+
+            return baseUrl + uniqueFileName;
         }
+        
 
         public Task DeleteFileAsync(string url)
         {
-            File.Delete(url);   
+            if (File.Exists(url))
+            {
+                File.Delete(url);
+            }
 
             return Task.CompletedTask;  
         }
 
         public string GetUrl() =>  _host.WebRootPath;
 
-        public Task UpdateDeleteFileAsync(string url, IFormFile file, string name)
+        
+        public async Task UpdateFileAsync(string url, IFormFile file,string dest, string name)
         {
-            DeleteFileAsync(url);
-            AddFileAsync(file, name);   
-            return Task.CompletedTask;  
+            await DeleteFileAsync(url);
+            await AddFileAsync(file,dest,name);   
+            
         }
     }
 }
