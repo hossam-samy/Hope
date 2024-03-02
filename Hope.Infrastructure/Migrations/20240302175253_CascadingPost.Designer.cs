@@ -4,6 +4,7 @@ using Hope.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hope.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240302175253_CascadingPost")]
+    partial class CascadingPost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment", (string)null);
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Message", b =>
@@ -93,7 +96,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Notification", b =>
@@ -113,7 +116,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.PostOfLostPeople", b =>
@@ -174,7 +177,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("postOfLostPeoples", (string)null);
+                    b.ToTable("postOfLostPeoples");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.PostOfLostThings", b =>
@@ -228,7 +231,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("postOfLostthings", (string)null);
+                    b.ToTable("postOfLostthings");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.User", b =>
@@ -451,7 +454,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("NotificationUser", (string)null);
+                    b.ToTable("NotificationUser");
                 });
 
             modelBuilder.Entity("PostOfLostPeopleUser", b =>

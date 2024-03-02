@@ -123,26 +123,48 @@ namespace Hope.Core.Service
             await mediaService.DeleteFileAsync(url);
             return await Response.SuccessAsync("tmam");
         }
-        public async Task<Response> DeletePost(int id, bool IsPeople)
+       
+        public async Task<Response> DeletePost(ServiceRequests requests)
         {
+            var user = await userManager.FindByIdAsync(requests.UserId);
+            if (user == null)
+            {
+
+                return await Response.FailureAsync(localizer["UserNotExist"]);
+
+            }
+
             Post? post;
-            if (IsPeople) {
-                post = work.Repository<PostOfLostPeople>().Get(i => i.Id == id).Result.FirstOrDefault();
+            if (requests.IsPeople)
+            {
+                post = user.lostPeople.FirstOrDefault();
                 if (post == null)
                 {
                     return await Response.FailureAsync("PostNotExist");
 
+                }
+                var peopleposts = (PostOfLostPeople)post;
+
+                foreach (var item in peopleposts?.Comments)
+                {
+                    await DeleteComment(item.Id);
                 }
 
                 await mediaService.DeleteFileAsync(post.ImageUrl);
                 await work.Repository<PostOfLostPeople>().Delete((PostOfLostPeople)post);
                 return await Response.SuccessAsync(localizer["Success"]);
             }
-            post = work.Repository<PostOfLostThings>().Get(i => i.Id == id).Result.FirstOrDefault();
+            post = user.lostThings.FirstOrDefault();
             if (post == null)
             {
                 return await Response.FailureAsync("PostNotExist");
 
+            }
+            var Thingsposts = (PostOfLostThings)post;
+
+            foreach (var item in Thingsposts?.Comments)
+            {
+                await DeleteComment(item.Id);
             }
             await mediaService.DeleteFileAsync(post.ImageUrl);
             await work.Repository<PostOfLostThings>().Delete((PostOfLostThings)post);

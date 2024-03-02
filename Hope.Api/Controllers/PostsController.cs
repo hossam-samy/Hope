@@ -65,9 +65,9 @@ namespace Hope.Api.Controllers
             return Ok(await _postService.GetPostOfLosties());
         }
         [HttpDelete]
-        public async Task<IActionResult> DeletePost(int id,bool IsPeople)
+        public async Task<IActionResult> DeletePost(ServiceRequests requests)
         {
-            return Ok(await _postService.DeletePost(id, IsPeople));
+            return Ok(await _postService.DeletePost(requests));
         }
         [HttpPut]
         public async Task<IActionResult> UpdatePostOfThingsPost(UpdatePostOfThingsRequest request)
@@ -87,18 +87,18 @@ namespace Hope.Api.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> PinPost(string UserId, int PostId, bool IsPeople)
+        public async Task<IActionResult> PinPost(ServiceRequests requests)
         {
-            var result = IsPeople ? await _postService.PinPost<PostOfLostPeople>(UserId, PostId) :
-                await _postService.PinPost<PostOfLostThings>(UserId, PostId);
+            var result = requests.IsPeople ? await _postService.PinPost<PostOfLostPeople>(requests.UserId, requests.PostId) :
+                await _postService.PinPost<PostOfLostThings>(requests.UserId, requests.PostId);
 
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> UnPinPost(string UserId, int PostId, bool IsPeople)
+        public async Task<IActionResult> UnPinPost(ServiceRequests requests)
         {
-            var result = IsPeople ? await _postService.UnPinPost<PostOfLostPeople>(UserId, PostId) :
-                await _postService.UnPinPost<PostOfLostThings>(UserId, PostId);
+            var result = requests.IsPeople ? await _postService.UnPinPost<PostOfLostPeople>(requests.UserId, requests.PostId) :
+                await _postService.UnPinPost<PostOfLostThings>(requests.UserId, requests.PostId);
 
             return Ok(result);
         }
@@ -129,11 +129,11 @@ namespace Hope.Api.Controllers
 
 
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFilePost(string url)
-        {
-            return Ok(await _postService.DeleteFileAsync(url));
-        }
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteFilePost(string url)
+        //{
+        //    return Ok(await _postService.DeleteFileAsync(url));
+        //}
 
     }
 }

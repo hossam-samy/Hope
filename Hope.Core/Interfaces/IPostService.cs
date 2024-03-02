@@ -1,6 +1,7 @@
 ﻿using Hope.Core.Common;
 using Hope.Core.Dtos;
 using Hope.Domain.Model;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Hope.Core.Interfaces
 {
@@ -14,7 +15,7 @@ namespace Hope.Core.Interfaces
         public Task<Response> GetPostOfAccidents();
         public Task<Response> GetPostOfLosties();
         public  Task<Response> DeleteFileAsync(string url);
-        public  Task<Response> DeletePost(int id,bool IsPeople);
+        public  Task<Response> DeletePost(ServiceRequests requests);
 
         public  Task<Response> UpdatePostOfThingsPost(UpdatePostOfThingsRequest request);
         public  Task<Response> UpdatePostOfPeoplePost(UpdatePostOfPeopleRequest request);
