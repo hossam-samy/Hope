@@ -27,7 +27,7 @@ namespace Hope.Api.Middlewares
             }
             catch(Exception e) {
 
-                var json = JsonSerializer.Serialize(await Response.FailureAsync(localizer["Faild"],e.Message));
+                var json = JsonSerializer.Serialize(await Response.FailureAsync(localizer["Faild"],e.InnerException.Message));
                 context.Response.ContentType = "application/json";
                 context?.Response.WriteAsync(json);
             }

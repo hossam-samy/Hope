@@ -14,5 +14,20 @@ namespace Hope.Core.Interfaces
         public Task<Response> GetPostOfAccidents();
         public Task<Response> GetPostOfLosties();
         public  Task<Response> DeleteFileAsync(string url);
+        public  Task<Response> DeletePost(int id,bool IsPeople);
+
+        public  Task<Response> UpdatePostOfThingsPost(UpdatePostOfThingsRequest request);
+        public  Task<Response> UpdatePostOfPeoplePost(UpdatePostOfPeopleRequest request);
+        public  Task<Response> PinPost<T>(string UserId,int PostId)where T:Post;
+
+        public Task<Response> UnPinPost<T>(string UserId, int PostId)where T:Post;
+        public  Task<Response> HidePost<T>(string UserId,int PostId)where T:Post;
+        public Task<Response> AddCommentToPost<T>(CommentRequest request) where T : Post;
+        public  Task<Response> AddCommentToComment(AddingCommentToCommentRequest request);
+        public Task<Response> UpdateComment(UpdateCommentRequest request);
+        public Task<Response> DeleteComment(int id);
+
+
+
     }
 }

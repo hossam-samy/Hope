@@ -15,8 +15,11 @@ namespace Hope.Infrastructure.Repos
         public async  Task AddAsync(T item)
         {
              
+           var asd= await dbContext.Set<T>().FindAsync(1);
             await dbContext.AddAsync(item);
-             await dbContext.SaveChangesAsync();  
+            
+            await dbContext.SaveChangesAsync();  
+
 
             
         }

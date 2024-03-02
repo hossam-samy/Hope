@@ -4,6 +4,7 @@ using Hope.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hope.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240302142102_AddingComment")]
+    partial class AddingComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,10 +46,10 @@ namespace Hope.Infrastructure.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Peopleid")
+                    b.Property<int>("PeopleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Thingsid")
+                    b.Property<int>("ThingsId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -57,9 +60,9 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("Peopleid");
+                    b.HasIndex("PeopleId");
 
-                    b.HasIndex("Thingsid");
+                    b.HasIndex("ThingsId");
 
                     b.HasIndex("UserId");
 
@@ -522,11 +525,15 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasOne("Hope.Domain.Model.PostOfLostPeople", "People")
                         .WithMany("Comments")
-                        .HasForeignKey("Peopleid");
+                        .HasForeignKey("PeopleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Hope.Domain.Model.PostOfLostThings", "Things")
                         .WithMany("Comments")
-                        .HasForeignKey("Thingsid");
+                        .HasForeignKey("ThingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Hope.Domain.Model.User", "User")
                         .WithMany()

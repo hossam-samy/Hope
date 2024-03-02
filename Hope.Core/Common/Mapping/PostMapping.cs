@@ -19,6 +19,12 @@ namespace Hope.Core.Common.Mapping
 
 
             config.NewConfig<PostThingsRequest, PostOfLostThings>();
+
+            config.NewConfig<UpdatePostOfPeopleRequest, PostOfLostPeople>();
+            config.NewConfig<CommentRequest, Comment>();
+            config.NewConfig<AddingCommentToCommentRequest, Comment>();
+            config.NewConfig<Comment, CommentResponse>().Map(i=>i.Comments,i=>i.Comments);
+
         }
     }
 }

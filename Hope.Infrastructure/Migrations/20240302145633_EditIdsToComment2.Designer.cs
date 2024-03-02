@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hope.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240226190515_EditingModels3")]
-    partial class EditingModels3
+    [Migration("20240302145633_EditIdsToComment2")]
+    partial class EditIdsToComment2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace Hope.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CommentId")
+                    b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -46,6 +46,12 @@ namespace Hope.Infrastructure.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("Peopleid")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Thingsid")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -54,9 +60,13 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("CommentId");
 
+                    b.HasIndex("Peopleid");
+
+                    b.HasIndex("Thingsid");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Message", b =>
@@ -124,7 +134,6 @@ namespace Hope.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Condition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
@@ -135,7 +144,6 @@ namespace Hope.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gendre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
@@ -150,7 +158,7 @@ namespace Hope.Infrastructure.Migrations
                     b.Property<bool>("IsSearcher")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("MissigDate")
+                    b.Property<DateTime?>("MissigDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -160,11 +168,9 @@ namespace Hope.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Town")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -204,14 +210,13 @@ namespace Hope.Infrastructure.Migrations
                     b.Property<bool>("IsSearcher")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("MissigDate")
+                    b.Property<DateTime?>("MissigDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Town")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
@@ -514,21 +519,29 @@ namespace Hope.Infrastructure.Migrations
 
             modelBuilder.Entity("Hope.Domain.Model.Comment", b =>
                 {
-                    b.HasOne("Hope.Domain.Model.Comment", "comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Hope.Domain.Model.Comment", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Hope.Domain.Model.PostOfLostPeople", "People")
+                        .WithMany("Comments")
+                        .HasForeignKey("Peopleid");
+
+                    b.HasOne("Hope.Domain.Model.PostOfLostThings", "Things")
+                        .WithMany("Comments")
+                        .HasForeignKey("Thingsid");
 
                     b.HasOne("Hope.Domain.Model.User", "User")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("People");
 
-                    b.Navigation("comment");
+                    b.Navigation("Things");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Message", b =>
@@ -546,9 +559,7 @@ namespace Hope.Infrastructure.Migrations
                 {
                     b.HasOne("Hope.Domain.Model.User", "User")
                         .WithMany("lostPeople")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -690,10 +701,23 @@ namespace Hope.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hope.Domain.Model.User", b =>
+            modelBuilder.Entity("Hope.Domain.Model.Comment", b =>
                 {
                     b.Navigation("Comments");
+                });
 
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostPeople", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Hope.Domain.Model.PostOfLostThings", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Hope.Domain.Model.User", b =>
+                {
                     b.Navigation("Messages");
 
                     b.Navigation("lostPeople");

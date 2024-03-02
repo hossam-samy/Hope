@@ -47,21 +47,29 @@ namespace Hope.Core.Service
 
         public Task DeleteFileAsync(string url)
         {
-            if (File.Exists(url))
+            //https: / / localhost:44318 / PostOfLostThingsImages / 6.png
+
+            var path = "wwwroot/"+url.Split('/')[3]+ '/' + url.Split('/')[4];
+            
+
+            var fullpath = Path.GetFullPath(path);
+
+
+            if (File.Exists(fullpath))
             {
-                File.Delete(url);
+                File.Delete(fullpath);
             }
 
             return Task.CompletedTask;  
         }
 
-        public string GetUrl() =>  _host.WebRootPath;
-
-        
-        public async Task UpdateFileAsync(string url, IFormFile file,string dest, string name)
+        public async Task<string> UpdateFileAsync(string url, IFormFile file,string dest, string name)
         {
+            if(file == null || file.Length == 0)   
+                return string.Empty;    
+
             await DeleteFileAsync(url);
-            await AddFileAsync(file,dest,name);   
+            return await AddFileAsync(file,dest,name);   
             
         }
     }

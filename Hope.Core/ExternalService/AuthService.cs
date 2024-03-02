@@ -83,9 +83,6 @@ namespace Hope.Core.Service
 
         public async Task<Response> UserRegister(UserDto model){
 
-            if(model.Password!=model.ConfirmPassword)
-                return await Response.FailureAsync(localizer["PasswordDidntMatch"].Value);
-
             if (await userManager.FindByEmailAsync(model.Email) is not null)
                 return await Response.FailureAsync(localizer["EmailExist"].Value);
 

@@ -9,6 +9,8 @@ namespace Hope.Core.Dtos
 {
     public class PostThingResponse:PostDto
     {
+
+        public int Id { get; set; }
         public string Type { get; set; }
 
         public string Description { get; set; }
@@ -26,6 +28,7 @@ namespace Hope.Core.Dtos
         public string? UserImage { get; set; }
         public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
+        public List<CommentResponse> Comments { get; set; } 
 
 
     }

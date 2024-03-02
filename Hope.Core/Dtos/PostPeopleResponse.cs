@@ -9,6 +9,7 @@ namespace Hope.Core.Dtos
 {
     public class PostPeopleResponse
     {
+        public int Id { get; set; }
         public int? Age { get; set; }
         public string? Name { get; set; }
         public string Gendre { get; set; }
@@ -27,7 +28,7 @@ namespace Hope.Core.Dtos
         public string? UserImage { get; set; }
         public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
-
+        public List<CommentResponse> Comments { get; set; }
 
 
     }

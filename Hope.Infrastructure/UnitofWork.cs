@@ -41,6 +41,11 @@ namespace Hope.Infrastructure
 
             context.Dispose();
         }
+
+        public async Task<int> SaveAsync()
+        {
+           return await context.SaveChangesAsync();
+        }
     }
 }
         

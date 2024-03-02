@@ -25,6 +25,7 @@ namespace Hope.Core.Dtos
         [MinLength(8,ErrorMessage ="Password should be at least 8 chars")]
         public string Password { get; set; }
         [Required]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
     }

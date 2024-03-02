@@ -12,7 +12,6 @@ namespace Hope.Core.Interfaces
 
         Task<string> AddFileAsync(IFormFile file,string dest,string name);
         Task DeleteFileAsync(string url);   
-        Task UpdateFileAsync(string url,IFormFile file,string dest, string name);   
-        string GetUrl();
-    }
+        Task<string> UpdateFileAsync(string url,IFormFile file,string dest, string name);   
+        }
 }

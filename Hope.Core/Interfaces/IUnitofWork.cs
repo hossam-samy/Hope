@@ -4,5 +4,6 @@
     {
         IBaseRepo<T> Repository<T>() where T : class;
 
+        Task<int> SaveAsync();
     }
 }
