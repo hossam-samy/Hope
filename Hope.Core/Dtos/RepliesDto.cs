@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hope.Core.Dtos
 {
-    public class AddingCommentToCommentRequest
+    public class RepliesDto
     {
-        public int CommentId { get; set; }
-        public string Content { get; set; }
+        public List<CommentResponse> Comments { get; set; }
     }
 }

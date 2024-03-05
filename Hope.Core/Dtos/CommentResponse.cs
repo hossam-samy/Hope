@@ -12,6 +12,6 @@ namespace Hope.Core.Dtos
         public string Content { get; set; }
         public DateTime Date { get; set; }
 
-        public List<CommentResponse>  Comments{ get; set; }
+      
     }
 }

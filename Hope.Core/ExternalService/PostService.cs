@@ -7,7 +7,6 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 
 namespace Hope.Core.Service
@@ -64,12 +63,17 @@ namespace Hope.Core.Service
 
         public async Task<Response> GetAllPosts()
         {
-            var Peopleposts = await work.Repository<PostOfLostPeople>().Get(i => i);
+            
+            var Peopleposts = await  work.Repository<PostOfLostPeople>().Get(i => i);
+
             var Thingsposts = await work.Repository<PostOfLostThings>().Get(i => i);
+
 
 
             var Peoplepostsoutput = mapper.Map<IEnumerable<PostPeopleResponse>>(Peopleposts);
             var Thingspostsoutput = mapper.Map<IEnumerable<PostThingResponse>>(Thingsposts);
+
+            Peoplepostsoutput.ToList().ForEach(x => x.UserName = Peopleposts.Select(i => i.Name).FirstOrDefault() ?? x.UserName);
 
             PostDto posts = new PostDto() { PeopleResponses = Peoplepostsoutput.ToList(), ThingResponses = Thingspostsoutput.ToList() };
 
@@ -140,7 +144,7 @@ namespace Hope.Core.Service
                 post = user.lostPeople.FirstOrDefault();
                 if (post == null)
                 {
-                    return await Response.FailureAsync("PostNotExist");
+                    return await Response.FailureAsync("You are not allowed to delete this post");
 
                 }
                 var peopleposts = (PostOfLostPeople)post;
@@ -178,7 +182,7 @@ namespace Hope.Core.Service
             if (post == null) return await Response.FailureAsync("PostNotExist");
 
 
-
+            post.IsSearcher = request.IsSearcher ?? post.IsSearcher;
             post.Age = request.Age ?? post.Age;
             post.Name = request.Name ?? post.Name;
             post.City = request.City ?? post.City;
@@ -207,7 +211,7 @@ namespace Hope.Core.Service
             if (post == null) return await Response.FailureAsync("PostNotExist");
 
 
-
+            post.IsSearcher = request.IsSearcher ?? post.IsSearcher;
             post.Type = request.Type ?? post.Type;
             post.City = request.City ?? post.City;
             post.Description = request.Description ?? post.Description;
@@ -340,13 +344,7 @@ namespace Hope.Core.Service
         
         public async Task<Response>AddCommentToPost<T>(CommentRequest request)where T : Post  
         {
-            var user = await userManager.FindByIdAsync(request.UserId);
-            if (user == null)
-            {
-
-                return await Response.FailureAsync(localizer["UserNotExist"]);
-
-            }
+            
 
             Post? post = work.Repository<T>().Get(i => i.Id == request.PostId).Result.FirstOrDefault();
             if (post == null)
@@ -382,19 +380,11 @@ namespace Hope.Core.Service
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Sucess"]);
+            return await Response.SuccessAsync(localizer["Success"]);
 
         }
         public async Task<Response> AddCommentToComment(AddingCommentToCommentRequest request) 
         {
-            var user = await userManager.FindByIdAsync(request.UserId);
-            if (user == null)
-            {
-
-                return await Response.FailureAsync(localizer["UserNotExist"]);
-
-            }
-
             Comment? comment = work.Repository<Comment>().Get(i => i.Id == request.CommentId).Result.FirstOrDefault();
             if (comment == null)
             {
@@ -429,7 +419,6 @@ namespace Hope.Core.Service
             return await Response.SuccessAsync(localizer["Success"]);
 
         }
-
         public async Task<Response> DeleteComment(int id)
         {
             var comment = work.Repository<Comment>().Get(i => i.Id == id).Result.FirstOrDefault();
@@ -446,5 +435,29 @@ namespace Hope.Core.Service
             return await Response.SuccessAsync(localizer["Success"]);
 
         }
+
+
+        public async Task<Response> GetReplies(int id)
+        {
+            var comment= work.Repository<Comment>().Get(i=>i.Id==id).Result.FirstOrDefault();
+
+            if (comment is null)
+            {
+                return await Response.FailureAsync(localizer["Faild"]);
+            }
+
+            var response = mapper.Map<RepliesDto>(comment);
+
+
+
+            return await Response.SuccessAsync(response, localizer["Success"]);
+
+        }
+
+
+       
+
+
+
     }
 }

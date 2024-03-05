@@ -64,6 +64,14 @@ namespace Hope.Api.Controllers
         {
             return Ok(await _postService.GetPostOfLosties());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReplies(int id)
+        {
+            return Ok(await _postService.GetReplies(id));
+        }
+
+
         [HttpDelete]
         public async Task<IActionResult> DeletePost(ServiceRequests requests)
         {
@@ -125,6 +133,7 @@ namespace Hope.Api.Controllers
         {
             return Ok(await _postService.DeleteComment(id));
         }
+
 
 
 

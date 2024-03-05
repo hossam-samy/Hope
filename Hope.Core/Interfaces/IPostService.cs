@@ -28,7 +28,7 @@ namespace Hope.Core.Interfaces
         public Task<Response> UpdateComment(UpdateCommentRequest request);
         public Task<Response> DeleteComment(int id);
 
-
+        public Task<Response> GetReplies(int id);
 
     }
 }

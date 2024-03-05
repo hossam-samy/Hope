@@ -23,7 +23,7 @@ namespace Hope.Domain.Model
         //
         public string? PhoneNumber { get; set; }
         //
-        public string? City { get; set; }
+        public string City { get; set; }
         public bool IsSearcher { get; set; }=true;
 
        

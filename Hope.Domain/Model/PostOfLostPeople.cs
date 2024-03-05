@@ -11,10 +11,10 @@ namespace Hope.Domain.Model
     {
         //
         public int? Age { get; set; }
-        public string? Condition { get; set; }
+        public string Condition { get; set; }
         //
         public string? Name { get; set; }
-        public string? Gendre { get; set; }
+        public string Gendre { get; set; }
 
         [ForeignKey("User")]
         public string? UserId { get; set; }

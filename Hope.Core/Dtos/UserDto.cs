@@ -13,6 +13,8 @@ namespace Hope.Core.Dtos
         [Required]
         public string UserName { get; set; }
         [Required]
+        public string Name { get; set; }
+        [Required]
         public string City { get; set; }
         [Required]
         [RegularExpression("01[0125][0-9]{8}",ErrorMessage ="Invalid Phone Number")]

@@ -20,6 +20,7 @@ namespace Hope.Core.Dtos
 
         public string? PhoneNumber { get; set; }
 
+        public bool? IsSearcher { get; set; }
 
         public string? Town { get; set; }
         public string? City { get; set; }
