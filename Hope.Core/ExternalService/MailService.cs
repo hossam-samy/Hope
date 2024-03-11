@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hope.Core.Service
 {
@@ -36,7 +37,7 @@ namespace Hope.Core.Service
             email.Subject = "Confirmation of Email Address";
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = $"<b>{key}</b>"
+                Text  = $"<b>{key}هو رمز التحقق الخاص بـ Hope. </b>"
             };
 
             using (var smtp = new SmtpClient())

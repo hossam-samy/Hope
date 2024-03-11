@@ -72,10 +72,10 @@ namespace Hope.Core.Service
 
 
             var peopleposts = Peoplecursor != 0 ? work.Repository<PostOfLostPeople>().
-                Get(i => i.Id > Peoplecursor && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(20).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
+                Get(i => i.Id > Peoplecursor && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(16).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
 
             var thingsposts = thingcursor != 0 ? work.Repository<PostOfLostThings>().
-               Get(i => i.Id > thingcursor &&!i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(20).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
+               Get(i => i.Id > thingcursor &&!i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(16).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
 
 
 
@@ -98,7 +98,7 @@ namespace Hope.Core.Service
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
             var posts = cursor != 0 ? work.Repository<PostOfLostPeople>().
-               Get(i => i.Id > cursor && i.Condition==Condition.accidents && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(20).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
+               Get(i => i.Id > cursor && i.Condition==Condition.accidents && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(32).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
 
             cursor = posts?.LastOrDefault()?.Id;
 
@@ -114,7 +114,7 @@ namespace Hope.Core.Service
 
 
             var posts = cursor != 0 ? work.Repository<PostOfLostPeople>().
-             Get(i => i.Id > cursor && i.Condition == Condition.losties && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(20).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
+             Get(i => i.Id > cursor && i.Condition == Condition.losties && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(32).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
 
 
             cursor = posts?.LastOrDefault()?.Id;
@@ -131,7 +131,7 @@ namespace Hope.Core.Service
 
 
             var posts = cursor != 0 ? work.Repository<PostOfLostPeople>().
-             Get(i => i.Id > cursor && i.Condition == Condition.shelters && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(20).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
+             Get(i => i.Id > cursor && i.Condition == Condition.shelters && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(32).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
 
 
             cursor = posts?.LastOrDefault()?.Id;
@@ -149,7 +149,7 @@ namespace Hope.Core.Service
 
 
             var posts = cursor != 0 ? work.Repository<PostOfLostThings>().
-                Get(i => i.Id > cursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(20).ToList().Adapt<List<PostThingResponse>>() : new List<PostThingResponse>();
+                Get(i => i.Id > cursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(32).ToList().Adapt<List<PostThingResponse>>() : new List<PostThingResponse>();
 
 
             cursor = posts?.LastOrDefault()?.Id;
