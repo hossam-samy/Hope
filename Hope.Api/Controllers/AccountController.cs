@@ -27,6 +27,34 @@ namespace Hope.Api.Controllers
             
          }
 
+        [HttpPost]
+        public async Task<IActionResult> AddUserImage(AddImageRequest request)
+        {
+
+            return Ok(await authService.AddUserImage(request));
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProfile(string UserId)
+        {
+
+
+
+            return Ok(await authService.GetProfile(UserId));
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchForUsers(string name)
+        {
+
+            
+
+            return Ok(await authService.SearchForUsers(name));
+
+        }
+
 
         //[HttpPost]
         //public async Task<IActionResult> AdminRegister([FromForm] UserDto User)

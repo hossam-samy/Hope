@@ -1,4 +1,6 @@
-﻿namespace Hope.Core.Interfaces
+﻿using Hope.Domain.Model;
+
+namespace Hope.Core.Interfaces
 {
     public interface IUnitofWork : IDisposable
     {

@@ -37,32 +37,32 @@ namespace Hope.Api.Controllers
             return Ok(await _postService.AddPostThings(dto));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostThings()
+        public async Task<IActionResult> GetPostThings(int? cursor, string UserId)
         {
               
-            return Ok(await _postService.GetPostThings());
+            return Ok(await _postService.GetPostThings(cursor,UserId));
         }
         [HttpGet]
        
-        public async Task<IActionResult> GetAllPosts()
+        public async Task<IActionResult> GetAllPosts(int? Peoplecursor, int?  thingcursor, string UserId)
         {
-            return Ok(await _postService.GetAllPosts());
+            return Ok(await _postService.GetAllPosts(Peoplecursor,thingcursor,UserId));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfShelters()
+        public async Task<IActionResult> GetPostOfShelters(int? cursor, string UserId)
         {
-            return Ok(await _postService.GetPostOfShelters());
+            return Ok(await _postService.GetPostOfShelters(cursor, UserId));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfAccidents()
+        public async Task<IActionResult> GetPostOfAccidents(int? cursor, string UserId)
         {
           
-            return Ok(await _postService.GetPostOfAccidents());
+            return Ok(await _postService.GetPostOfAccidents(cursor, UserId));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfLosties()
+        public async Task<IActionResult> GetPostOfLosties(int? cursor, string UserId)
         {
-            return Ok(await _postService.GetPostOfLosties());
+            return Ok(await _postService.GetPostOfLosties(cursor, UserId));
         }
 
         [HttpGet]
@@ -73,7 +73,7 @@ namespace Hope.Api.Controllers
 
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePost(ServiceRequests requests)
+        public async Task<IActionResult> DeletePost(DeletePostRequests requests)
         {
             return Ok(await _postService.DeletePost(requests));
         }
@@ -88,10 +88,10 @@ namespace Hope.Api.Controllers
             return Ok(await _postService.UpdatePostOfPeoplePost(request));
         }
         [HttpPost]
-        public async Task<IActionResult> HidePost(string UserId, int PostId, bool IsPeople)
+        public async Task<IActionResult> HidePost(ServiceRequests requests)
         {
-            var result=IsPeople? await _postService.HidePost<PostOfLostPeople>(UserId, PostId):
-                 await _postService.HidePost<PostOfLostThings>(UserId, PostId);
+            var result= requests.IsPeople ? await _postService.HidePost<PostOfLostPeople>(requests.UserId, requests.PostId) :
+                 await _postService.HidePost<PostOfLostThings>(requests.UserId, requests.PostId);
             return Ok(result);
         }
         [HttpPost]
@@ -129,9 +129,9 @@ namespace Hope.Api.Controllers
             return Ok(await _postService.UpdateComment(request));
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteComment(int id)
+        public async Task<IActionResult> DeleteComment(DeleteCommentRequests requests)
         {
-            return Ok(await _postService.DeleteComment(id));
+            return Ok(await _postService.DeleteComment(requests));
         }
 
 

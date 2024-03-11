@@ -9,13 +9,13 @@ namespace Hope.Core.Interfaces
     {
         public Task<Response> AddPostPeople(PostPeopleRequest dto);
         public Task<Response> AddPostThings(PostThingsRequest dto);
-        public Task<Response> GetPostThings();
-        public Task<Response> GetAllPosts();
-        public Task<Response> GetPostOfShelters();
-        public Task<Response> GetPostOfAccidents();
-        public Task<Response> GetPostOfLosties();
+        public Task<Response> GetPostThings(int? cursor, string UserId);
+        public  Task<Response> GetAllPosts(int? Peoplecursor, int? thingcursor,string UserId);
+        public Task<Response> GetPostOfShelters(int? cursor, string UserId);
+        public Task<Response> GetPostOfAccidents(int? cursor, string UserId);
+        public Task<Response> GetPostOfLosties(int? cursor, string UserId);
         public  Task<Response> DeleteFileAsync(string url);
-        public  Task<Response> DeletePost(ServiceRequests requests);
+        public  Task<Response> DeletePost(DeletePostRequests requests);
 
         public  Task<Response> UpdatePostOfThingsPost(UpdatePostOfThingsRequest request);
         public  Task<Response> UpdatePostOfPeoplePost(UpdatePostOfPeopleRequest request);
@@ -26,7 +26,7 @@ namespace Hope.Core.Interfaces
         public Task<Response> AddCommentToPost<T>(CommentRequest request) where T : Post;
         public  Task<Response> AddCommentToComment(AddingCommentToCommentRequest request);
         public Task<Response> UpdateComment(UpdateCommentRequest request);
-        public Task<Response> DeleteComment(int id);
+        public Task<Response> DeleteComment(DeleteCommentRequests requests);
 
         public Task<Response> GetReplies(int id);
 

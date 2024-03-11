@@ -8,6 +8,7 @@ namespace Hope.Core.Dtos
 {
     public class UpdateCommentRequest
     {
+        public string UserId { get; set; }
         public int CommentId { get; set; }
         public string Content { get; set; }
     }

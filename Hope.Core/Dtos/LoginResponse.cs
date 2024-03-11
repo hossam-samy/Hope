@@ -10,6 +10,7 @@ namespace Hope.Core.Dtos
     {
         public bool IsAuthenticated { get; set; } = false;
         public string? Id { get; set; }
+        public string? Name { get; set; }
         public string? Email { get; set; }
         public string? Username { get; set; }
         public List<string>? Roles { get; set; }

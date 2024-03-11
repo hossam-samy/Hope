@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hope.Domain.Model
 {
-    public class Notification
+    public class Notification:BaseEntity
     {
-        public int Id { get; set; }
-
+       
         public string Content { get; set; }
         public DateTime Date { get; set; }
 

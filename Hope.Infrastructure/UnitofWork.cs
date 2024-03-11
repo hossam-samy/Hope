@@ -1,4 +1,5 @@
 ﻿using Hope.Core.Interfaces;
+using Hope.Domain.Model;
 using Hope.Infrastructure.Repos;
 using System.Collections;
 

@@ -1,4 +1,5 @@
-﻿using Hope.Core.Interfaces;
+﻿using Hope.Core.ExternalService;
+using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Mapster;
 using MapsterMapper;
@@ -44,6 +45,7 @@ namespace Hope.Core.Extensions
             services.AddScoped<IMediaService, MediaService>();
 
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IAiPostServices, AiPostServices>();
 
             services.AddTransient<IMailService, MailService>();
 

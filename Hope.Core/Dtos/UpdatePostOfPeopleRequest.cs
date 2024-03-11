@@ -9,6 +9,8 @@ namespace Hope.Core.Dtos
 {
     public class UpdatePostOfPeopleRequest
     {
+
+        public string? UserId { get; set; }
         public int Id { get; set; }
         public int? Age { get; set; }
         public string? Name { get; set; }
