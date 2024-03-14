@@ -17,16 +17,16 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             {
 
 
-                if (phone == null ||
-                phone.Length != 11 ||
-                !phone.StartsWith("010") ||
-                !phone.StartsWith("011") ||
-                !phone.StartsWith("012") ||
-                !phone.StartsWith("015"))
+                if (phone != null &&
+                phone.Length == 11 &&(
+                phone.StartsWith("010") ||
+                phone.StartsWith("011") ||
+                phone.StartsWith("012") ||
+                phone.StartsWith("015")))
                     return false;
 
                 return true;
-            }).WithMessage(localizer["PhoneNumberRequired"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
+            }).WithMessage(localizer["PhoneNumberInvalid"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
 
         }
     }

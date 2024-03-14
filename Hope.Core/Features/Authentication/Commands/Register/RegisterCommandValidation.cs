@@ -31,8 +31,8 @@ namespace Hope.Core.Features.Authentication.Commands.Register
             {
 
 
-                if (phone != null &&(
-                phone.Length == 11 ||
+                if (phone != null &&
+                phone.Length == 11 &&(
                 phone.StartsWith("010") ||
                 phone.StartsWith("011") ||
                 phone.StartsWith("012") ||

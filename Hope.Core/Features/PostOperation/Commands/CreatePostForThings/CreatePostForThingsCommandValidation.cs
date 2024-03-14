@@ -12,21 +12,21 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
     {
         public CreatePostForThingsCommandValidation(IStringLocalizer<CreatePostForThingsCommandValidation>localizer)
         {
-            
-        RuleFor(i => i.PhoneNumber).MustAsync(async (phone, _) =>
+
+            RuleFor(i => i.PhoneNumber).MustAsync(async (phone, _) =>
             {
 
 
-            if (phone == null ||
-            phone.Length != 11 ||
-            !phone.StartsWith("010") ||
-            !phone.StartsWith("011") ||
-            !phone.StartsWith("012") ||
-            !phone.StartsWith("015"))
-                return false;
+                if (phone != null &&
+                phone.Length == 11 && (
+                phone.StartsWith("010") ||
+                phone.StartsWith("011") ||
+                phone.StartsWith("012") ||
+                phone.StartsWith("015")))
+                    return false;
 
-            return true;
-        }).WithMessage(localizer["PhoneNumberRequired"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
+                return true;
+            }).WithMessage(localizer["PhoneNumberInvalid"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
 
         }
     }
