@@ -31,15 +31,15 @@ namespace Hope.Core.Features.Authentication.Commands.Register
             {
 
 
-                if (phone == null ||
-                phone.Length != 11 ||
-                !phone.StartsWith("010") ||
-                !phone.StartsWith("011") ||
-                !phone.StartsWith("012") ||
-                !phone.StartsWith("015"))
-                    return false;
+                if (phone != null &&(
+                phone.Length == 11 ||
+                phone.StartsWith("010") ||
+                phone.StartsWith("011") ||
+                phone.StartsWith("012") ||
+                phone.StartsWith("015")))
+                    return true;
 
-                return true;
+                return false;
             }).WithMessage(localizer["PhoneNumberInvalid"]).MustAsync(async (phone, _) =>
             {
                 if (work.Repository<User>().Get(i => i.PhoneNumber == phone).Result.FirstOrDefault() != null) return false;
@@ -79,26 +79,44 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                             if (i == 1)
                             {
                                 for (char j = starts[i]; j <= ends[i]; j++)
-                                    if (password.Contains(j))
+                                    if (password.Contains(j)) { 
                                         f = true;
+                                        break;
+                                    }
+                                
+                               
+                                
                                 for (char j = ':'; j <= '@'; j++)
                                     if (password.Contains(j))
-                                        f = true;
+                                    {
+                                         f = true;
+                                        break;
+                                    }
+                                
+                        
+                                
                                 for (char j = '['; j <= '\''; j++)
                                      if (password.Contains(j))
+                                    {
                                         f = true;
+                                        break;
+                                    }
+                                
+                            
+
                                 for (char j = '{'; j <= '}'; j++)
                                     if (password.Contains(j))
+                                    {
                                         f = true;
+                                        break;
+                                    }
                             }
                             else
                                 for (char j = starts[i]; j <= ends[i]; j++)
                                     if (password.Contains(j))
                                         f = true;
 
-                            c = f ? c++ : c;
-
-                        }
+                            if (f) c++;                        }
 
                         if (password.Length < 8 || c != 4)
                             return false;
