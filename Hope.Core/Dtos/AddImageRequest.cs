@@ -10,9 +10,7 @@ namespace Hope.Core.Dtos
 {
     public class AddImageRequest
     {
-        [Required]
         public string UserId { get; set; }
-        [Required]
         public IFormFile Image { get; set; }    
     }
 }

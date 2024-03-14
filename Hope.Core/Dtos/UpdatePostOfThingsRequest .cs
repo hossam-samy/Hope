@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Hope.Core.Dtos
 {
     public class UpdatePostOfThingsRequest
     {
+     
         public string UserId { get; set; }
         public int Id { get; set; }
         public string? Type { get; set; }

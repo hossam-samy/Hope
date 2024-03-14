@@ -1,5 +1,8 @@
-﻿using Hope.Core.Interfaces;
-using Hope.Domain.Model;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Hope.Core.Dtos;
+using Hope.Core.Interfaces;
+using Hope.Core.Validations;
 using Hope.Infrastructure.Repos;
 using System.Collections;
 
@@ -8,8 +11,8 @@ namespace Hope.Infrastructure
     public class UnitofWork:IUnitofWork
     {
         private readonly AppDBContext context;
-       
         
+       
        
         private Hashtable _repositries;
 
@@ -47,6 +50,7 @@ namespace Hope.Infrastructure
         {
            return await context.SaveChangesAsync();
         }
+
     }
 }
         

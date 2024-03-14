@@ -1,4 +1,5 @@
-﻿using Hope.Core.ExternalService;
+﻿using FluentValidation;
+using Hope.Core.ExternalService;
 using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Mapster;
@@ -15,7 +16,7 @@ namespace Hope.Core.Extensions
         {
             
 
-           services.AddMapping().AddCollection(); 
+           services.AddMapping().AddCollection().AddValidators().AddMediator(); 
 
             
 
@@ -24,7 +25,7 @@ namespace Hope.Core.Extensions
             return services;
         }
 
-        public static IServiceCollection AddMapping(this IServiceCollection services) {
+        private static IServiceCollection AddMapping(this IServiceCollection services) {
 
             services.AddMapster();
             var config = TypeAdapterConfig.GlobalSettings;
@@ -36,7 +37,7 @@ namespace Hope.Core.Extensions
 
         }
 
-        public static IServiceCollection AddCollection(this IServiceCollection services)
+        private static IServiceCollection AddCollection(this IServiceCollection services)
         {
 
             services.AddScoped<IAuthService, AuthService>();
@@ -52,6 +53,14 @@ namespace Hope.Core.Extensions
 
             return services;
 
+        }
+        private static IServiceCollection AddValidators(this IServiceCollection services)
+        {
+            return services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+        private static IServiceCollection AddMediator(this IServiceCollection services)
+        {
+            return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
     }
 }

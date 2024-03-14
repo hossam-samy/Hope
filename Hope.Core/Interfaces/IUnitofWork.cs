@@ -1,4 +1,5 @@
-﻿using Hope.Domain.Model;
+﻿using FluentValidation.Results;
+using Hope.Domain.Model;
 
 namespace Hope.Core.Interfaces
 {

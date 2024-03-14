@@ -21,7 +21,7 @@ namespace Hope.Core.Service
         private readonly IMapper mapper;
         private readonly IStringLocalizer<AuthService> localizer;
         private readonly IUnitofWork unitofWork;
-        private readonly IMediaService mediaService;
+        private readonly IMediaService mediaService; 
 
         public AuthService(UserManager<User> userManager, IMapper mapper, IStringLocalizer<AuthService> localizer, IConfiguration configuration, IUnitofWork unitofWork, IMediaService mediaService)
         {
@@ -44,10 +44,12 @@ namespace Hope.Core.Service
             }
 
 
+            
+
             List<PostDto> allposts = [.. user.lostPeople.Adapt<List<PostDto>>(), .. user.lostThings.Adapt<List<PostDto>>()];
 
 
-            return await Response.SuccessAsync(new { user.Name, user.City, allposts }, localizer["Success"]);
+            return await Response.SuccessAsync(new { user.Name,user.UserName,user.UserImage, user.City, allposts }, localizer["Success"]);
 
         }
 
@@ -55,6 +57,7 @@ namespace Hope.Core.Service
 
         public async Task<Response> AddUserImage(AddImageRequest request)
         {
+          
             var user = await userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
@@ -64,7 +67,7 @@ namespace Hope.Core.Service
 
             }
 
-            user.UserImage = await mediaService.AddFileAsync(request.Image, "User", user.UserName);
+            user.UserImage = await mediaService.AddFileAsync(request.Image, "User", user.Id);
 
             await unitofWork.SaveAsync();
 
@@ -100,6 +103,8 @@ namespace Hope.Core.Service
         public async Task<Response> Login(LoginRequest model)
         {
 
+     
+
             var user = await userManager.FindByEmailAsync(model.Email!);
 
 
@@ -126,15 +131,19 @@ namespace Hope.Core.Service
             return await Response.SuccessAsync(login, localizer["Success"].Value);
         }
 
-        public async Task<Response> SearchForUsers(string name)
+        public async Task<Response> GetAllUsers()
         {
-            var user =  unitofWork.Repository<User>().Get(i => i.Name.Contains(name)).Result.Select(i =>new {i.Name,i.Id});
+            var user =  unitofWork.Repository<User>().Get(i => i).Result.Select(i =>new {i.Name,i.Id,i.UserImage});
 
             return await Response.SuccessAsync(user);
         }
 
         public async Task<Response> UserRegister(UserDto model)
         {
+
+            if(model.Password != model.ConfirmPassword) 
+              return await Response.FailureAsync(localizer["Password"].Value);
+            
 
             if (await userManager.FindByEmailAsync(model.Email) is not null)
                 return await Response.FailureAsync(localizer["EmailExist"].Value);

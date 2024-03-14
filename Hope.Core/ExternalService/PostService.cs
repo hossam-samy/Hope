@@ -162,6 +162,13 @@ namespace Hope.Core.Service
             return await Response.SuccessAsync("tmam");
         }
 
+
+
+
+
+
+
+
         public async Task<Response> DeletePost(DeletePostRequests requests)
         {
             var user = await userManager.FindByIdAsync(requests.UserId);
@@ -282,6 +289,10 @@ namespace Hope.Core.Service
 
 
         }
+
+
+
+
 
         public async Task<Response> PinPost<T>(string UserId, int PostId) where T : Post
         {

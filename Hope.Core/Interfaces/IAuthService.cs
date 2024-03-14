@@ -12,7 +12,7 @@ namespace Hope.Core.Interfaces
 
         Task<Response> ChangePassword(string UserEmail, string password);
 
-        Task<Response> SearchForUsers(string name);
+        Task<Response> GetAllUsers();
 
         Task<Response> GetProfile(string UserId);
 

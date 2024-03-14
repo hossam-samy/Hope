@@ -1,5 +1,6 @@
 ﻿using Hope.Core.Interfaces;
 using Hope.Domain.Model;
+using Hope.Infrastructure.InternalServices.jwtTokenGenerator;
 using Hope.Infrastructure.Jobs;
 using Hope.Infrastructure.Repos;
 using Hope.Infrastructure.Services.Localization;
@@ -25,11 +26,10 @@ namespace Hope.Infrastructure.Extensions
 
             services.AddScoped<IUnitofWork, UnitofWork>();
 
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             services.AddSPecialLocalization();
-
-
-
 
 
 

@@ -1,137 +1,166 @@
-﻿using Hope.Core.Interfaces;
-using Hope.Core.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using Hope.Domain.Model;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using Hope.Core.Features.PostOperation.Commands.CreatePostForPeople;
+using Hope.Core.Features.PostOperation.Commands.CreatePostForThings;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings;
+using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfShelters;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfLosties;
+using Hope.Core.Features.CommentOperation.Queries.GetReplies;
+using Hope.Core.Features.PostOperation.Commands.DeletePost;
+using Hope.Core.Features.PostOperation.Commands.UpdatePostOfPeople;
+using Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings;
+using Hope.Core.Features.PostOperation.Commands.HidePosts;
+using Hope.Core.Features.PostOperation.Commands.PinPost;
+using Hope.Core.Features.PostOperation.Commands.UnPinPost;
+using Hope.Core.Features.CommentOperation.Commands.AddCommentToPost;
+using Hope.Core.Features.CommentOperation.Commands.AddCommentToComment;
+using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
+using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
+
+
 
 
 namespace Hope.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-   // [Authorize(Roles ="User")]
+    [Authorize(Roles ="User")]
     public class PostsController : ControllerBase
     {
-        private readonly IPostService _postService; 
-        public PostsController( IPostService postService)
+        private readonly IMediator _mediator;
+        public PostsController(IMediator mediator)
         {
-            _postService = postService;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public async  Task<IActionResult> AddPostPeople ([FromForm]PostPeopleRequest dto)
+        public async  Task<IActionResult> AddPostPeople ([FromForm]CreatePostForPeopleCommand  command)
         {
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }
-            
-            
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
-            return Ok(await _postService.AddPostPeople(dto));
+            return Ok(await _mediator.Send(command));
         }
         [HttpPost]
-        public async Task<IActionResult> AddPostThings([FromForm]PostThingsRequest dto)
+        public async Task<IActionResult> AddPostThings([FromForm] CreatePostForThingsCommand command)
         {
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }
-            
-             
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
-            return Ok(await _postService.AddPostThings(dto));
+            return Ok(await _mediator.Send(command));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostThings(int? cursor, string UserId)
+        public async Task<IActionResult> GetPostThings(int? cursor)
         {
-              
-            return Ok(await _postService.GetPostThings(cursor,UserId));
+
+            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { cursor=cursor, UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
+
         }
         [HttpGet]
        
-        public async Task<IActionResult> GetAllPosts(int? Peoplecursor, int?  thingcursor, string UserId)
+        public async Task<IActionResult> GetAllPosts(int? Peoplecursor, int?  thingcursor)
         {
-            return Ok(await _postService.GetAllPosts(Peoplecursor,thingcursor,UserId));
+            return Ok(await _mediator.Send(new GetAllPostsQuery { Peoplecursor=Peoplecursor,thingcursor=thingcursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfShelters(int? cursor, string UserId)
+        public async Task<IActionResult> GetPostOfShelters(int ? cursor)
         {
-            return Ok(await _postService.GetPostOfShelters(cursor, UserId));
+            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+           
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfAccidents(int? cursor, string UserId)
+        public async Task<IActionResult> GetPostOfAccidents(int? cursor)
         {
           
-            return Ok(await _postService.GetPostOfAccidents(cursor, UserId));
+
+            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfLosties(int? cursor, string UserId)
+        public async Task<IActionResult> GetPostOfLosties(int? cursor)
         {
-            return Ok(await _postService.GetPostOfLosties(cursor, UserId));
+           
+            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetReplies(int id)
         {
-            return Ok(await _postService.GetReplies(id));
+            
+            return Ok(await _mediator.Send(new GetRepliesQuery {Id=id }));
         }
 
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePost(DeletePostRequests requests)
+        public async Task<IActionResult> DeletePost(DeletePostCommand  command)
         {
-            return Ok(await _postService.DeletePost(requests));
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+            return Ok(await _mediator.Send(command));
+            
         }
         [HttpPut]
-        public async Task<IActionResult> UpdatePostOfThingsPost(UpdatePostOfThingsRequest request)
+        public async Task<IActionResult> UpdatePostOfThingsPost(UpdatePostOfThingsCommand command)
         {
-            return Ok(await _postService.UpdatePostOfThingsPost(request));
+
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+        }
+          
+        [HttpPut]
+        public async Task<IActionResult> UpdatePostOfPeoplePost(UpdatePostOfPeopleCommand command)
+        {
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> HidePost(HidePostsCommand command)
+        {
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> PinPost(PinPostCommand command)
+        {
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnPinPost(UnPinPostCommand command)
+        {
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCommentToPost(AddCommentToPostCommand  command)
+        {
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCommentToComment(AddCommentToCommentCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdatePostOfPeoplePost(UpdatePostOfPeopleRequest request)
+        public async Task<IActionResult> UpdateComment(UpdateCommentCommand  command)
         {
-            return Ok(await _postService.UpdatePostOfPeoplePost(request));
-        }
-        [HttpPost]
-        public async Task<IActionResult> HidePost(ServiceRequests requests)
-        {
-            var result= requests.IsPeople ? await _postService.HidePost<PostOfLostPeople>(requests.UserId, requests.PostId) :
-                 await _postService.HidePost<PostOfLostThings>(requests.UserId, requests.PostId);
-            return Ok(result);
-        }
-        [HttpPost]
-        public async Task<IActionResult> PinPost(ServiceRequests requests)
-        {
-            var result = requests.IsPeople ? await _postService.PinPost<PostOfLostPeople>(requests.UserId, requests.PostId) :
-                await _postService.PinPost<PostOfLostThings>(requests.UserId, requests.PostId);
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
-            return Ok(result);
-        }
-        [HttpPost]
-        public async Task<IActionResult> UnPinPost(ServiceRequests requests)
-        {
-            var result = requests.IsPeople ? await _postService.UnPinPost<PostOfLostPeople>(requests.UserId, requests.PostId) :
-                await _postService.UnPinPost<PostOfLostThings>(requests.UserId, requests.PostId);
-
-            return Ok(result);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddCommentToPost(CommentRequest request)
-        {
-            var result = request.IsPeople ? await _postService.AddCommentToPost<PostOfLostPeople> (request) :
-                await _postService.AddCommentToPost<PostOfLostThings> (request);
-
-            return Ok(result);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddCommentToComment(AddingCommentToCommentRequest request)
-        {
-            return Ok(await _postService.AddCommentToComment(request));
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateComment(UpdateCommentRequest request)
-        {
-            return Ok(await _postService.UpdateComment(request));
+            return Ok(await _mediator.Send(command));
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteComment(DeleteCommentRequests requests)
+        public async Task<IActionResult> DeleteComment(DeleteCommentCommand command)
         {
-            return Ok(await _postService.DeleteComment(requests));
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
         }
 
 

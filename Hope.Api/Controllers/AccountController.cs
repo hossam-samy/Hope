@@ -1,8 +1,14 @@
-﻿using Hope.Core.Dtos;
+﻿using FluentValidation;
+using Hope.Core.Features.Authentication.Commands.AddUserImage;
+using Hope.Core.Features.Authentication.Commands.ChangePassword;
+using Hope.Core.Features.Authentication.Commands.Register;
+using Hope.Core.Features.Authentication.Queries.GetAllUsers;
+using Hope.Core.Features.Authentication.Queries.GetProfile;
+using Hope.Core.Features.Authentication.Queries.Login;
 using Hope.Core.Interfaces;
-using MapsterMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace Hope.Api.Controllers
 {
@@ -10,48 +16,50 @@ namespace Hope.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAuthService authService;
-        private readonly IMailService mailService;
+        private readonly IMediator _mediator;   
+        private readonly IMailService _mailService;
 
-        public AccountController(IAuthService authService, IMailService mailService)
+        public AccountController(IMediator mediator, IMailService mailService)
         {
-            this.authService = authService;
-            this.mailService = mailService;
+
+            _mediator = mediator;
+            _mailService = mailService;
         }
         [HttpPost]
-        public async Task<IActionResult> UserRegister(UserDto dto) { 
-             
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }  
-
-             return Ok(await authService.UserRegister(dto)); 
+        public async Task<IActionResult> UserRegister(RegisterCommand command) { 
+            
+             return Ok(await _mediator.Send(command)); 
             
          }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserImage(AddImageRequest request)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddUserImage(AddUserImageCommand  command)
         {
 
-            return Ok(await authService.AddUserImage(request));
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
+
+            return Ok(await _mediator.Send(command));
+
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProfile(string UserId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetProfile()
         {
 
 
 
-            return Ok(await authService.GetProfile(UserId));
+            return Ok(await _mediator.Send(new GetProfileQuery() {UserId= User.Claims.Where(i => i.Type == "uid").First().Value })) ;
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchForUsers(string name)
+        public async Task<IActionResult> GetAllUsers()
         {
 
-            
-
-            return Ok(await authService.SearchForUsers(name));
+            return Ok(await _mediator.Send(new GetAllUsersQuery()));
 
         }
 
@@ -65,18 +73,16 @@ namespace Hope.Api.Controllers
         //    return Ok(result);
         //}
         [HttpPost]
-        //[Authorize(Roles ="User")]
-        public async Task<IActionResult> Login( LoginRequest dto)
+        public async Task<IActionResult> Login( LoginQuery query)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            return Ok(await authService.Login(dto));
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpPost]
         public async Task<IActionResult> SendEmail( string userEmail )
         {
-            await mailService.SendEmailAsync(userEmail);
+            await _mailService.SendEmailAsync(userEmail);
 
             return Ok("good");
 
@@ -84,12 +90,12 @@ namespace Hope.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetConfirmationNumber(string num)
         {
-                 return Ok( await mailService.GetConfirmationNumber(num));
+                 return Ok( await _mailService.GetConfirmationNumber(num));
         }
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(string userEmail,string password)
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
         {
-            await authService.ChangePassword(userEmail,password);
+            _mediator.Send(command);    
 
             return Ok("good");
 
