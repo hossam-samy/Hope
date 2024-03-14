@@ -1,17 +1,10 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hope.Core.Features.Authentication.Commands.AddUserImage
 {
@@ -21,16 +14,25 @@ namespace Hope.Core.Features.Authentication.Commands.AddUserImage
         private readonly IStringLocalizer<AddUserImageCommandHandler> localizer;
         private readonly IUnitofWork unitofWork;
         private readonly IMediaService mediaService;
+        private readonly IValidator<AddUserImageCommand> validator;
 
-        public AddUserImageCommandHandler(UserManager<User> userManager, IStringLocalizer<AddUserImageCommandHandler> localizer, IUnitofWork unitofWork, IMediaService mediaService)
+        public AddUserImageCommandHandler(UserManager<User> userManager, IStringLocalizer<AddUserImageCommandHandler> localizer, IUnitofWork unitofWork, IMediaService mediaService, IValidator<AddUserImageCommand> validator)
         {
             this.userManager = userManager;
             this.localizer = localizer;
             this.unitofWork = unitofWork;
             this.mediaService = mediaService;
+            this.validator = validator;
         }
         public async Task<Response> Handle(AddUserImageCommand command, CancellationToken cancellationToken)
         {
+            var result=await validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(x => x.ErrorMessage), localizer["Faild"]);
+            }
+
             var user = await userManager.FindByIdAsync(command.UserId);
 
             if (user == null)

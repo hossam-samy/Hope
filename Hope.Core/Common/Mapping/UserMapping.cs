@@ -1,4 +1,4 @@
-﻿using Hope.Core.Dtos;
+﻿using Hope.Core.Features.Authentication.Commands.Register;
 using Hope.Domain.Model;
 using Mapster;
 
@@ -8,7 +8,7 @@ namespace Hope.Core.Common.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<UserDto, User>();
+            config.NewConfig<RegisterCommand, User>();
 
         }
     }

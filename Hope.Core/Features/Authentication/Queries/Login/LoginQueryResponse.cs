@@ -1,12 +1,12 @@
-﻿using  System;
-using  System.Collections.Generic;
-using  System.Linq;
-using  System.Text;
-using  System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Hope.Core.Dtos
+namespace Hope.Core.Features.Authentication.Queries.Login
 {
-    public class LoginResponse
+    public class LoginQueryResponse
     {
         public bool IsAuthenticated { get; set; } = false;
         public string? Id { get; set; }
@@ -15,6 +15,5 @@ namespace Hope.Core.Dtos
         public string? Username { get; set; }
         public List<string>? Roles { get; set; }
         public string? Token { get; set; }
-
     }
 }

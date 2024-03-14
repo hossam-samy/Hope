@@ -1,11 +1,7 @@
 ﻿using Hope.Core.Common;
-using Hope.Core.Common.Consts;
-using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
 using Mapster;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
@@ -32,7 +28,8 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings
 
 
             var posts = query.cursor != 0 ? work.Repository<PostOfLostThings>().
-                Get(i => i.Id > query.cursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(32).ToList().Adapt<List<PostThingResponse>>() : new List<PostThingResponse>();
+                Get(i => i.Id > query.cursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" })
+                .Result.Take(32).ToList().Adapt<List<GetAllPostsOfThingsQueryResponse>>() : new List<GetAllPostsOfThingsQueryResponse>();
 
 
             query.cursor = posts?.LastOrDefault()?.Id;

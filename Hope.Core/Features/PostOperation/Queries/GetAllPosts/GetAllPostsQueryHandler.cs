@@ -1,7 +1,5 @@
 ﻿using Hope.Core.Common;
-using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
 using Mapster;
 using MapsterMapper;
@@ -34,11 +32,13 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
 
+            
             var peopleposts = query.Peoplecursor != 0 ? work.Repository<PostOfLostPeople>().
-                Get(i => i.Id > query.Peoplecursor && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(16).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
+                Get(i => i.Id > query.Peoplecursor && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() : new List<GetAllPostsQueryResponse>();
 
+           
             var thingsposts = query.thingcursor != 0 ? work.Repository<PostOfLostThings>().
-               Get(i => i.Id > query.thingcursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(16).ToList().Adapt<List<PostDto>>() : new List<PostDto>();
+               Get(i => i.Id > query.thingcursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() : new List<GetAllPostsQueryResponse>();
 
 
 
@@ -47,7 +47,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
             query.thingcursor = thingsposts?.LastOrDefault()?.Id;
 
 
-            List<PostDto> allposts = [.. peopleposts, .. thingsposts];
+            List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
 
             //post1.ToList().ForEach(x => x.UserName = Peopleposts.Select(i => i.Name).FirstOrDefault() ?? x.UserName);
 

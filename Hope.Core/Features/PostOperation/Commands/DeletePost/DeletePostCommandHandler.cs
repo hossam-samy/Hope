@@ -35,7 +35,7 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
                 post = user.lostPeople.FirstOrDefault();
                 if (post == null)
                 {
-                    return await Response.FailureAsync("You are not allowed to delete this post");
+                    return await Response.FailureAsync(localizer["BlockDeletingPost"]);
 
                 }
                 var peopleposts = (PostOfLostPeople)post;

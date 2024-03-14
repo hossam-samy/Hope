@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Hope.Core.Dtos;
-using Hope.Core.Interfaces;
-using Hope.Core.Validations;
+﻿using Hope.Core.Interfaces;
 using Hope.Infrastructure.Repos;
 using System.Collections;
 

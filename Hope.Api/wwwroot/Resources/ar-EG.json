@@ -1,0 +1,37 @@
+{
+  "ar-EG": {
+    "PasswordDidntMatch": "كلمة السر غير مطابقة",
+    "EmailExist": "البريد الاليكترونى موجود بالفعل",
+    "Success": "عملية ناجحة",
+    "InvalidLogin": ".اسم المستخدم أو كلمة المرور غير صحيح",
+    "Faild": "عملية فاشلة",
+    "UserExist": "اسم المستخدم موجود بالفعل",
+    "UnAuthorized": "انت غير مصرح",
+    "UserNotExist": "المستخدم المطلوب غير موجود",
+    "PostNotExist": "المنشور غير موجود",
+    "UnPinError": "لا تستطيع الغاء تثبيت منشور غير مثبت",
+    "HideError": "لاتستطيع اخفاء منشور مثبت",
+    "CommentNotExist": "التعليق المطلوب غير موجود",
+    "ImageRequired": "مطلوب ادخال الصورة ",
+    "UserEmailRequired": "مطلوب ادخال البريد الالكترونى ",
+    "UserNameRequired": "مطلوب ادخال اسم المستخدم ",
+    "CityRequired": "مطلوب ادخال اسم المحافظة ",
+    "EmailRequired": "مطلوب ادخال البريد الاليكترونى ",
+    "ContentRequired": " يجب ان لا يكون التعليق فارغ",
+    "PasswordRequired": "مطلوب ادخال كلمة المرور ",
+    "PhoneNumberRequired": "مطلوب ادخال رقم الهاتف ",
+    "DisplayNameRequired": "مطلوب ادخال الاسم المعروض",
+    "PhoneNumberInvalid": "صيغة رقم الهاتف غير صحيحة",
+    "EmailInvalid": "صيغة البريد الاليكترونى غير صحيحة",
+    "PasswordInvalid": " يجب ان تتكون كلمة المرور من 8 احرف على الاقل وتحتوى على رمز وحرف كبير وحرف صغير و رقم",
+    "UniqueUserName": "هذا الاسم مستخدم  بالفعل",
+    "UniquePhoneNumber": "هذا الرقم مستخدم بالفعل",
+    "UniqueEmail": "هذا البريد الاليكترونى مستخدم بالفعل",
+    "BlockDeletingPost": "انت غير مسموح لك لازالة هذا المنشور",
+    "BlockUpdatingPost": "انت غير مسموح لك لتعديل هذا المنشور",
+    "BlockDeletingComment": "انت غير مسموح لك لازالة هذا التعليق",
+    "BlockUpdatingComment": "انت غير مسموح لك لتعديل هذا التعليق"
+
+
+
+  }

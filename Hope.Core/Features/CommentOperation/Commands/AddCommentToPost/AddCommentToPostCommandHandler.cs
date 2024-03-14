@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MapsterMapper;
@@ -14,15 +15,24 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
         private readonly IStringLocalizer<AddCommentToPostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
-        public AddCommentToPostCommandHandler(IUnitofWork work, IStringLocalizer<AddCommentToPostCommandHandler> localizer, UserManager<User> userManager, IMapper mapper)
+        private readonly IValidator<AddCommentToPostCommand> validator;
+        public AddCommentToPostCommandHandler(IUnitofWork work, IStringLocalizer<AddCommentToPostCommandHandler> localizer, UserManager<User> userManager, IMapper mapper, IValidator<AddCommentToPostCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.mapper = mapper;
+            this.validator = validator;
         }
         public async Task<Response> Handle(AddCommentToPostCommand command, CancellationToken cancellationToken)
         {
+            var result = await validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+            }
+
             if (command.IsPeople)
                 return await AddCommentToPost<PostOfLostPeople>(command);
             else

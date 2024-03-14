@@ -1,6 +1,7 @@
 ﻿using Hope.Core.Common;
 using Hope.Core.Common.Consts;
 using Hope.Core.Dtos;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
 using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Hope.Domain.Model;
@@ -30,7 +31,8 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfShelters
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
             var posts = query.cursor != 0 ? work.Repository<PostOfLostPeople>().
-               Get(i => i.Id > query.cursor && i.Condition == Condition.shelters && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(32).ToList().Adapt<List<PostPeopleResponse>>() : new List<PostPeopleResponse>();
+               Get(i => i.Id > query.cursor && i.Condition == Condition.shelters && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(32).ToList()
+               .Adapt<List<GetAllPostsOfPeopleQueryResponse>>() : new List<GetAllPostsOfPeopleQueryResponse>();
 
             query.cursor = posts?.LastOrDefault()?.Id;
 

@@ -60,10 +60,14 @@ namespace Hope.Infrastructure.Services.Localization
         private string GetString(string key)
         {
 
-            var value = _configuration[$"{Thread.CurrentThread.CurrentCulture.Name}:{key}"];
-            if (value is not null)
-                return value;
+            var filePath = $"wwwroot/Resources/{Thread.CurrentThread.CurrentCulture.Name}.json";
+            var fullFilePath = Path.GetFullPath(filePath);
+            if (File.Exists(fullFilePath))
+            {
+                
+                return GetValueFromJson(key, fullFilePath);
 
+            }
             return string.Empty;
 
         }

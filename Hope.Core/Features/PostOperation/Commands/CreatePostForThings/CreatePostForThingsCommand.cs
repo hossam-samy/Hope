@@ -1,7 +1,6 @@
 ﻿using Hope.Core.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System.Text.Json.Serialization;
 
 namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
 {

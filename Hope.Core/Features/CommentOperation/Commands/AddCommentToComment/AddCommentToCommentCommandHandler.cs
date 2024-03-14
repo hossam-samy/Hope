@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MapsterMapper;
@@ -12,19 +13,26 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
     {
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<AddCommentToCommentCommandHandler> localizer;
-        private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
+        private readonly IValidator<AddCommentToCommentCommand> validator;
 
-        public AddCommentToCommentCommandHandler(IMapper mapper, UserManager<User> userManager, IStringLocalizer<AddCommentToCommentCommandHandler> localizer, IUnitofWork work)
+        public AddCommentToCommentCommandHandler(IMapper mapper, IStringLocalizer<AddCommentToCommentCommandHandler> localizer, IUnitofWork work, IValidator<AddCommentToCommentCommand> validator)
         {
             this.mapper = mapper;
-            this.userManager = userManager;
             this.localizer = localizer;
             this.work = work;
+            this.validator = validator;
         }
 
         public async Task<Response> Handle(AddCommentToCommentCommand command, CancellationToken cancellationToken)
         {
+            var result=await validator.ValidateAsync(command);
+
+            if(!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+            }
+
             Comment? comment = work.Repository<Comment>().Get(i => i.Id == command.CommentId).Result.FirstOrDefault();
             if (comment == null)
             {

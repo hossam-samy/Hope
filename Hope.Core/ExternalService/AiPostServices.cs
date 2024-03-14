@@ -4,20 +4,16 @@ using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hope.Core.ExternalService
 {
     public class AiPostServices : IAiPostServices
     {
         private readonly IUnitofWork work;
-        private readonly IMapper mapper;
 
-        public AiPostServices(IUnitofWork work, IMapper mapper)
+        public AiPostServices(IUnitofWork work)
         {
             this.work = work;
-            this.mapper = mapper;
         }
 
         public async Task<Response> GetPostOfPeopleByAge(int age)

@@ -1,6 +1,6 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
 using Mapster;
 using MapsterMapper;
@@ -16,20 +16,27 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<CreatePostForPeopleCommandHandler> localizer;
         private readonly IMediaService mediaService;
-        
-        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager)
+        private readonly IValidator<CreatePostForPeopleCommand> validator;
+
+        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager, IValidator<CreatePostForPeopleCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.mediaService = mediaService;
+            this.validator = validator;
         }
         public async Task<Response> Handle(CreatePostForPeopleCommand command, CancellationToken cancellationToken)
         {
-            var post = command.Adapt<PostOfLostPeople>();
-            await work.Repository<PostOfLostPeople>().AddAsync(post);
-            var result = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
+            var result = await validator.ValidateAsync(command);
 
-            post.ImageUrl = result;
+            if (!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+            }
+            var post = command.Adapt<PostOfLostPeople>();
+            await work.Repository<PostOfLostPeople>().AddAsync(post); 
+
+            post.ImageUrl = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
 
             await work.Repository<PostOfLostPeople>().Update(post);
 

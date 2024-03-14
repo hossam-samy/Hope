@@ -16,7 +16,7 @@ namespace Hope.Core.Extensions
         {
             
 
-           services.AddMapping().AddCollection().AddValidators().AddMediator(); 
+           services.AddMapping().AddCollection().Addasd().AddMediator(); 
 
             
 
@@ -52,7 +52,7 @@ namespace Hope.Core.Extensions
             return services;
 
         }
-        private static IServiceCollection AddValidators(this IServiceCollection services)
+        private static IServiceCollection Addasd(this IServiceCollection services)
         {
             return services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }

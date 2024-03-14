@@ -22,6 +22,8 @@ namespace Hope.Infrastructure.Extensions
         {
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
+            
+
             services.AddDbContext<AppDBContext>(option => option.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("defstr")));
 
             services.AddScoped<IUnitofWork, UnitofWork>();

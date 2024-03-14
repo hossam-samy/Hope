@@ -32,7 +32,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
                 return await Response.FailureAsync(localizer["Faild"]);
             }
 
-            var response = mapper.Map<RepliesDto>(comment);
+            var response = mapper.Map<GetRepliesQueryResponse>(comment);
 
 
 

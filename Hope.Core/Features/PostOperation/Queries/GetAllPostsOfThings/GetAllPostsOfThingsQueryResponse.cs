@@ -1,18 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hope.Core.Features.CommentOperation.Queries.GetReplies;
 
-namespace Hope.Core.Dtos
+namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings
 {
-    public class PostPeopleResponse
+    public class GetAllPostsOfThingsQueryResponse
     {
         public int Id { get; set; }
-        public int? Age { get; set; }
-        public string? Name { get; set; }
-        public string Gendre { get; set; }
+        public string Type { get; set; }
+
         public string Description { get; set; }
         public DateTime? MissigDate { get; set; }
         public string Condition { get; set; }
@@ -29,7 +23,5 @@ namespace Hope.Core.Dtos
         public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
         public List<CommentResponse> Comments { get; set; }
-
-
     }
 }

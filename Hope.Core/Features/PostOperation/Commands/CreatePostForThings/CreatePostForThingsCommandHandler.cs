@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Hope.Domain.Model;
@@ -13,23 +14,30 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
     internal class CreatePostForThingsCommandHandler : IRequestHandler<CreatePostForThingsCommand, Response>
     {
         private readonly IUnitofWork work;
-       
         private readonly IStringLocalizer<CreatePostForThingsCommandHandler> localizer;
         private readonly IMediaService mediaService;
-        public CreatePostForThingsCommandHandler(IUnitofWork work, IStringLocalizer<CreatePostForThingsCommandHandler> localizer, IMediaService mediaService)
+        private readonly IValidator<CreatePostForThingsCommand> validator;
+
+        public CreatePostForThingsCommandHandler(IUnitofWork work, IStringLocalizer<CreatePostForThingsCommandHandler> localizer, IMediaService mediaService, IValidator<CreatePostForThingsCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.mediaService = mediaService;
-            
+            this.validator = validator;
         }
         public async Task<Response> Handle(CreatePostForThingsCommand command, CancellationToken cancellationToken)
         {
+            var result = await validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+            }
+
             var post = command.Adapt<PostOfLostThings>();
             await work.Repository<PostOfLostThings>().AddAsync(post);
-            var result = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
 
-            post.ImageUrl = result;
+            post.ImageUrl = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
 
             await work.Repository<PostOfLostThings>().Update(post);
 

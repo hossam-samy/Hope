@@ -33,7 +33,7 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfPeople
 
             var post = user.lostPeople.FirstOrDefault(i => i.Id == command.Id);
 
-            if (post == null) return await Response.FailureAsync("You are not allowed to update this post");
+            if (post == null) return await Response.FailureAsync(localizer["BlockUpdatingPost"]);
 
 
             post.IsSearcher = command.IsSearcher ?? post.IsSearcher;

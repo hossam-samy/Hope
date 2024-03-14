@@ -1,32 +1,30 @@
 ﻿using FluentValidation;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.Authentication.Commands.Register
 {
     public class RegisterCommandValidation:AbstractValidator<RegisterCommand>
     {
-        public RegisterCommandValidation(IUnitofWork work)
-        {
-            RuleFor(i => i.UserName).MustAsync(async (username, _) => {
+        public RegisterCommandValidation(IUnitofWork work,IStringLocalizer<RegisterCommand> localizer)
+        { 
+            
+            RuleFor(i => i.UserName).NotNull().WithMessage(localizer["UserNameRequired"])
+                .NotEmpty().WithMessage(localizer["UserNameRequired"])
+                .MustAsync(async (username, _) => {
 
-                if (work.Repository<Domain.Model.User>().Get(i => i.UserName == username).Result.FirstOrDefault() != null) return false;
+               if (work.Repository<User>().Get(i => i.UserName == username).Result.FirstOrDefault()!= null) return false;
 
 
                 return true;
 
 
-            }).WithMessage("UserName Should Be Unique").NotEmpty().WithMessage("The UserName Is Required Input").NotNull().WithMessage("The UserName Is Required Input");
+            }).WithMessage(localizer["UniqueUserName"]);
 
-            RuleFor(i => i.Name).NotNull().WithMessage("The Name Is Required Input").NotEmpty().WithMessage("The Name Is Required Input");
+            RuleFor(i => i.DisplayName).NotNull().WithMessage(localizer["DisplayNameRequired"]).NotEmpty().WithMessage(localizer["DisplayNameRequired"]);
 
-            RuleFor(i => i.City).NotNull().WithMessage("The City Is Required Input").NotEmpty().WithMessage("The City Is Required Input");
+            RuleFor(i => i.City).NotNull().WithMessage(localizer["CityRequired"]).NotEmpty().WithMessage(localizer["CityRequired"]);
 
 
             RuleFor(i => i.PhoneNumber).MustAsync(async (phone, _) =>
@@ -42,13 +40,13 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                     return false;
 
                 return true;
-            }).WithMessage("PhoneNumber is in Invalid Format").MustAsync(async (phone, _) =>
+            }).WithMessage(localizer["PhoneNumberInvalid"]).MustAsync(async (phone, _) =>
             {
                 if (work.Repository<User>().Get(i => i.PhoneNumber == phone).Result.FirstOrDefault() != null) return false;
 
                 return true;
 
-            }).WithMessage("PhoneNumber Should Be Unique").NotNull().WithMessage("The PhoneNumber Is Required Input").NotEmpty().WithMessage("PhoneNumber Should Be Unique");
+            }).WithMessage(localizer["UniquePhoneNumber"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
 
 
             RuleFor(i => i.Email).MustAsync(async (email, _) =>
@@ -58,22 +56,22 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
                 return true;
 
-            }).WithMessage("Email is in Invalid Format").MustAsync(async (email, _) => {
+            }).WithMessage(localizer["EmailInvalid"]).MustAsync(async (email, _) => {
 
                 if (work.Repository<User>().Get(i => i.Email == email).Result.FirstOrDefault() != null) return false;
 
                 return true;
 
 
-            }).WithMessage("Email should be Unique").NotNull().WithMessage("The Email Is Required Input").NotEmpty().WithMessage("The Email Is Required Input");
+            }).WithMessage(localizer["UniqueEmail"]).NotNull().WithMessage(localizer["EmailRequired"]).NotEmpty().WithMessage(localizer["EmailRequired"]);
 
-            RuleFor(i => i.Password).NotEmpty().WithMessage("The Password Is Required Input").NotNull().WithMessage("The Password Is Required Input").
+            RuleFor(i => i.Password).NotEmpty().WithMessage(localizer["PasswordRequired"]).NotNull().WithMessage(localizer["PasswordRequired"]).
                     MustAsync(async (password, _) => {
 
                         var c = 0;
 
-                        var starts = new char[] { 'A', '!', 'a', '0' };
-                        var ends = new char[] { 'Z', '/', 'z', '9' };
+                        var starts = new char[] { 'a', '!', 'a', '0' };
+                        var ends = new char[] { 'z', '/', 'z', '9' };
 
                         for (int i = 0; i < 4; i++)
                         {
@@ -87,7 +85,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                                     if (password.Contains(j))
                                         f = true;
                                 for (char j = '['; j <= '\''; j++)
-                                    if (password.Contains(j))
+                                     if (password.Contains(j))
                                         f = true;
                                 for (char j = '{'; j <= '}'; j++)
                                     if (password.Contains(j))
@@ -102,14 +100,11 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
                         }
 
-
-
-
                         if (password.Length < 8 || c != 4)
                             return false;
 
-                        return true;
-                    }).WithMessage("Password should be at least 8 chars contains Symbols ,Capital Letters,Small Letters and Numbers ");
+                       return true;
+                   }).WithMessage(localizer["PasswordInvalid"]);
 
 
 

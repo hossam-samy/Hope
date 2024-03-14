@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Domain.Model;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -10,16 +11,26 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
     {
         private readonly UserManager<User> userManager;
         private readonly IStringLocalizer<ChangePasswordCommandHandler> localizer;
-        
+        private readonly IValidator<ChangePasswordCommand> validator;
 
-        public ChangePasswordCommandHandler(UserManager<User> userManager, IStringLocalizer<ChangePasswordCommandHandler> localizer)
+
+        public ChangePasswordCommandHandler(UserManager<User> userManager, IStringLocalizer<ChangePasswordCommandHandler> localizer, IValidator<ChangePasswordCommand> validator)
         {
             this.userManager = userManager;
             this.localizer = localizer;
-            
+            this.validator = validator;
         }
         public async Task<Response> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
         {
+
+            var result=await validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+            }
+
+
             var user = await userManager.FindByEmailAsync(command.UserEmail);
 
 
@@ -27,20 +38,12 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
 
-            var result = await userManager.RemovePasswordAsync(user);
+             await userManager.RemovePasswordAsync(user);
+
+            await userManager.AddPasswordAsync(user, command.password);
 
 
-            if (!result.Succeeded)
-                return await Response.FailureAsync(localizer["Faild"]);
-
-
-            var identityResult = await userManager.AddPasswordAsync(user, command.password);
-
-
-            if (!identityResult.Succeeded)
-                return await Response.FailureAsync(localizer["Faild"]);
-
-            return await Response.SuccessAsync("good");
+            return await Response.SuccessAsync("Success");
         }
     }
 }

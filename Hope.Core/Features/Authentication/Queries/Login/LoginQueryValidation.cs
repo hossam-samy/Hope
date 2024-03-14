@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Hope.Core.Features.Authentication.Queries.Login
 {
     public class LoginQueryValidation : AbstractValidator<LoginQuery>
     {
-        public LoginQueryValidation()
+        public LoginQueryValidation(IStringLocalizer<LoginQuery> localizer)
         {
-            RuleFor(i => i.Email).NotNull().WithMessage("The Email Is Required Input").NotEmpty().WithMessage("The Email Is Required Input");
+            RuleFor(i => i.Email).NotNull().WithMessage(localizer["EmailRequired"]).NotEmpty().WithMessage(localizer["EmailRequired"]);
 
-            RuleFor(i => i.Password).NotNull().WithMessage("The Email Is Required Input").NotEmpty().WithMessage("The Email Is Required Input");
+            RuleFor(i => i.Password).NotNull().WithMessage(localizer["PasswordRequired"]).NotEmpty().WithMessage(localizer["PasswordRequired"]);
         }
     }
 }

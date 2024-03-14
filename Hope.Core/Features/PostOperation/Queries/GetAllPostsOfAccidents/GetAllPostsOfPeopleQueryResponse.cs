@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Hope.Core.Dtos;
+using Hope.Core.Features.CommentOperation.Queries.GetReplies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Hope.Core.Dtos
+namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
 {
-    
-    public  class PostDto
+    public class GetAllPostsOfPeopleQueryResponse
     {
         public int Id { get; set; }
         public int? Age { get; set; }
@@ -21,7 +21,6 @@ namespace Hope.Core.Dtos
 
         public string? PhoneNumber { get; set; }
 
-        public string Type { get; set; }
 
         public string Town { get; set; }
         public string City { get; set; }
