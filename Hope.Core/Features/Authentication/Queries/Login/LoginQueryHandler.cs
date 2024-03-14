@@ -20,11 +20,11 @@ namespace Hope.Core.Features.Authentication.Queries.Login
     public class LoginQueryHandler : IRequestHandler<LoginQuery, Response>
     {
         private readonly UserManager<User> userManager;
-        private readonly IStringLocalizer<AuthService> localizer;
+        private readonly IStringLocalizer<LoginQueryHandler> localizer;
         private readonly IJwtTokenGenerator jwtTokenGenerator;
        
 
-        public LoginQueryHandler(UserManager<User> userManager, IStringLocalizer<AuthService> localizer, IJwtTokenGenerator jwtTokenGenerator)
+        public LoginQueryHandler(UserManager<User> userManager, IStringLocalizer<LoginQueryHandler> localizer, IJwtTokenGenerator jwtTokenGenerator)
         {
             this.userManager = userManager;
             this.localizer = localizer;

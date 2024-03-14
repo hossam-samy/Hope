@@ -18,11 +18,11 @@ namespace Hope.Core.Features.Authentication.Commands.AddUserImage
     internal class AddUserImageCommandHandler : IRequestHandler<AddUserImageCommand, Response>
     {
         private readonly UserManager<User> userManager;
-        private readonly IStringLocalizer<AuthService> localizer;
+        private readonly IStringLocalizer<AddUserImageCommandHandler> localizer;
         private readonly IUnitofWork unitofWork;
         private readonly IMediaService mediaService;
 
-        public AddUserImageCommandHandler(UserManager<User> userManager, IStringLocalizer<AuthService> localizer, IUnitofWork unitofWork, IMediaService mediaService)
+        public AddUserImageCommandHandler(UserManager<User> userManager, IStringLocalizer<AddUserImageCommandHandler> localizer, IUnitofWork unitofWork, IMediaService mediaService)
         {
             this.userManager = userManager;
             this.localizer = localizer;

@@ -40,12 +40,10 @@ namespace Hope.Core.Extensions
         private static IServiceCollection AddCollection(this IServiceCollection services)
         {
 
-            services.AddScoped<IAuthService, AuthService>();
 
 
             services.AddScoped<IMediaService, MediaService>();
-
-            services.AddScoped<IPostService, PostService>();
+           
             services.AddScoped<IAiPostServices, AiPostServices>();
 
             services.AddTransient<IMailService, MailService>();

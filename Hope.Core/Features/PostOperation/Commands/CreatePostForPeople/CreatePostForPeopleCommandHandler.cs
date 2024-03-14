@@ -14,10 +14,10 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
     internal class CreatePostForPeopleCommandHandler : IRequestHandler<CreatePostForPeopleCommand, Response>
     {
         private readonly IUnitofWork work;
-        private readonly IStringLocalizer<PostService> localizer;
+        private readonly IStringLocalizer<CreatePostForPeopleCommandHandler> localizer;
         private readonly IMediaService mediaService;
         
-        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<PostService> localizer, IMediaService mediaService, UserManager<User> userManager)
+        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager)
         {
             this.work = work;
             this.localizer = localizer;

@@ -14,9 +14,9 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
     {
         private readonly IUnitofWork work;
        
-        private readonly IStringLocalizer<PostService> localizer;
+        private readonly IStringLocalizer<CreatePostForThingsCommandHandler> localizer;
         private readonly IMediaService mediaService;
-        public CreatePostForThingsCommandHandler(IUnitofWork work, IStringLocalizer<PostService> localizer, IMediaService mediaService)
+        public CreatePostForThingsCommandHandler(IUnitofWork work, IStringLocalizer<CreatePostForThingsCommandHandler> localizer, IMediaService mediaService)
         {
             this.work = work;
             this.localizer = localizer;

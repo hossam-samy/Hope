@@ -17,12 +17,12 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
-        private readonly IStringLocalizer<AuthService> localizer;
+        private readonly IStringLocalizer<RegisterCommandHandler> localizer;
         private readonly IUnitofWork unitofWork;
         private readonly IMediaService mediaService;
         private readonly IJwtTokenGenerator jwtTokenGenerator;
 
-        public RegisterCommandHandler(UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IStringLocalizer<AuthService> localizer, IUnitofWork unitofWork, IMediaService mediaService, IJwtTokenGenerator jwtTokenGenerator)
+        public RegisterCommandHandler(UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IStringLocalizer<RegisterCommandHandler> localizer, IUnitofWork unitofWork, IMediaService mediaService, IJwtTokenGenerator jwtTokenGenerator)
         {
             this.userManager = userManager;
             this.configuration = configuration;

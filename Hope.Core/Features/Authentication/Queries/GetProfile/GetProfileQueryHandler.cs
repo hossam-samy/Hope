@@ -17,11 +17,11 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
-        private readonly IStringLocalizer<AuthService> localizer;
+        private readonly IStringLocalizer<GetProfileQueryHandler> localizer;
         private readonly IUnitofWork unitofWork;
         private readonly IMediaService mediaService;
 
-        public GetProfileQueryHandler(UserManager<User> userManager, IMapper mapper, IStringLocalizer<AuthService> localizer, IConfiguration configuration, IUnitofWork unitofWork, IMediaService mediaService)
+        public GetProfileQueryHandler(UserManager<User> userManager, IMapper mapper, IStringLocalizer<GetProfileQueryHandler> localizer, IConfiguration configuration, IUnitofWork unitofWork, IMediaService mediaService)
         {
             this.userManager = userManager;
             this.mapper = mapper;
