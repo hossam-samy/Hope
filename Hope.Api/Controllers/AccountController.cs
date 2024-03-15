@@ -80,11 +80,18 @@ namespace Hope.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendEmail( string userEmail )
+        public async Task<IActionResult> SendVerfingEmailEmail( string userEmail )
         {
             await _mailService.SendEmailAsync(userEmail);
 
             return Ok("good");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> SendEmailForChangePasswordAsync(string userEmail)
+        {
+            return Ok(await _mailService.SendEmailForChangePasswordAsync(userEmail));
+
 
         }
         [HttpGet]

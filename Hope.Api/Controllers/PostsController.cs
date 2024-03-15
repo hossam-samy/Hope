@@ -139,12 +139,14 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCommentToPost(AddCommentToPostCommand  command)
         {
-
+            command.UserId=User.Claims.Where(i=>i.Type== "uid").First().Value;  
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> AddCommentToComment(AddCommentToCommentCommand command)
         {
+
+            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
             return Ok(await _mediator.Send(command));
         }

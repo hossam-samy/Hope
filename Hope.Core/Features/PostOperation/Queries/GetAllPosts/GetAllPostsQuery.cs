@@ -10,3 +10,4 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
         public string UserId { get; set; }
     }
 }
+    
