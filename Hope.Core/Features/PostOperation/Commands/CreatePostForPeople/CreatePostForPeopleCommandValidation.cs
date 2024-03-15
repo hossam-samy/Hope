@@ -23,9 +23,9 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
                 phone.StartsWith("011") ||
                 phone.StartsWith("012") ||
                 phone.StartsWith("015")))
-                    return false;
+                    return true;
 
-                return true;
+               return false;
             }).WithMessage(localizer["PhoneNumberInvalid"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
 
         }

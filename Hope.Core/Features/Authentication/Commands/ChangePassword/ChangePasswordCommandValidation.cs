@@ -8,7 +8,7 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
         public ChangePasswordCommandValidation(IStringLocalizer<ChangePasswordCommandValidation> localizer)
         {
             RuleFor(i => i.UserEmail).NotNull().WithMessage(localizer["UserEmailRequired"]).NotEmpty().WithMessage(localizer["UserEmailRequired"]);
-            RuleFor(i=>i.password).NotNull().WithMessage(localizer["passwordRequired"]).NotEmpty().WithMessage(localizer["passwordRequired"]);    
+            RuleFor(i=>i.password).NotNull().WithMessage(localizer["PasswordRequired"]).NotEmpty().WithMessage(localizer["PasswordRequired"]);    
         }
     }
 }

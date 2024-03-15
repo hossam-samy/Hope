@@ -23,7 +23,7 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
         public async Task<Response> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
         {
 
-            var result=await validator.ValidateAsync(command);
+            var result = await validator.ValidateAsync(command);
 
             if (!result.IsValid)
             {

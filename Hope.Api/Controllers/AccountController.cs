@@ -102,7 +102,7 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
         {
-            _mediator.Send(command);    
+            await _mediator.Send(command);    
 
             return Ok("good");
 
