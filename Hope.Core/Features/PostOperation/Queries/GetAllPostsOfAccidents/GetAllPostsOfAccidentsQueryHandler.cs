@@ -6,6 +6,7 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Linq;
 
 namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
 {
@@ -26,13 +27,12 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
             if (user == null)
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
-            var posts = query.cursor != 0 ? work.Repository<PostOfLostPeople>().
-               Get(i => i.Id > query.cursor && i.Condition == Condition.accidents && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" })
-               .Result.Take(32).ToList().Adapt<List<GetAllPostsOfPeopleQueryResponse>>() : new List<GetAllPostsOfPeopleQueryResponse>();
+            var posts =  work.Repository<PostOfLostPeople>().
+               Get(i =>  i.Condition == Condition.accidents && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" })
+               .Result.Skip((query.PageNumber - 1) * 32).Take(32).ToList().Adapt<List<GetAllPostsOfPeopleQueryResponse>>() ;
 
-            query.cursor = posts?.LastOrDefault()?.Id;
 
-            return await Response.SuccessAsync(new { posts, query.cursor }, localizer["Success"].Value);
+            return await Response.SuccessAsync( posts, localizer["Success"].Value);
         }
     }
 }

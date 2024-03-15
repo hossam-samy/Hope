@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Hope.Core.Dtos;
 using Hope.Core.Features.Authentication.Commands.AddUserImage;
 using Hope.Core.Features.Authentication.Commands.ChangePassword;
 using Hope.Core.Features.Authentication.Commands.Register;
@@ -80,24 +81,24 @@ namespace Hope.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendVerfingEmailEmail( string userEmail )
+        public async Task<IActionResult> SendVerfingEmailCode(SendVerfingEmailCodeRequest request )
         {
-            await _mailService.SendEmailAsync(userEmail);
+            await _mailService.SendEmailAsync(request.userEmail);
 
             return Ok("good");
 
         }
         [HttpPost]
-        public async Task<IActionResult> SendEmailForChangePasswordAsync(string userEmail)
+        public async Task<IActionResult> SendCodeForChangePasswordAsync(SendEmailForChangePasswordRequest request)
         {
-            return Ok(await _mailService.SendEmailForChangePasswordAsync(userEmail));
+            return Ok(await _mailService.SendEmailForChangePasswordAsync(request.userEmail));
 
 
         }
-        [HttpGet]
-        public async Task<IActionResult> GetConfirmationNumber(string num)
+        [HttpPost]
+        public async Task<IActionResult> GetConfirmationNumber(GetConfirmationNumberRequest request)
         {
-                 return Ok( await _mailService.GetConfirmationNumber(num));
+                 return Ok( await _mailService.GetConfirmationNumber(request.UserEmail,request.num));
         }
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)

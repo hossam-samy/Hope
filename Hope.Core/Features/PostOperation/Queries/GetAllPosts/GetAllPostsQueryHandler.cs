@@ -33,18 +33,15 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
 
 
             
-            var peopleposts = query.Peoplecursor != 0 ? work.Repository<PostOfLostPeople>().
-                Get(i => i.Id > query.Peoplecursor && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() : new List<GetAllPostsQueryResponse>();
+            var peopleposts =  work.Repository<PostOfLostPeople>().
+                Get(i=>!i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Skip((query.PageNumber-1)*16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() ;
 
            
-            var thingsposts = query.thingcursor != 0 ? work.Repository<PostOfLostThings>().
-               Get(i => i.Id > query.thingcursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() : new List<GetAllPostsQueryResponse>();
+            var thingsposts =  work.Repository<PostOfLostThings>().
+               Get(i =>!i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() ;
 
 
 
-
-            query.Peoplecursor = peopleposts?.LastOrDefault()?.Id;
-            query.thingcursor = thingsposts?.LastOrDefault()?.Id;
 
 
             List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
@@ -52,7 +49,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
             //post1.ToList().ForEach(x => x.UserName = Peopleposts.Select(i => i.Name).FirstOrDefault() ?? x.UserName);
 
 
-            return await Response.SuccessAsync(new { allposts, query.Peoplecursor, query.thingcursor }, localizer["Success"]);
+            return await Response.SuccessAsync( allposts, localizer["Success"]);
         }
     }
 }

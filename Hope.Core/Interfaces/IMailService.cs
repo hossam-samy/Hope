@@ -7,6 +7,6 @@ namespace Hope.Core.Interfaces
         Task<Response> SendEmailAsync(string UserEmail);
 
         Task<Response> SendEmailForChangePasswordAsync(string UserEmail);
-        Task<Response> GetConfirmationNumber(string num);
+        public  Task<Response> GetConfirmationNumber(string UserEmail, string num);
     }
 }

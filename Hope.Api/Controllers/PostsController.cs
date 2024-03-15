@@ -51,37 +51,37 @@ namespace Hope.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostThings(int? cursor)
+        public async Task<IActionResult> GetPostThings(int PageNumber)
         {
-
-            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { cursor=cursor, UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
+            
+            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { PageNumber = PageNumber, UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
 
         }
         [HttpGet]
        
-        public async Task<IActionResult> GetAllPosts(int? Peoplecursor, int?  thingcursor)
+        public async Task<IActionResult> GetAllPosts(int PageNumber)
         {
-            return Ok(await _mediator.Send(new GetAllPostsQuery { Peoplecursor=Peoplecursor,thingcursor=thingcursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsQuery { PageNumber = PageNumber,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
             
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfShelters(int ? cursor)
+        public async Task<IActionResult> GetPostOfShelters(int PageNumber)
         {
-            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
            
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfAccidents(int? cursor)
+        public async Task<IActionResult> GetPostOfAccidents(int PageNumber)
         {
           
 
-            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostOfLosties(int? cursor)
+        public async Task<IActionResult> GetPostOfLosties(int PageNumber)
         {
            
-            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { cursor=cursor,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
         }
 
         [HttpGet]

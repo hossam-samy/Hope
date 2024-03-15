@@ -27,14 +27,13 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
 
-            var posts = query.cursor != 0 ? work.Repository<PostOfLostThings>().
-                Get(i => i.Id > query.cursor && !i.HiddenThings.Contains(user), new[] { "HiddenThings" })
-                .Result.Take(32).ToList().Adapt<List<GetAllPostsOfThingsQueryResponse>>() : new List<GetAllPostsOfThingsQueryResponse>();
+            var posts =  work.Repository<PostOfLostThings>().
+                Get(i => !i.HiddenThings.Contains(user), new[] { "HiddenThings" })
+                .Result.Skip((query.PageNumber - 1) * 32).Take(32).ToList().Adapt<List<GetAllPostsOfThingsQueryResponse>>() ;
 
 
-            query.cursor = posts?.LastOrDefault()?.Id;
 
-            return await Response.SuccessAsync(new { posts, query.cursor }, localizer["Success"].Value);
+            return await Response.SuccessAsync( posts, localizer["Success"].Value);
         }
     }
 }
