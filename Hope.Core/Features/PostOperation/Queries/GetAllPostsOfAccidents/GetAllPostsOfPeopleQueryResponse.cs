@@ -29,6 +29,9 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
         public string? UserImage { get; set; }
         public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<CommentResponse> Comments { get; set; }
+
+        public int? CommentCount { get; set; }
+        public bool IsPeople { get; set; } = true;
+        // public List<CommentResponse> Comments { get; set; }
     }
 }

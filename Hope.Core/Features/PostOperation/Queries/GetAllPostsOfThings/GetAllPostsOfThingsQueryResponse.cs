@@ -17,11 +17,13 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings
 
         public string Town { get; set; }
         public string City { get; set; }
+        public bool IsPeople { get; set; } = false;
 
         public bool IsSearcher { get; set; }
+
         public string? UserImage { get; set; }
         public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<CommentResponse> Comments { get; set; }
+        public int? CommentCount { get; set; }
     }
 }

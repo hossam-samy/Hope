@@ -27,12 +27,14 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
         {
             var comment = work.Repository<Comment>().Get(i => i.Id == query.Id).Result.FirstOrDefault();
 
+            var comments = comment.Comments;
+
             if (comment is null)
             {
                 return await Response.FailureAsync(localizer["Faild"]);
             }
 
-            var response = mapper.Map<GetRepliesQueryResponse>(comment);
+            var response = mapper.Map<List<GetRepliesQueryResponse>>(comments);
 
 
 

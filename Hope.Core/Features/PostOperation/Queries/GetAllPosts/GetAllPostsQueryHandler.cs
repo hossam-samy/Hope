@@ -6,6 +6,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 
 namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
 {
@@ -32,24 +33,32 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
                 return await Response.FailureAsync(localizer["UserNotExist"]);
 
 
-            
-            var peopleposts =  work.Repository<PostOfLostPeople>().
-                Get(i=>!i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Skip((query.PageNumber-1)*16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() ;
+
+            var peopleposts = work.Repository<PostOfLostPeople>().
+                Get(i => !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>();
+
+
+            var thingsposts = work.Repository<PostOfLostThings>().
+               Get(i => !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>();
+
+
 
            
-            var thingsposts =  work.Repository<PostOfLostThings>().
-               Get(i =>!i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList().Adapt<List<GetAllPostsQueryResponse>>() ;
+
+            peopleposts.ForEach(i => i.IsPeople = true);
 
 
+            thingsposts.ForEach(i => i.IsPeople = false);
 
 
+            //peopleposts.ForEach(x => x.UserName = peopleEntities.Where(i=>i.Id==x.Id).Select(i => i.User.DisplayName??i.User.UserName)?.FirstOrDefault()!);
+
+            //thingsposts.ForEach(x => x.UserName = thingsEntities.Where(i=>i.Id==x.Id).Select(i => i.User.DisplayName??i.User.UserName)?.FirstOrDefault()!);
 
             List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
 
-            //post1.ToList().ForEach(x => x.UserName = Peopleposts.Select(i => i.Name).FirstOrDefault() ?? x.UserName);
 
-
-            return await Response.SuccessAsync( allposts, localizer["Success"]);
+            return await Response.SuccessAsync(allposts, localizer["Success"]);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Hope.Api.Controllers
 
 
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> GetConfirmationNumber(GetConfirmationNumberRequest request)
         {
                  return Ok( await _mailService.GetConfirmationNumber(request.UserEmail,request.num));

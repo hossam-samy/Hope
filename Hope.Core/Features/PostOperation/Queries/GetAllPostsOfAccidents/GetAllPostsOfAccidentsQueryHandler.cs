@@ -32,6 +32,9 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
                .Result.Skip((query.PageNumber - 1) * 32).Take(32).ToList().Adapt<List<GetAllPostsOfPeopleQueryResponse>>() ;
 
 
+             
+
+
             return await Response.SuccessAsync( posts, localizer["Success"].Value);
         }
     }

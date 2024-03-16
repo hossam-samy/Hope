@@ -19,6 +19,7 @@ using Hope.Core.Features.CommentOperation.Commands.AddCommentToPost;
 using Hope.Core.Features.CommentOperation.Commands.AddCommentToComment;
 using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
 using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
+using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
 
 
 
@@ -163,6 +164,14 @@ namespace Hope.Api.Controllers
             command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
             return Ok(await _mediator.Send(command));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>GetCommentsByPostId (GetCommentsByPostIdQuery query)
+        {
+       
+
+            return Ok(await _mediator.Send(query));
         }
 
 
