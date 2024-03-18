@@ -39,7 +39,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
             if (!validationresult.IsValid)
             {
-                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["faild"]);
+                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["faild"].Value);
             }
 
             var user = mapper.Map<User>(command);

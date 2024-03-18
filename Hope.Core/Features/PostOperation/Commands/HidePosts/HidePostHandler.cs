@@ -30,14 +30,14 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
         {
             var user = await userManager.FindByIdAsync(UserId);
             if (user == null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
 
             Post? post = work.Repository<T>().Get(i => i.Id == PostId).Result.FirstOrDefault();
             if (post == null)
             {
 
-                return await Response.FailureAsync(localizer["PostNotExist"]);
+                return await Response.FailureAsync(localizer["PostNotExist"].Value);
 
             }
 
@@ -64,7 +64,7 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

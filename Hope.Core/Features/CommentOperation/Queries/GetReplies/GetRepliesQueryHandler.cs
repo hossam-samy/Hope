@@ -31,14 +31,14 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
 
             if (comment is null)
             {
-                return await Response.FailureAsync(localizer["Faild"]);
+                return await Response.FailureAsync(localizer["Faild"].Value);
             }
 
             var response = mapper.Map<List<GetRepliesQueryResponse>>(comments);
 
 
 
-            return await Response.SuccessAsync(response, localizer["Success"]);
+            return await Response.SuccessAsync(response, localizer["Success"].Value);
 
         }
     }

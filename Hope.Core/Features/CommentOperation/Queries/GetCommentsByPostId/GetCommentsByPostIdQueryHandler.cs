@@ -33,7 +33,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId
                  
                 if(Post==null) 
                 {
-                    return await Response.FailureAsync(localizer["PostNotExist"]);
+                    return await Response.FailureAsync(localizer["PostNotExist"].Value);
                 }
 
                 Comments = Post.Comments.Adapt<List<GetRepliesQueryResponse>>();   
@@ -45,13 +45,13 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId
 
                 if (Post == null)
                 {
-                    return await Response.FailureAsync(localizer["PostNotExist"]);
+                    return await Response.FailureAsync(localizer["PostNotExist"].Value);
                 }
 
                 Comments = Post.Comments.Adapt<List<GetRepliesQueryResponse>>();
             }
 
-            return await Response.SuccessAsync(Comments, localizer["Success"]);
+            return await Response.SuccessAsync(Comments, localizer["Success"].Value);
         }
     }
 }

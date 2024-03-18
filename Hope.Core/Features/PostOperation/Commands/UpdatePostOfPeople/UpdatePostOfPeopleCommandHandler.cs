@@ -27,13 +27,13 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfPeople
             if (user == null)
             {
 
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             }
 
             var post = user.lostPeople.FirstOrDefault(i => i.Id == command.Id);
 
-            if (post == null) return await Response.FailureAsync(localizer["BlockUpdatingPost"]);
+            if (post == null) return await Response.FailureAsync(localizer["BlockUpdatingPost"].Value);
 
 
             post.IsSearcher = command.IsSearcher ?? post.IsSearcher;
@@ -55,7 +55,7 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfPeople
 
 
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

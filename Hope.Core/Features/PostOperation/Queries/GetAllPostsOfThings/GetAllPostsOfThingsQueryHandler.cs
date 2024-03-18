@@ -24,7 +24,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings
             var user = await userManager.FindByIdAsync(query.UserId);
 
             if (user == null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
 
             var posts =  work.Repository<PostOfLostThings>().

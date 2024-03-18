@@ -30,19 +30,19 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
             var user = await userManager.FindByIdAsync(UserId);
             if (user == null)
             {
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
 
 
             Post? post = work.Repository<T>().Get(i => i.Id == PostId).Result.FirstOrDefault();
             if (post == null)
             {
-                return await Response.FailureAsync(localizer["PostNotExist"]);
+                return await Response.FailureAsync(localizer["PostNotExist"].Value);
             }
 
             if (!user.PinningPeoples.Any(i => i == post) && !user.PinningThings.Any(i => i == post))
             {
-                return await Response.FailureAsync("UnPinError");
+                return await Response.FailureAsync(localizer["UnPinError"].Value);
             }
 
             if (typeof(T).Name == nameof(PostOfLostPeople))
@@ -56,7 +56,7 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

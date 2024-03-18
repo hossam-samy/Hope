@@ -26,7 +26,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
                     return true;
 
                return false;
-            }).WithMessage(localizer["PhoneNumberInvalid"]).NotNull().WithMessage(localizer["PhoneNumberRequired"]).NotEmpty().WithMessage(localizer["PhoneNumberRequired"]);
+            }).WithMessage(localizer["PhoneNumberInvalid"].Value).NotNull().WithMessage(localizer["PhoneNumberRequired"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
 
         }
     }

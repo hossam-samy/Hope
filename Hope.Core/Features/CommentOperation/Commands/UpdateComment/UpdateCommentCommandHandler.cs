@@ -28,26 +28,26 @@ namespace Hope.Core.Features.CommentOperation.Commands.UpdateComment
 
             if (!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             var user = await userManager.FindByIdAsync(command.UserId);
             if (user == null)
             {
 
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             }
 
             var comment = user.Comments.FirstOrDefault(i => i.Id == command.CommentId);
 
-            if (comment == null) return await Response.FailureAsync(localizer["BlockUpdatingComment"]);
+            if (comment == null) return await Response.FailureAsync(localizer["BlockUpdatingComment"].Value);
 
             comment.Content = command.Content;
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

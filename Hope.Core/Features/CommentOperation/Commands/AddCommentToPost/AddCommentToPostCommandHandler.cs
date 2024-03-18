@@ -30,7 +30,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
 
             if (!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             if (command.IsPeople)
@@ -46,7 +46,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
             if (post == null)
             {
 
-                return await Response.FailureAsync(localizer["PostNotExist"]);
+                return await Response.FailureAsync(localizer["PostNotExist"].Value);
 
             }
 
@@ -76,7 +76,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
 
         }
     }

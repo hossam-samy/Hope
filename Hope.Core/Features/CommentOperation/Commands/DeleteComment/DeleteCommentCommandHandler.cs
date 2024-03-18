@@ -30,25 +30,25 @@ namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
 
             if (!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             var user = await userManager.FindByIdAsync(command.UserId);
             if (user == null)
             {
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             }
 
             var comment = user.Comments.FirstOrDefault(i => i.Id == command.CommentId);
 
-            if (comment == null) return await Response.FailureAsync(localizer["BlockDeletingComment"]);
+            if (comment == null) return await Response.FailureAsync(localizer["BlockDeletingComment"].Value);
 
 
             await work.Repository<Comment>().Delete(comment);
 
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

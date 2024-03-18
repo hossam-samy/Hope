@@ -8,7 +8,7 @@ namespace Hope.Core.Features.Authentication.Commands.AddUserImage
         public AddUserImageCommandValidation(IStringLocalizer<AddUserImageCommandValidation> localizer)
         {
              //RuleFor(i => i.UserId).NotNull().WithMessage("The UserId Is Required Input").NotEmpty().WithMessage("The UserId Is Required Input");
-            RuleFor(i => i.Image).NotNull().WithMessage(localizer["ImageRequired"]).NotEmpty().WithMessage(localizer["ImageRequired"]);
+            RuleFor(i => i.Image).NotNull().WithMessage(localizer["ImageRequired"].Value).NotEmpty().WithMessage(localizer["ImageRequired"].Value);
       
         }
     }

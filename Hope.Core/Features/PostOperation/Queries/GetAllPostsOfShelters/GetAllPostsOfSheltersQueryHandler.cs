@@ -28,7 +28,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfShelters
         {
             var user = await userManager.FindByIdAsync(query.UserId);
             if (user == null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             var posts =  work.Repository<PostOfLostPeople>().
                Get(i =>  i.Condition == Condition.shelters && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Skip((query.PageNumber - 1) * 32).Take(32).ToList()

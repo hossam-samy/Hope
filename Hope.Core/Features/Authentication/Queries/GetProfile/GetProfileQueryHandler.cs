@@ -37,14 +37,14 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
 
             if (user == null)
             {
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
 
         
             List<GetAllPostsOfPeopleQueryResponse> allposts = [..   user.lostPeople.Adapt<List<GetAllPostsOfPeopleQueryResponse>>(), .. user.lostThings.Adapt<List<GetAllPostsOfPeopleQueryResponse>>()];
 
 
-            return await Response.SuccessAsync(new { user.DisplayName, user.UserName, user.UserImage, user.City, allposts }, localizer["Success"]);
+            return await Response.SuccessAsync(new { user.DisplayName, user.UserName, user.UserImage, user.City, allposts }, localizer["Success"].Value);
 
         }
     }

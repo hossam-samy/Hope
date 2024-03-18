@@ -27,7 +27,7 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
 
             if (!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
 
@@ -35,7 +35,7 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
 
 
             if (user is null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
 
              await userManager.RemovePasswordAsync(user);
@@ -43,7 +43,7 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
             await userManager.AddPasswordAsync(user, command.password);
 
 
-            return await Response.SuccessAsync("Success");
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

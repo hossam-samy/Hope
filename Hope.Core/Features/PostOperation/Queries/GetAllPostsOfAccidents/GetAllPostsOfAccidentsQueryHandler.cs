@@ -25,7 +25,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents
         {
             var user = await userManager.FindByIdAsync(query.UserId);
             if (user == null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             var posts =  work.Repository<PostOfLostPeople>().
                Get(i =>  i.Condition == Condition.accidents && !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" })

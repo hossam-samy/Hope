@@ -12,9 +12,9 @@ namespace Hope.Core.Features.Authentication.Queries.Login
     {
         public LoginQueryValidation(IStringLocalizer<LoginQuery> localizer)
         {
-            RuleFor(i => i.Email).NotNull().WithMessage(localizer["EmailRequired"]).NotEmpty().WithMessage(localizer["EmailRequired"]);
+            RuleFor(i => i.Email).NotNull().WithMessage(localizer["EmailRequired"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
 
-            RuleFor(i => i.Password).NotNull().WithMessage(localizer["PasswordRequired"]).NotEmpty().WithMessage(localizer["PasswordRequired"]);
+            RuleFor(i => i.Password).NotNull().WithMessage(localizer["PasswordRequired"].Value).NotEmpty().WithMessage(localizer["PasswordRequired"].Value);
         }
     }
 }

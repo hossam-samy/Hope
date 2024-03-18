@@ -27,7 +27,7 @@ namespace Hope.Core.Features.Authentication.Queries.GetAllUsers
         {
             var user = unitofWork.Repository<User>().Get(i => i).Result.Select(i => new { i.DisplayName, i.Id, i.UserImage });
 
-            return await Response.SuccessAsync(user, localizer["Success"]);
+            return await Response.SuccessAsync(user, localizer["Success"].Value);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Hope.Api.Controllers
 
 
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetConfirmationNumber(GetConfirmationNumberRequest request)
         {
                  return Ok( await _mailService.GetConfirmationNumber(request.UserEmail,request.num));
@@ -103,10 +103,7 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
         {
-            await _mediator.Send(command);    
-
-            return Ok("good");
-
+           return Ok(await _mediator.Send(command));    
         }
 
 

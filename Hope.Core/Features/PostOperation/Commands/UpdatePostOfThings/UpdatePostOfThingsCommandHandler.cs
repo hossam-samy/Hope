@@ -27,13 +27,13 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings
             if (user == null)
             {
 
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             }
 
             var post = user.lostThings.FirstOrDefault(i => i.Id == command.Id);
 
-            if (post == null) return await Response.FailureAsync(localizer["BlockUpdatingPost"]);
+            if (post == null) return await Response.FailureAsync(localizer["BlockUpdatingPost"].Value);
 
 
 
@@ -53,7 +53,7 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings
 
             await work.Repository<PostOfLostThings>().Update(post);
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

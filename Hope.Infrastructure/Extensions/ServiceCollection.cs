@@ -31,6 +31,7 @@ namespace Hope.Infrastructure.Extensions
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+           
             services.AddSPecialLocalization();
 
 

@@ -30,7 +30,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
             var user = await userManager.FindByIdAsync(query.UserId);
 
             if (user == null)
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
 
 
@@ -58,7 +58,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
             List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
 
 
-            return await Response.SuccessAsync(allposts, localizer["Success"]);
+            return await Response.SuccessAsync(allposts, localizer["Success"].Value);
         }
     }
 }

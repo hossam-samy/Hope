@@ -32,7 +32,7 @@ namespace Hope.Core.Features.PostOperation.Commands.PinPost
             if (user == null)
             {
 
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
             }
 
@@ -41,7 +41,7 @@ namespace Hope.Core.Features.PostOperation.Commands.PinPost
             if (post == null)
             {
 
-                return await Response.FailureAsync(localizer["PostNotExist"]);
+                return await Response.FailureAsync(localizer["PostNotExist"].Value);
 
             }
             if (typeof(T).Name == nameof(PostOfLostPeople))
@@ -59,7 +59,7 @@ namespace Hope.Core.Features.PostOperation.Commands.PinPost
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

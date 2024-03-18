@@ -30,14 +30,14 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
 
             if(!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             Comment? comment = work.Repository<Comment>().Get(i => i.Id == command.CommentId).Result.FirstOrDefault();
             if (comment == null)
             {
 
-                return await Response.FailureAsync(localizer["CommentNotExist"]);
+                return await Response.FailureAsync(localizer["CommentNotExist"].Value);
             }
 
             var newcomment = mapper.Map<Comment>(command);
@@ -46,7 +46,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
 
         }
     }

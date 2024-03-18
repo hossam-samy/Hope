@@ -30,21 +30,21 @@ namespace Hope.Core.Features.Authentication.Commands.AddUserImage
 
             if (!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(x => x.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(x => x.ErrorMessage), localizer["Faild"].Value);
             }
 
             var user = await userManager.FindByIdAsync(command.UserId);
 
             if (user == null)
             {
-                return await Response.FailureAsync(localizer["UserNotExist"]);
+                return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
 
             user.UserImage = await mediaService.AddFileAsync(command.Image, "User", user.Id);
 
             await unitofWork.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"]);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }

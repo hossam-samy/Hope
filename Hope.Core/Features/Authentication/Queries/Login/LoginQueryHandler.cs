@@ -39,7 +39,7 @@ namespace Hope.Core.Features.Authentication.Queries.Login
 
             if(!result.IsValid)
             {
-                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"]);
+                return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             var user = await userManager.FindByEmailAsync(query.Email!);
