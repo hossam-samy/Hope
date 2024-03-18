@@ -29,7 +29,8 @@
   "BlockDeletingComment": "You are not allowed to delete this Comment",
   "BlockUpdatingComment": "You are not allowed to update this Comment",
   "BlockDeletingPost": "You are not allowed to delete this Post",
-  "BlockUpdatingPost": "You are not allowed to update this Post"
+  "BlockUpdatingPost": "You are not allowed to update this Post",
+  "WrongEmail": "Email Is Not Correct "
 
 
 }

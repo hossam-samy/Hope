@@ -30,7 +30,8 @@
     "BlockDeletingPost": "انت غير مسموح لك لازالة هذا المنشور",
     "BlockUpdatingPost": "انت غير مسموح لك لتعديل هذا المنشور",
     "BlockDeletingComment": "انت غير مسموح لك لازالة هذا التعليق",
-    "BlockUpdatingComment": "انت غير مسموح لك لتعديل هذا التعليق"
+    "BlockUpdatingComment": "انت غير مسموح لك لتعديل هذا التعليق",
+    "WrongEmail": "البريد الاليكترونى غير صحيح"
 
 
 

@@ -18,12 +18,12 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
 
             }).WithMessage(localizer["EmailInvalid"].Value).MustAsync(async (email, _) => {
 
-                if (work.Repository<User>().Get(i => i.Email == email).Result.FirstOrDefault() != null) return false;
+                if (work.Repository<User>().Get(i => i.Email == email).Result.FirstOrDefault() != null) return true;
 
-                return true;
+                return false;
 
 
-            }).WithMessage(localizer["UniqueEmail"].Value).NotNull().WithMessage(localizer["EmailRequired"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
+            }).WithMessage(localizer["WrongEmail"].Value).NotNull().WithMessage(localizer["EmailRequired"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
             RuleFor(i => i.password).NotEmpty().WithMessage(localizer["PasswordRequired"].Value).NotNull().WithMessage(localizer["PasswordRequired"].Value).
                      MustAsync(async (password, _) => {
 
