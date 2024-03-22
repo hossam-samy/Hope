@@ -62,6 +62,7 @@ namespace Hope.Core.Features.Authentication.Queries.Login
                 Token = token,
                 Roles = role.ToList(),
                 Name = user.DisplayName,
+                 UserImage=user.UserImage,
                 IsAuthenticated = true,
             };
 

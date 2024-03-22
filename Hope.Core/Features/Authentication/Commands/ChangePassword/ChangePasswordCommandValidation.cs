@@ -23,8 +23,8 @@ namespace Hope.Core.Features.Authentication.Commands.ChangePassword
                 return false;
 
 
-            }).WithMessage(localizer["WrongEmail"].Value).NotNull().WithMessage(localizer["EmailRequired"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
-            RuleFor(i => i.password).NotEmpty().WithMessage(localizer["PasswordRequired"].Value).NotNull().WithMessage(localizer["PasswordRequired"].Value).
+            }).WithMessage(localizer["WrongEmail"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
+            RuleFor(i => i.password).NotEmpty().WithMessage(localizer["PasswordRequired"].Value).
                      MustAsync(async (password, _) => {
 
                          var c = 0;

@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
@@ -13,16 +14,25 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
         private readonly IStringLocalizer<DeletePostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IMediaService mediaService;
-        public DeletePostCommandHandler(IUnitofWork work, IStringLocalizer<DeletePostCommandHandler> localizer, UserManager<User> userManager, IMediaService mediaService)
+        private readonly IValidator<DeletePostCommand> validator;
+        public DeletePostCommandHandler(IUnitofWork work, IStringLocalizer<DeletePostCommandHandler> localizer, UserManager<User> userManager, IMediaService mediaService, IValidator<DeletePostCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.mediaService = mediaService;
+            this.validator = validator;
         }
 
         public async Task<Response> Handle(DeletePostCommand command, CancellationToken cancellationToken)
         {
+            var validationresult = await validator.ValidateAsync(command);
+
+            if (!validationresult.IsValid)
+            {
+                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
+            }
+
             var user = await userManager.FindByIdAsync(command.UserId!);
             if (user == null)
             {

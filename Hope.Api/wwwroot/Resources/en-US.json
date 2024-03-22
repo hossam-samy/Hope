@@ -30,7 +30,16 @@
   "BlockUpdatingComment": "You are not allowed to update this Comment",
   "BlockDeletingPost": "You are not allowed to delete this Post",
   "BlockUpdatingPost": "You are not allowed to update this Post",
-  "WrongEmail": "Email Is Not Correct "
+  "WrongEmail": "Email Is Not Correct ",
+  "AgeRequired": " Age Is Required Input",
+  "TownRequired": " Town Is Required Input",
+  "ConditionRequired": " Condition Is Required Input",
+  "IsSearcherRequired": " IsSearcher Is Required Input",
+  "GendreRequired": " Gendre Is Required Input",
+  "DescriptionRequired": " Description Is Required Input",
+  "TypeRequired": " Type Is Required Input"
+
+
 
 
 }

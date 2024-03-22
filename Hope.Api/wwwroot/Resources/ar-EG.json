@@ -31,7 +31,15 @@
     "BlockUpdatingPost": "انت غير مسموح لك لتعديل هذا المنشور",
     "BlockDeletingComment": "انت غير مسموح لك لازالة هذا التعليق",
     "BlockUpdatingComment": "انت غير مسموح لك لتعديل هذا التعليق",
-    "WrongEmail": "البريد الاليكترونى غير صحيح"
+    "WrongEmail": "البريد الاليكترونى غير صحيح",
+    "AgeRequired": " مطلوب ادخال السن",
+    "TownRequired": " طلوب ادخال المدينة",
+    "ConditionRequired": " مطلوب ادخال حالة المفقود",
+    "IsSearcherRequired": " مطلوب ادخال نوع البلاغ",
+    "GendreRequired": " مطلوب ادخال نوع المفقود",
+    "DescriptionRequired": " مطلوب ادخال وصف المفقود",
+    "TypeRequired": " مطلوب ادخال نوع الشىء المفقود"
+
 
 
 

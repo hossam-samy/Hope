@@ -14,6 +14,6 @@ namespace Hope.Core.Features.Authentication.Commands.AddUserImage
     {
 
         public string? UserId { get; set; }
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

@@ -10,7 +10,10 @@ namespace Hope.Core.Features.Authentication.Commands.Register
         public RegisterCommandValidation(IUnitofWork work,IStringLocalizer<RegisterCommand> localizer)
         { 
             
-            RuleFor(i => i.UserName).NotNull().WithMessage(localizer["UserNameRequired"].Value)
+            
+
+
+            RuleFor(i => i.UserName)
                 .NotEmpty().WithMessage(localizer["UserNameRequired"].Value)
                 .MustAsync(async (username, _) => {
 
@@ -22,9 +25,9 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
             }).WithMessage(localizer["UniqueUserName"].Value);
 
-            RuleFor(i => i.DisplayName).NotNull().WithMessage(localizer["DisplayNameRequired"].Value).NotEmpty().WithMessage(localizer["DisplayNameRequired"].Value);
+            RuleFor(i => i.DisplayName).NotEmpty().WithMessage(localizer["DisplayNameRequired"].Value);
 
-            RuleFor(i => i.City).NotNull().WithMessage(localizer["CityRequired"].Value).NotEmpty().WithMessage(localizer["CityRequired"].Value);
+            RuleFor(i => i.City).NotEmpty().WithMessage(localizer["CityRequired"].Value);
 
 
             RuleFor(i => i.PhoneNumber).MustAsync(async (phone, _) =>
@@ -46,7 +49,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
                 return true;
 
-            }).WithMessage(localizer["UniquePhoneNumber"].Value).NotNull().WithMessage(localizer["PhoneNumberRequired"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
+            }).WithMessage(localizer["UniquePhoneNumber"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
 
 
             RuleFor(i => i.Email).MustAsync(async (email, _) =>
@@ -63,9 +66,9 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                 return true;
 
 
-            }).WithMessage(localizer["UniqueEmail"].Value).NotNull().WithMessage(localizer["EmailRequired"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
+            }).WithMessage(localizer["UniqueEmail"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);
 
-            RuleFor(i => i.Password).NotEmpty().WithMessage(localizer["PasswordRequired"].Value).NotNull().WithMessage(localizer["PasswordRequired"].Value).
+            RuleFor(i => i.Password).NotEmpty().WithMessage(localizer["PasswordRequired"].Value).
                     MustAsync(async (password, _) => {
 
                         var c = 0;
@@ -116,14 +119,14 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                                     if (password.Contains(j))
                                         f = true;
 
-                            if (f) c++;                        }
+                            if (f) c++;                        
+                        }
 
                         if (password.Length < 8 || c != 4)
                             return false;
 
                        return true;
-                   }).WithMessage(localizer["PasswordInvalid"].Value);
-
+                    }).WithMessage(localizer["PasswordInvalid"].Value).Equal(i => i.ConfirmPassword).WithMessage(localizer["PasswordDidntMatch"]);
 
 
         }

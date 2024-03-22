@@ -1,6 +1,8 @@
 ﻿using Hope.Core.Common;
 using Hope.Core.Dtos;
+using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
 using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings;
 using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Hope.Domain.Model;
@@ -41,7 +43,7 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
             }
 
         
-            List<GetAllPostsOfPeopleQueryResponse> allposts = [..   user.lostPeople.Adapt<List<GetAllPostsOfPeopleQueryResponse>>(), .. user.lostThings.Adapt<List<GetAllPostsOfPeopleQueryResponse>>()];
+            List<GetAllPostsQueryResponse> allposts = [..   user.lostPeople.Adapt<List<GetAllPostsQueryResponse>>(), .. user.lostThings.Adapt<List<GetAllPostsQueryResponse>>()];
 
 
             return await Response.SuccessAsync(new { user.DisplayName, user.UserName, user.UserImage, user.City, allposts }, localizer["Success"].Value);

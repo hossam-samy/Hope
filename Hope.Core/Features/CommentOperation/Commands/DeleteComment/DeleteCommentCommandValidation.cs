@@ -8,7 +8,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
         {
             //RuleFor(i => i.UserId).NotNull().WithMessage("PostId is Required").NotEmpty().WithMessage("PostId is Required");
 
-            RuleFor(i => i.CommentId).NotNull().WithMessage("CommentId is Required").NotEmpty().WithMessage("CommentId is Required");
+            RuleFor(i => i.CommentId).NotEmpty().WithMessage("CommentId is Required");
         }
     }
 }

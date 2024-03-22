@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
@@ -12,14 +13,22 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<HidePostHandler> localizer;
         private readonly UserManager<User> userManager;
-        public HidePostHandler(IUnitofWork work, IStringLocalizer<HidePostHandler> localizer, UserManager<User> userManager)
+        private readonly IValidator<HidePostsCommand> validator;
+        public HidePostHandler(IUnitofWork work, IStringLocalizer<HidePostHandler> localizer, UserManager<User> userManager, IValidator<HidePostsCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
+            this.validator = validator;
         }
         public async Task<Response> Handle(HidePostsCommand command, CancellationToken cancellationToken)
         {
+            var validationresult = await validator.ValidateAsync(command);
+
+            if (!validationresult.IsValid)
+            {
+                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
+            }
             if (command.IsPeople)
                 return await HidePost<PostOfLostPeople>(command.UserId!, command.PostId);
             else

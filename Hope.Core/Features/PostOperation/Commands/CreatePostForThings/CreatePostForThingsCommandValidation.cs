@@ -26,7 +26,12 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
                     return true;
 
                 return false;
-            }).WithMessage(localizer["PhoneNumberInvalid"].Value).NotNull().WithMessage(localizer["PhoneNumberRequired"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
+            }).WithMessage(localizer["PhoneNumberInvalid"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
+
+            RuleFor(i => i.City).NotEmpty().WithMessage(localizer["CityRequired"].Value);
+            RuleFor(i => i.Town).NotEmpty().WithMessage(localizer["TownRequired"].Value);
+            RuleFor(i => i.Type).NotEmpty().WithMessage(localizer["TypeRequired"].Value);
+            RuleFor(i => i.Description).NotEmpty().WithMessage(localizer["DescriptionRequired"].Value);
 
         }
     }

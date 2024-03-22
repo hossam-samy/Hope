@@ -6,17 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
+namespace Hope.Core.Features.PostOperation.Commands.DeletePost
 {
-    public class AddCommentToPostCommandValidation:AbstractValidator<AddCommentToPostCommand>
+    public class DeletePostCommandValidations:AbstractValidator<DeletePostCommand>
     {
-        public AddCommentToPostCommandValidation(IStringLocalizer<AddCommentToPostCommand> localizer)
+        public DeletePostCommandValidations(IStringLocalizer<DeletePostCommandValidations> localizer)
         {
-            RuleFor(i => i.Content).NotEmpty().WithMessage(localizer["ContentRequired"].Value);
             RuleFor(i => i.PostId).NotEmpty().WithMessage("PostId Is Required");
             RuleFor(i => i.IsPeople).NotNull().WithMessage("IsPeople IsRequired");
-
-           
 
         }
     }

@@ -32,14 +32,11 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
         public async Task<Response> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
-            if (command.Password != command.ConfirmPassword)
-                return await Response.FailureAsync(localizer["PasswordDidntMatch"].Value);
-
              var validationresult=await validator.ValidateAsync(command);
 
             if (!validationresult.IsValid)
             {
-                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["faild"].Value);
+                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
             var user = mapper.Map<User>(command);

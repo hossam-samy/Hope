@@ -12,7 +12,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.UpdateComment
     {
         public UpdateCommentCommandValidation(IStringLocalizer<UpdateCommentCommand> localizer)
         {
-            RuleFor(i => i.CommentId).NotNull().WithMessage("CommentId is Required").NotEmpty().WithMessage("CommentId is Required");
+            RuleFor(i => i.CommentId).NotEmpty().WithMessage("CommentId is Required");
 
             RuleFor(i => i.Content).NotNull().WithMessage(localizer["ContentRequired"]).NotEmpty().WithMessage(localizer["ContentRequired"]);
         }

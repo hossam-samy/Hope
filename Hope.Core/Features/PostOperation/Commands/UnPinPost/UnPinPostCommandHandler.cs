@@ -1,4 +1,5 @@
-﻿using Hope.Core.Common;
+﻿using FluentValidation;
+using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
@@ -12,14 +13,22 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<UnPinPostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
-        public UnPinPostCommandHandler(IUnitofWork work, IStringLocalizer<UnPinPostCommandHandler> localizer, UserManager<User> userManager)
+        private readonly IValidator<UnPinPostCommand> validator;
+        public UnPinPostCommandHandler(IUnitofWork work, IStringLocalizer<UnPinPostCommandHandler> localizer, UserManager<User> userManager, IValidator<UnPinPostCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
+            this.validator = validator;
         }
         public async Task<Response> Handle(UnPinPostCommand command, CancellationToken cancellationToken)
         {
+            var validationresult = await validator.ValidateAsync(command);
+
+            if (!validationresult.IsValid)
+            {
+                return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
+            }
             if (command.IsPeople)
                 return await UnPinPost<PostOfLostPeople>(command.UserId, command.PostId);
             else
