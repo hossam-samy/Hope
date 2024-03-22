@@ -31,7 +31,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.UpdateComment
                 return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
-            var user = await userManager.FindByIdAsync(command.UserId);
+            var user = await userManager.FindByIdAsync(command.UserId!);
             if (user == null)
             {
 

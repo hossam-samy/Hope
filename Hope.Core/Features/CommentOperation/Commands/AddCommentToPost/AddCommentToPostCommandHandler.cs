@@ -42,7 +42,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
         {
 
 
-            Post? post = work.Repository<T>().Get(i => i.Id == command.PostId).Result.FirstOrDefault();
+            Post? post = await work.Repository<T>().GetItem(i => i.Id == command.PostId);
             if (post == null)
             {
 

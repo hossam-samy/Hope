@@ -33,10 +33,9 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
                 return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
-            Comment? comment = work.Repository<Comment>().Get(i => i.Id == command.CommentId).Result.FirstOrDefault();
+            Comment? comment =  await work.Repository<Comment>().GetItem(i => i.Id == command.CommentId);
             if (comment == null)
             {
-
                 return await Response.FailureAsync(localizer["CommentNotExist"].Value);
             }
 

@@ -21,9 +21,6 @@ using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
 using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
 using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
 
-
-
-
 namespace Hope.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -166,7 +163,7 @@ namespace Hope.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult>GetCommentsByPostId (GetCommentsByPostIdQuery query)
         {
        

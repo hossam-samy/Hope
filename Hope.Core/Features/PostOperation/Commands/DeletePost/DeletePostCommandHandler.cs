@@ -20,9 +20,10 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
             this.userManager = userManager;
             this.mediaService = mediaService;
         }
+
         public async Task<Response> Handle(DeletePostCommand command, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByIdAsync(command.UserId);
+            var user = await userManager.FindByIdAsync(command.UserId!);
             if (user == null)
             {
 
@@ -32,7 +33,7 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
             Post? post;
             if (command.IsPeople)
             {
-                post = user.lostPeople.FirstOrDefault();
+                post = user?.lostPeople?.FirstOrDefault(i=>i.Id==command.PostId);
                 if (post == null)
                 {
                     return await Response.FailureAsync(localizer["BlockDeletingPost"].Value);
@@ -40,16 +41,19 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
                 }
                 var peopleposts = (PostOfLostPeople)post;
 
-                foreach (var item in peopleposts?.Comments)
+                foreach (var item in peopleposts?.Comments!)
                 {
                     await DeleteComment(item.Id);
                 }
 
-                await mediaService.DeleteFileAsync(post.ImageUrl);
-                await work.Repository<PostOfLostPeople>().Delete((PostOfLostPeople)post);
+
+                await mediaService.DeleteFileAsync(post?.ImageUrl!);
+                
+                await work.Repository<PostOfLostPeople>().Delete((PostOfLostPeople)post!);
+                
                 return await Response.SuccessAsync(localizer["Success"].Value);
             }
-            post = user.lostThings.FirstOrDefault();
+            post = user?.lostThings?.FirstOrDefault(i => i.Id == command.PostId);
             if (post == null)
             {
                 return await Response.FailureAsync("PostNotExist");
@@ -57,12 +61,12 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
             }
             var Thingsposts = (PostOfLostThings)post;
 
-            foreach (var item in Thingsposts?.Comments)
+            foreach (var item in Thingsposts?.Comments!)
             {
                 await DeleteComment(item.Id);
             }
-            await mediaService.DeleteFileAsync(post.ImageUrl);
-            await work.Repository<PostOfLostThings>().Delete((PostOfLostThings)post);
+            await mediaService.DeleteFileAsync(post?.ImageUrl!);
+            await work.Repository<PostOfLostThings>().Delete((PostOfLostThings)post!);
             return await Response.SuccessAsync(localizer["Success"].Value);
 
         }
@@ -70,7 +74,7 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
         {
             var comment = work.Repository<Comment>().Get(i => i.Id == id).Result.FirstOrDefault();
 
-            await work.Repository<Comment>().Delete(comment);
+            await work.Repository<Comment>().Delete(comment!);
 
 
 

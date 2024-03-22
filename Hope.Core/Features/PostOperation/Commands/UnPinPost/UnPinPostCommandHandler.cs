@@ -34,7 +34,7 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
             }
 
 
-            Post? post = work.Repository<T>().Get(i => i.Id == PostId).Result.FirstOrDefault();
+            Post? post = await work.Repository<T>().GetItem(i => i.Id == PostId);
             if (post == null)
             {
                 return await Response.FailureAsync(localizer["PostNotExist"].Value);

@@ -68,6 +68,11 @@ namespace Hope.Infrastructure.Repos
             return Task.FromResult<IEnumerable<TResult>>(dbContext.Set<T>().Select(selector).ToList());
         }
 
+        public  Task<T> GetItem(Func<T, bool> match)
+        {
+            return Task.FromResult(dbContext.Set<T>().FirstOrDefault(match));
+        }
+
         //public async Task<IEnumerable<T>> GetAll()
         //{
 

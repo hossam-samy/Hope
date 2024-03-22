@@ -83,10 +83,9 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> SendVerfingEmailCode(SendVerfingEmailCodeRequest request )
         {
-            await _mailService.SendEmailAsync(request.userEmail);
+            return Ok( await _mailService.SendEmailAsync(request.userEmail));
 
-            return Ok("good");
-
+            
         }
         [HttpPost]
         public async Task<IActionResult> SendCodeForChangePasswordAsync(SendEmailForChangePasswordRequest request)

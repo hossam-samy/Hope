@@ -29,7 +29,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId
             List<GetRepliesQueryResponse> Comments;
             if (query.IsPeople)
             {
-                var Post=work.Repository<PostOfLostPeople>().Get(i=>i.Id==query.PostId).Result.FirstOrDefault();    
+                var Post=await work.Repository<PostOfLostPeople>().GetItem(i => i.Id == query.PostId);    
                  
                 if(Post==null) 
                 {
@@ -41,7 +41,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId
             else
             {
 
-                var Post = work.Repository<PostOfLostThings>().Get(i => i.Id == query.PostId).Result.FirstOrDefault();
+                var Post = await work.Repository<PostOfLostThings>().GetItem(i => i.Id == query.PostId);
 
                 if (Post == null)
                 {

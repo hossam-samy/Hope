@@ -26,6 +26,11 @@ namespace Hope.Api.Controllers
         {
 
             return Ok(await services.GetPostOfPeopleByAge(age));
+        }[HttpGet]
+        public async Task<IActionResult> GetPostOfPeopleByTownandAge(int age,string town)
+        {
+
+            return Ok(await services.GetPostOfPeopleByTownandAge(age,town));
         }
         [HttpGet]
         public async Task<IActionResult> GetPostOfThingsByTown(string town)

@@ -2,6 +2,7 @@
 using Hope.Domain.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Hope.Core.Service
 {
@@ -48,6 +49,9 @@ namespace Hope.Core.Service
         public Task DeleteFileAsync(string url)
         {
             //https: / / localhost:44318 / PostOfLostThingsImages / 6.png
+
+            if(url.IsNullOrEmpty())
+                return Task.CompletedTask;   
 
             var path = "wwwroot/"+url.Split('/')[3]+ '/' + url.Split('/')[4];
             

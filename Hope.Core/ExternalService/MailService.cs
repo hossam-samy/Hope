@@ -28,6 +28,9 @@ namespace Hope.Core.Service
         public async Task<Response> SendEmailAsync(string UserEmail)
         {
 
+            if (UserEmail == null) 
+                return await Response.FailureAsync(localizer["EmailRequired"].Value);
+
             var random=new Random();
             
             var key = random.Next(99999, 1000000);
@@ -56,13 +59,13 @@ namespace Hope.Core.Service
                 smtp.Send(email);
                 smtp.Disconnect(true);
             }
-                return await Response.SuccessAsync("Success");  
+                return await Response.SuccessAsync(localizer["Success"].Value);  
 
         }
         public async Task<Response> GetConfirmationNumber( string UserEmail,string num)
         {
-            if (cache.GetString(UserEmail) != num) return await Response.FailureAsync(localizer["Faild"]);
-            else  return await Response.SuccessAsync(localizer["Success"]);
+            if (cache.GetString(UserEmail) != num) return await Response.FailureAsync(localizer["Faild"].Value);
+            else  return await Response.SuccessAsync(localizer["Success"].Value);
 
 
         }
@@ -72,7 +75,7 @@ namespace Hope.Core.Service
         public async Task<Response> SendEmailForChangePasswordAsync(string UserEmail)
         {
             if (work.Repository<User>().Get(i => i.Email == UserEmail).Result.FirstOrDefault() == null)
-                return await Response.FailureAsync("Invalid Email");
+                return await Response.FailureAsync(localizer["EmailInvalid"].Value);
 
 
             return await SendEmailAsync(UserEmail);

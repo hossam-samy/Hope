@@ -25,7 +25,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
         }
         public async Task<Response> Handle(GetRepliesQuery query, CancellationToken cancellationToken)
         {
-            var comment = work.Repository<Comment>().Get(i => i.Id == query.Id).Result.FirstOrDefault();
+            var comment = await work.Repository<Comment>().GetItem(i => i.Id == query.Id);
 
             var comments = comment.Comments;
 

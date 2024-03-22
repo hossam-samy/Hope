@@ -64,6 +64,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                 Username = user.UserName,
                 Roles = new List<string> { "User" },
                 Token = jwtsecuritytoken,
+                UserImage=user.UserImage,
                 Name = user.DisplayName,
             }, localizer["Success"].Value);
         }

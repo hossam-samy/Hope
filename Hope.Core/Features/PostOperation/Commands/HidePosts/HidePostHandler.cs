@@ -21,9 +21,9 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
         public async Task<Response> Handle(HidePostsCommand command, CancellationToken cancellationToken)
         {
             if (command.IsPeople)
-                return await HidePost<PostOfLostPeople>(command.UserId, command.PostId);
+                return await HidePost<PostOfLostPeople>(command.UserId!, command.PostId);
             else
-                return await HidePost<PostOfLostThings>(command.UserId, command.PostId);
+                return await HidePost<PostOfLostThings>(command.UserId!, command.PostId);
 
         }
         public async Task<Response> HidePost<T>(string UserId, int PostId) where T : Post
@@ -33,7 +33,7 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
                 return await Response.FailureAsync(localizer["UserNotExist"].Value);
 
 
-            Post? post = work.Repository<T>().Get(i => i.Id == PostId).Result.FirstOrDefault();
+            Post? post =  await work.Repository<T>().GetItem(i => i.Id == PostId);
             if (post == null)
             {
 

@@ -1,6 +1,8 @@
-﻿using Hope.Core.Features.CommentOperation.Queries.GetReplies;
+﻿using Hope.Core.Dtos;
+using Hope.Core.Features.CommentOperation.Queries.GetReplies;
 using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
 using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings;
 using Hope.Domain.Model;
 using Mapster;
 
@@ -18,8 +20,12 @@ namespace Hope.Core.Common.Mapping
 
 
             config.NewConfig<PostOfLostPeople, GetAllPostsOfPeopleQueryResponse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
+           
+            config.NewConfig<PostOfLostPeople, AiPostPeopleResposnse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
 
-            config.NewConfig<PostOfLostThings, GetAllPostsOfPeopleQueryResponse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
+            config.NewConfig<PostOfLostThings, GetAllPostsOfThingsQueryResponse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
+            
+            config.NewConfig<PostOfLostThings, AiPostThingsResposnse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
 
 
             //config.NewConfig<PostThingsRequest, PostOfLostThings>();

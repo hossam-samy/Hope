@@ -33,6 +33,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             {
                 return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+
             var post = command.Adapt<PostOfLostPeople>();
             await work.Repository<PostOfLostPeople>().AddAsync(post); 
 
