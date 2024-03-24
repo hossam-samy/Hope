@@ -30,7 +30,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 
             RuleFor(i => i.City).NotEmpty().WithMessage(localizer["CityRequired"].Value);
             RuleFor(i => i.Town).NotEmpty().WithMessage(localizer["TownRequired"].Value);
-            RuleFor(i => i.IsSearcher).NotNull().WithMessage(localizer["IsSearcher Required"].Value);
+            RuleFor(i => i.IsSearcher).NotNull().WithMessage(localizer["IsSearcherRequired"].Value);
             RuleFor(i => i.Condition).NotEmpty().WithMessage(localizer["ConditionRequired"].Value);
             RuleFor(i => i.Gendre).NotEmpty().WithMessage(localizer["GendreRequired"].Value);
             RuleFor(i => i.Description).NotEmpty().WithMessage(localizer["DescriptionRequired"].Value);

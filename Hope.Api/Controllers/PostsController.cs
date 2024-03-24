@@ -163,12 +163,11 @@ namespace Hope.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost]
-        public async Task<IActionResult>GetCommentsByPostId (GetCommentsByPostIdQuery query)
+        [HttpGet]
+        public async Task<IActionResult>GetCommentsByPostId (int PostId,bool IsPeople )
         {
-       
-
-            return Ok(await _mediator.Send(query));
+                    
+            return Ok(await _mediator.Send(new GetCommentsByPostIdQuery() { PostId=PostId,IsPeople=IsPeople}));
         }
 
 
