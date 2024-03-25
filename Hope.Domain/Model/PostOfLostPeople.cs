@@ -19,9 +19,9 @@ namespace Hope.Domain.Model
         [ForeignKey("User")]
         public string? UserId { get; set; }
 
-         public int ? CommentCount=>Comments?.Count; 
+         public int ? CommentCount=>Comments?.Count;
 
-
+        public bool IsPeople =>true;
         public virtual User User { get; set; } 
 
         public virtual List<User> HiddenPeoples { get; set; }

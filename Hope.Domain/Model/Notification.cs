@@ -10,7 +10,8 @@ namespace Hope.Domain.Model
     {
        
         public string Content { get; set; }
-        public DateTime Date { get; set; }
+
+        public DateTime Date { get; set; } = DateTime.Now;
 
         public virtual List<User> Users { get; set; }   
        

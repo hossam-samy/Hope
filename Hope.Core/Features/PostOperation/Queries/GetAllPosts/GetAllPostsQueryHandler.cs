@@ -45,10 +45,10 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
 
            
 
-            peopleposts.ForEach(i => i.IsPeople = true);
+            //peopleposts.ForEach(i => i.IsPeople = true);
 
 
-            thingsposts.ForEach(i => i.IsPeople = false);
+            //thingsposts.ForEach(i => i.IsPeople = false);
 
 
             //peopleposts.ForEach(x => x.UserName = peopleEntities.Where(i=>i.Id==x.Id).Select(i => i.User.DisplayName??i.User.UserName)?.FirstOrDefault()!);

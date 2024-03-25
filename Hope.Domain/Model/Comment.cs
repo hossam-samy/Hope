@@ -5,8 +5,9 @@ namespace Hope.Domain.Model
     public class Comment:BaseEntity
     {
         public string Content { get; set; }
-        public DateTime Date { get; set; }= DateTime.Now;
-        
+        public DateTime Date { get; set; } = DateTime.Now;
+
+
         public virtual List<Comment>  Comments { get; set; }
         public string UserId { get; set; }
         public virtual User User { get; set; }

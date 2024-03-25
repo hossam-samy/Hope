@@ -33,6 +33,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
         public DateTime CreationDate { get; set; }
 
         public int? CommentCount { get; set; }
+
         //public List<CommentResponse> Comments { get; set; }
     }
 }

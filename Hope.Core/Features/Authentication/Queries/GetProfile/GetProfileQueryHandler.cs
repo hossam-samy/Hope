@@ -43,10 +43,10 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
             }
 
         
-            List<GetAllPostsQueryResponse> allposts = [..   user.lostPeople.Adapt<List<GetAllPostsQueryResponse>>(), .. user.lostThings.Adapt<List<GetAllPostsQueryResponse>>()];
+           // List<GetAllPostsQueryResponse> allposts = [..   user.lostPeople.Adapt<List<GetAllPostsQueryResponse>>(), .. user.lostThings.Adapt<List<GetAllPostsQueryResponse>>()];
 
 
-            return await Response.SuccessAsync(new { user.DisplayName, user.UserName, user.UserImage, user.City, allposts }, localizer["Success"].Value);
+            return await Response.SuccessAsync(new { user.DisplayName, user.UserName, user.UserImage, user.City,user.Email,user.PhoneNumber }, localizer["Success"].Value);
 
         }
     }

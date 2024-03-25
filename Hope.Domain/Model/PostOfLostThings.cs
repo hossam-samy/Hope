@@ -8,7 +8,7 @@ namespace Hope.Domain.Model
         [ForeignKey("User")]
         public string UserId { get; set; }
 
-
+        public bool IsPeople =>false;
         public int? CommentCount => Comments?.Count;
         public virtual User User { get; set; } 
 

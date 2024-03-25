@@ -10,7 +10,9 @@ namespace Hope.Domain.Model
     {
   
         public string Content { get; set; }
-        public DateTime Date { get; set; }
+
+        public DateTime Date { get; set; } = DateTime.Now;
+
         public string ReciverEmail { get; set; }
 
         public string UserId { get; set; }

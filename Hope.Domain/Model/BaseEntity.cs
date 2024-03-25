@@ -8,6 +8,9 @@ namespace Hope.Domain.Model
 {
     public class BaseEntity
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+       // public DateTime CreationDate { get; set; }= DateTime.UtcNow;   
+    
+    
     }
 }

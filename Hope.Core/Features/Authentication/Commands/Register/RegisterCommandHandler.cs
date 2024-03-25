@@ -53,7 +53,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
             var jwtsecuritytoken = await jwtTokenGenerator.GenerateToken(user);
 
 
-            return await Response.SuccessAsync(new LoginQueryResponse
+            return await Response.SuccessAsync(new RegisterCommandResponse
             {
                 Id = user.Id,
                 Email = user.Email,
@@ -61,7 +61,6 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                 Username = user.UserName,
                 Roles = new List<string> { "User" },
                 Token = jwtsecuritytoken,
-                UserImage=user.UserImage,
                 Name = user.DisplayName,
             }, localizer["Success"].Value);
         }

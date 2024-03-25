@@ -4,7 +4,7 @@
   "UserExist": "User Already Exist",
   "Success": "Successful Operation",
   "InvalidLogin": "Username or password isn't correct.",
-  "Faild": "Faild Operation",
+  "Faild": "Failed Operation",
   "UnAuthorized": "You Are Not Allowed",
   "UserNotExist": "The User Dont Exist",
   "PostNotExist": "This Post Dont Exist ",
