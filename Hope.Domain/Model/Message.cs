@@ -11,7 +11,7 @@ namespace Hope.Domain.Model
   
         public string Content { get; set; }
 
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public string ReciverEmail { get; set; }
 

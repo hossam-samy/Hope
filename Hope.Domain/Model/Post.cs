@@ -14,7 +14,7 @@ namespace Hope.Domain.Model
         //
         public string? ImageUrl { get; set; }
         public string Description { get; set; }
-        public DateTime CreationDate { get; set; }= DateTime.Now;   
+        public DateTime CreationDate { get; set; }= DateTime.UtcNow;   
         public bool IsDeleted { get; set; }=false;  
         public bool IsFound { get; set; }=false;
         public string? Town { get; set; }
