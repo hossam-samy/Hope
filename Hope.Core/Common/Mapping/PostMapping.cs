@@ -19,6 +19,8 @@ namespace Hope.Core.Common.Mapping
             config.NewConfig<PostOfLostPeople, GetAllPostsQueryResponse>()
                 .Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
                 .Map(dest=>dest.UserImage,src=>src.User.UserImage);
+
+
             config.NewConfig<PostOfLostThings, GetAllPostsQueryResponse>()
                .Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
                .Map(dest => dest.UserImage, src => src.User.UserImage);

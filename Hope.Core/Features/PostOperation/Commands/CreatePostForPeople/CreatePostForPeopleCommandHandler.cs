@@ -35,11 +35,14 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             }
 
             var post = command.Adapt<PostOfLostPeople>();
-            await work.Repository<PostOfLostPeople>().AddAsync(post); 
+            await work.Repository<PostOfLostPeople>().AddAsync(post);
 
-            post.ImageUrl = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
+             post.ImageUrl = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
 
-            await work.Repository<PostOfLostPeople>().Update(post);
+            DateTime.TryParse(command.MissigDate, out DateTime missingDate);
+            post.MissigDate = missingDate;
+
+            await work.SaveAsync();
 
             return await Response.SuccessAsync(localizer["Success"].Value);
         }

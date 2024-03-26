@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,19 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
         public CreatePostForThingsCommandValidation(IStringLocalizer<CreatePostForThingsCommandValidation>localizer)
         {
 
+            RuleFor(i => i.MissigDate).MustAsync(async (date, __) => {
+
+                if (!date.IsNullOrEmpty() && !DateTime.TryParse(date,out _))
+                    return false;
+
+                return true;
+         
+            }).WithMessage("MissingDate is invalid format");
+
             RuleFor(i => i.PhoneNumber).MustAsync(async (phone, _) =>
             {
-
-
-                if (phone != null &&
+                
+                if (phone.IsNullOrEmpty() ||
                 phone.Length == 11 && (
                 phone.StartsWith("010") ||
                 phone.StartsWith("011") ||
@@ -26,7 +35,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
                     return true;
 
                 return false;
-            }).WithMessage(localizer["PhoneNumberInvalid"].Value).NotEmpty().WithMessage(localizer["PhoneNumberRequired"].Value);
+            }).WithMessage(localizer["PhoneNumberInvalid"].Value);
 
             RuleFor(i => i.City).NotEmpty().WithMessage(localizer["CityRequired"].Value);
             RuleFor(i => i.Town).NotEmpty().WithMessage(localizer["TownRequired"].Value);

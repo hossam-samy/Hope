@@ -42,7 +42,7 @@ namespace Hope.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
-        public async Task<IActionResult> AddPostThings([FromForm] CreatePostForThingsCommand command)
+        public async Task<IActionResult> AddPostThings( [FromForm]CreatePostForThingsCommand command)
         {
             command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 

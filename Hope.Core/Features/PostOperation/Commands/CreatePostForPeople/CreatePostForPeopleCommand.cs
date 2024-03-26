@@ -22,7 +22,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
      
         public string Description { get; set; }
 
-        public DateTime? MissigDate { get; set; }
+        public string? MissigDate { get; set; }
 
       
         public string? PhoneNumber { get; set; }

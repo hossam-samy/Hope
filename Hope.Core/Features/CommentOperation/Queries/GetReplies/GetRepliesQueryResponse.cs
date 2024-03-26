@@ -8,6 +8,8 @@
         public string UserImage { get; set; }
         public string Content { get; set; }
 
+        public string UserId { get; set; }
+
         public int? CommentCount { get; set; }
         public DateTime Date { get; set; }
 

@@ -39,7 +39,10 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
 
             post.ImageUrl = await mediaService.AddFileAsync(command.ImageFile, post.GetType().Name, post.Id.ToString());
 
-            await work.Repository<PostOfLostThings>().Update(post);
+           
+            DateTime.TryParse(command.MissigDate,out DateTime missingDate);
+            post.MissigDate = missingDate;
+            await work.SaveAsync();
 
             return await Response.SuccessAsync(localizer["Success"].Value);
         }

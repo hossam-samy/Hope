@@ -11,7 +11,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
         public IFormFile? ImageFile { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
-        public DateTime? MissigDate { get; set; }
+        public string? MissigDate { get; set; }
         public string? PhoneNumber { get; set; }
 
         public string Town { get; set; }
