@@ -1,13 +1,14 @@
 ﻿using FluentValidation;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.Authentication.Commands.Register
 {
     public class RegisterCommandValidation:AbstractValidator<RegisterCommand>
     {
-        public RegisterCommandValidation(IUnitofWork work,IStringLocalizer<RegisterCommand> localizer)
+        public RegisterCommandValidation(IUnitofWork work,IStringLocalizer<RegisterCommand> localizer,UserManager<User>  userManager)
         { 
             
             
@@ -17,10 +18,10 @@ namespace Hope.Core.Features.Authentication.Commands.Register
                 .NotEmpty().WithMessage(localizer["UserNameRequired"].Value)
                 .MustAsync(async (username, _) => {
 
-               if (work.Repository<User>().Get(i => i.UserName == username).Result.FirstOrDefault()!= null) return false;
+               if (await userManager.FindByNameAsync(username)== null) return true;
 
 
-                return true;
+                return false;
 
 
             }).WithMessage(localizer["UniqueUserName"].Value);
@@ -61,9 +62,9 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
             }).WithMessage(localizer["EmailInvalid"].Value).MustAsync(async (email, _) => {
 
-                if (work.Repository<User>().Get(i => i.Email == email).Result.FirstOrDefault() != null) return false;
+                if (await userManager.FindByEmailAsync(email)== null) return true;
 
-                return true;
+                return false;
 
 
             }).WithMessage(localizer["UniqueEmail"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);

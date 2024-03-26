@@ -1,26 +1,27 @@
 ﻿using FluentValidation;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.Authentication.Commands.ChangePassword
 {
     public class ChangePasswordCommandValidation:AbstractValidator<ChangePasswordCommand>
     {
-        public ChangePasswordCommandValidation(IStringLocalizer<ChangePasswordCommandValidation> localizer,IUnitofWork work)
+        public ChangePasswordCommandValidation(IStringLocalizer<ChangePasswordCommandValidation> localizer,UserManager<User> userManager)
         {
-            RuleFor(i => i.UserEmail).MustAsync(async (email, _) =>
+            RuleFor(i => i.UserEmail).MustAsync( (email, _) =>
             {
 
-                if (!email.EndsWith("@gmail.com")) return false;
+                if (!email.EndsWith("@gmail.com")) return Task.FromResult( false);
 
-                return true;
+                return Task.FromResult(true);
 
             }).WithMessage(localizer["EmailInvalid"].Value).MustAsync(async (email, _) => {
 
-                if (work.Repository<User>().Get(i => i.Email == email).Result.FirstOrDefault() != null) return true;
+                if (await userManager.FindByEmailAsync(email)== null) return false;
 
-                return false;
+                return true;
 
 
             }).WithMessage(localizer["WrongEmail"].Value).NotEmpty().WithMessage(localizer["EmailRequired"].Value);

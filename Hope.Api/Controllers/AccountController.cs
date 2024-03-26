@@ -91,15 +91,6 @@ namespace Hope.Api.Controllers
 
         }
 
-
-        //[HttpPost]
-        //public async Task<IActionResult> AdminRegister([FromForm] UserDto User)
-        //{
-        //    if (!ModelState.IsValid) { return BadRequest(ModelState); }
-        //    var result = await authService.AdminRegister(User);
-        //    if (!result.IsAuthenticated) return BadRequest(result.Message);
-        //    return Ok(result);
-        //}
         [HttpPost]
         public async Task<IActionResult> Login( LoginQuery query)
         {

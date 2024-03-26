@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Hope.Domain.Model
 {
     public class User:IdentityUser
     {
-
         public string City { get; set; }
         public string? DisplayName { get; set; }
 
@@ -23,4 +24,5 @@ namespace Hope.Domain.Model
         public virtual List<Comment> Comments { get; set; } 
 
     }
+   
 }

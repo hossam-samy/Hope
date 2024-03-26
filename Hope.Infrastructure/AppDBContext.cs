@@ -34,7 +34,7 @@ namespace Hope.Infrastructure
             builder.Entity<PostOfLostPeople>().HasQueryFilter(i => !i.IsDeleted);
             builder.Entity<PostOfLostThings>().HasQueryFilter(i => !i.IsDeleted);
 
-
+       
             //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
 
 

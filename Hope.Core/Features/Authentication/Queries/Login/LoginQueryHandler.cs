@@ -1,20 +1,10 @@
 ﻿using FluentValidation;
 using Hope.Core.Common;
-using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hope.Core.Features.Authentication.Queries.Login
 {
@@ -43,6 +33,8 @@ namespace Hope.Core.Features.Authentication.Queries.Login
             }
 
             var user = await userManager.FindByEmailAsync(query.Email!);
+
+           
 
 
             if (user is null || !await userManager.CheckPasswordAsync(user, query.Password!))

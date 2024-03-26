@@ -32,7 +32,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
         public async Task<Response> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
-             var validationresult=await validator.ValidateAsync(command);
+            var validationresult = await validator.ValidateAsync(command);
 
             if (!validationresult.IsValid)
             {
@@ -43,7 +43,7 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
 
 
-             await userManager.CreateAsync(user, command.Password);
+            var asd= await userManager.CreateAsync(user, command.Password);
 
            
 

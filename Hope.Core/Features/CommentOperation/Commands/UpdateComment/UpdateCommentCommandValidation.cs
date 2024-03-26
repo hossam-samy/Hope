@@ -14,7 +14,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.UpdateComment
         {
             RuleFor(i => i.CommentId).NotEmpty().WithMessage("CommentId is Required");
 
-            RuleFor(i => i.Content).NotNull().WithMessage(localizer["ContentRequired"]).NotEmpty().WithMessage(localizer["ContentRequired"]);
+            RuleFor(i => i.Content).NotEmpty().WithMessage(localizer["ContentRequired"].Value);
         }
     }
 }

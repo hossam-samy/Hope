@@ -20,7 +20,12 @@ namespace Hope.Infrastructure.Extensions
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationManager configuration)
         {
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
+            services.AddIdentity<User, IdentityRole>(o=> { 
+                
+                 o.User.RequireUniqueEmail = true;
+                 o.Password.RequiredLength = 8;
+            
+            }).AddEntityFrameworkStores<AppDBContext>();
 
             
 
