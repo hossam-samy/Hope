@@ -4,6 +4,8 @@ using Hope.Core.Features.Authentication.Commands.AddUserImage;
 using Hope.Core.Features.Authentication.Commands.ChangePassword;
 using Hope.Core.Features.Authentication.Commands.Register;
 using Hope.Core.Features.Authentication.Commands.UpdateUserData;
+using Hope.Core.Features.Authentication.Queries.GetAllCities;
+using Hope.Core.Features.Authentication.Queries.GetAllTownsByCityId;
 using Hope.Core.Features.Authentication.Queries.GetAllUsers;
 using Hope.Core.Features.Authentication.Queries.GetProfile;
 using Hope.Core.Features.Authentication.Queries.Login;
@@ -88,6 +90,20 @@ namespace Hope.Api.Controllers
         {
 
             return Ok(await _mediator.Send(new GetAllUsersQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllCities()
+        {
+
+            return Ok(await _mediator.Send(new GetAllCitiesQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllTownsByCityId(int id)
+        {
+
+            return Ok(await _mediator.Send(new GetAllTownsByCityIdQuery() { Id=id}));
 
         }
 

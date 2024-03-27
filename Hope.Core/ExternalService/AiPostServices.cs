@@ -16,6 +16,8 @@ namespace Hope.Core.ExternalService
             this.work = work;
         }
 
+       
+
         public async Task<Response> GetPostOfPeopleByAge(int age)
         {
            var posts = work.Repository<PostOfLostPeople>().IgnoreFilter().Result.Where(i => i.Age == age).ToList().Adapt<List<AiPostPeopleResposnse>>();

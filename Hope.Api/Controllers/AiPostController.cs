@@ -38,6 +38,7 @@ namespace Hope.Api.Controllers
 
             return Ok(await services.GetPostOfThingsByTown(town));
         }
+   
 
     }
 }

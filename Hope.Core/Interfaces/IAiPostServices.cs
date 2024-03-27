@@ -14,5 +14,6 @@ namespace Hope.Core.Interfaces
         Task<Response> GetPostOfThingsByTown(string town);
         Task<Response> GetPostOfPeopleByTownandAge(int age, string town);
 
+
     }
 }

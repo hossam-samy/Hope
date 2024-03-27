@@ -49,6 +49,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId
                 }
 
                 Comments = Post.Comments.Adapt<List<GetRepliesQueryResponse>>();
+
             }
 
             return await Response.SuccessAsync(Comments, localizer["Success"].Value);

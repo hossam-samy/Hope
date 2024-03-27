@@ -18,21 +18,25 @@ namespace Hope.Core.Common.Mapping
 
             config.NewConfig<PostOfLostPeople, GetAllPostsQueryResponse>()
                 .Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
-                .Map(dest=>dest.UserImage,src=>src.User.UserImage);
+                .Map(dest=>dest.UserImage,src=>src.User.UserImage)
+                .Map(dest=>dest.CreationDate,src=>src.CreationDate.ToLocalTime());
 
 
             config.NewConfig<PostOfLostThings, GetAllPostsQueryResponse>()
                .Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
-               .Map(dest => dest.UserImage, src => src.User.UserImage);
+               .Map(dest => dest.UserImage, src => src.User.UserImage)
+               .Map(dest => dest.CreationDate, src => src.CreationDate.ToLocalTime());
 
 
             config.NewConfig<PostOfLostPeople, GetAllPostsOfPeopleQueryResponse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
-                .Map(dest => dest.UserImage, src => src.User.UserImage);
-           
+                .Map(dest => dest.UserImage, src => src.User.UserImage)
+                .Map(dest => dest.CreationDate, src => src.CreationDate.ToLocalTime());
+
 
             config.NewConfig<PostOfLostThings, GetAllPostsOfThingsQueryResponse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName)
-                .Map(dest => dest.UserImage, src => src.User.UserImage);
-            
+                .Map(dest => dest.UserImage, src => src.User.UserImage)
+                .Map(dest => dest.CreationDate, src => src.CreationDate.ToLocalTime());
+
 
             //config.NewConfig<PostThingsRequest, PostOfLostThings>();
 
@@ -40,9 +44,13 @@ namespace Hope.Core.Common.Mapping
             // config.NewConfig<CommentRequest, Comment>();
             //onfig.NewConfig<AddingCommentToCommentRequest, Comment>();
             //config.NewConfig<Comment, CommentResponse>();
-            config.NewConfig<Comment, GetRepliesQueryResponse>().Map(i => i, i => i.User);
+            config.NewConfig<Comment, GetRepliesQueryResponse>().Map(i => i, i => i.User)
+                .Map(dest => dest.Date, src => src.Date.ToLocalTime());
 
+            
+            
             config.NewConfig<PostOfLostThings, AiPostThingsResposnse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
+            
             config.NewConfig<PostOfLostPeople, AiPostPeopleResposnse>().Map(dest => dest.UserName, src => src.User.DisplayName ?? src.User.UserName);
 
         }
