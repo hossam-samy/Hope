@@ -15,5 +15,6 @@ namespace Hope.Core.Features.Authentication.Commands.UpdateUserData
         public string DisplayName { get; set; }
 
         public string City { get; set; }
+        public string Password { get; set; }
     }
 }

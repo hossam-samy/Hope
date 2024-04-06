@@ -18,9 +18,9 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
     internal class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, Response>
     {
         private readonly UserManager<User> userManager;
-        private readonly IConfiguration configuration;
-        private readonly IMapper mapper;
         private readonly IStringLocalizer<GetProfileQueryHandler> localizer;
+        private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
         private readonly IUnitofWork unitofWork;
         private readonly IMediaService mediaService;
 

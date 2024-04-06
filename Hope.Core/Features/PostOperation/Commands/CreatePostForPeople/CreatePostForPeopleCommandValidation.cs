@@ -1,12 +1,6 @@
 ﻿using FluentValidation;
-using Hope.Domain.Model;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 {

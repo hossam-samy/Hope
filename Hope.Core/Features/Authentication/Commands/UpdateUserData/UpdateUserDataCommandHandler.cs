@@ -23,8 +23,8 @@ namespace Hope.Core.Features.Authentication.Commands.UpdateUserData
         {
             var user = await userManager.FindByIdAsync(command.UserId);
 
-            if (user == null)
-                return await Response.FailureAsync(localizer["Faild"].Value);
+            if (user == null||!await userManager.CheckPasswordAsync(user,command.Password))
+                return await Response.FailureAsync(localizer["WrongPassword"].Value);
 
 
 

@@ -38,7 +38,9 @@
     "IsSearcherRequired": " مطلوب ادخال نوع البلاغ",
     "GendreRequired": " مطلوب ادخال نوع المفقود",
     "DescriptionRequired": " مطلوب ادخال وصف المفقود",
-    "TypeRequired": " مطلوب ادخال نوع الشىء المفقود"
+    "TypeRequired": " مطلوب ادخال نوع الشىء المفقود",
+    "InvalidUserName": "اسم المستخدم يحتوى فقط على حروف بالغة الانجليزية وارقام",
+    "WrongPassword": "كلمة المرور خاطئة"
 
 
 

@@ -43,9 +43,10 @@ namespace Hope.Core.Features.Authentication.Commands.Register
 
 
 
-            var asd= await userManager.CreateAsync(user, command.Password);
+            var result=await userManager.CreateAsync(user, command.Password);
 
-           
+            if(!result.Succeeded)
+             return await Response.FailureAsync(localizer["InvalidUserName"]);
 
              await userManager.AddToRoleAsync(user, "User");
 

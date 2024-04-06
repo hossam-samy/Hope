@@ -11,9 +11,6 @@ namespace Hope.Core.Features.Authentication.Commands.Register
         public RegisterCommandValidation(IUnitofWork work,IStringLocalizer<RegisterCommand> localizer,UserManager<User>  userManager)
         { 
             
-            
-
-
             RuleFor(i => i.UserName)
                 .NotEmpty().WithMessage(localizer["UserNameRequired"].Value)
                 .MustAsync(async (username, _) => {
