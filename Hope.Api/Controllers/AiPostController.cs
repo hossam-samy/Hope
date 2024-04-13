@@ -38,7 +38,14 @@ namespace Hope.Api.Controllers
 
             return Ok(await services.GetPostOfThingsByTown(town));
         }
-   
+
+        [HttpGet]
+        public async Task<IActionResult> GetHospitalsByCity(string city)
+        {
+
+            return Ok(await services.GetHospitalsByCity(city));
+        }
+
 
     }
 }

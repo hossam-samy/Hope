@@ -48,5 +48,12 @@ namespace Hope.Core.ExternalService
 
             return await Response.SuccessAsync(posts, "Success");
         }
+        public async Task<Response> GetHospitalsByCity(string city)
+        {
+            var hospitals = work.Repository<Hospital>().IgnoreFilter().Result.Where(i => i.City == city).ToList().Adapt<List<HospitalsResponse>>();
+
+
+            return await Response.SuccessAsync(hospitals, "Success");
+        }
     }
 }
