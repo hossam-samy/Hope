@@ -59,6 +59,7 @@ namespace Hope.Api.Controllers
        
         public async Task<IActionResult> GetAllPosts(int PageNumber)
         {
+            
             return Ok(await _mediator.Send(new GetAllPostsQuery { PageNumber = PageNumber,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
             
         }

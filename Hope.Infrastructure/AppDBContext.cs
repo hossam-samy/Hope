@@ -38,6 +38,7 @@ namespace Hope.Infrastructure
             //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
 
 
+
         }
 
         public DbSet<User> Users { get; set; }
@@ -45,6 +46,7 @@ namespace Hope.Infrastructure
          public DbSet<PostOfLostPeople> postOfLostPeoples { get; set; }
          public DbSet<PostOfLostThings> postOfLostthings { get; set; }
          public DbSet<Message>  Messages { get; set; }
+         public DbSet<Hospital>  Hospitals  { get; set; }
          public DbSet<Notification>  Notifications  { get; set; }
          //public DbSet<Comment>  Comments  { get; set; }
         

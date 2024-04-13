@@ -44,6 +44,8 @@ namespace Hope.Core.Features.Authentication.Queries.Login
 
             var token = await jwtTokenGenerator.GenerateToken(user);
 
+          
+
             var role = await userManager.GetRolesAsync(user);
 
             var login = new LoginQueryResponse()
@@ -54,7 +56,7 @@ namespace Hope.Core.Features.Authentication.Queries.Login
                 Token = token,
                 Roles = role.ToList(),
                 Name = user.DisplayName,
-                 UserImage=user.UserImage,
+                UserImage=user.UserImage,
                 IsAuthenticated = true,
             };
 
