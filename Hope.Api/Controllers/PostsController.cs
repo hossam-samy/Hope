@@ -20,6 +20,7 @@ using Hope.Core.Features.CommentOperation.Commands.AddCommentToComment;
 using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
 using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
 using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
+using Hope.Core.Features.PostOperation.Queries.GetArchivedPosts;
 
 namespace Hope.Api.Controllers
 {
@@ -169,6 +170,12 @@ namespace Hope.Api.Controllers
         {
                     
             return Ok(await _mediator.Send(new GetCommentsByPostIdQuery() { PostId=PostId,IsPeople=IsPeople}));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetArchivedPosts()
+        {
+
+            return Ok(await _mediator.Send(new GetArchivedPostsQuery() {UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
         }
 
 

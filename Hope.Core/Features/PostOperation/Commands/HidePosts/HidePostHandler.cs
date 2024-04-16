@@ -29,6 +29,8 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
             {
                 return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+            
+
             if (command.IsPeople)
                 return await HidePost<PostOfLostPeople>(command.UserId!, command.PostId);
             else
@@ -43,29 +45,20 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
 
 
             Post? post =  await work.Repository<T>().GetItem(i => i.Id == PostId);
-            if (post == null)
-            {
-
-                return await Response.FailureAsync(localizer["PostNotExist"].Value);
-
-            }
-
-
-            if (user.PinningPeoples.Any(i => i == post) || user.PinningThings.Any(i => i == post))
-            {
-
-                return await Response.FailureAsync("HideError");
-            }
-
+            
 
             if (typeof(T).Name == nameof(PostOfLostPeople))
             {
+                if(user.PinningPeoples.Any(i => i == post))
+                   return await Response.FailureAsync("HideError");
 
                 user.HiddingPeoples.Add((PostOfLostPeople)post);
 
             }
             else
             {
+                if (user.PinningThings.Any(i => i == post))
+                    return await Response.FailureAsync("HideError");
 
                 user.HiddingThings.Add((PostOfLostThings)post);
 

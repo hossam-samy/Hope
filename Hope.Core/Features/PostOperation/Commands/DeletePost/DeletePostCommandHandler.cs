@@ -13,14 +13,12 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<DeletePostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
-        private readonly IMediaService mediaService;
         private readonly IValidator<DeletePostCommand> validator;
-        public DeletePostCommandHandler(IUnitofWork work, IStringLocalizer<DeletePostCommandHandler> localizer, UserManager<User> userManager, IMediaService mediaService, IValidator<DeletePostCommand> validator)
+        public DeletePostCommandHandler(IUnitofWork work, IStringLocalizer<DeletePostCommandHandler> localizer, UserManager<User> userManager, IValidator<DeletePostCommand> validator)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
-            this.mediaService = mediaService;
             this.validator = validator;
         }
 
@@ -39,6 +37,8 @@ namespace Hope.Core.Features.PostOperation.Commands.DeletePost
 
                 return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
+
+           
 
             Post? post;
             if (command.IsPeople)

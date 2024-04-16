@@ -39,7 +39,8 @@
   "DescriptionRequired": " Description Is Required Input",
   "TypeRequired": " Type Is Required Input",
   "InvalidUserName": "UserName Only Countain English letters and numbers ",
-  "WrongPassword": "Password is Wrong"
+  "WrongPassword": "Password is Wrong",
+  "UnHideError": "You Can't UnHide UnHidden Post"
 
 
 

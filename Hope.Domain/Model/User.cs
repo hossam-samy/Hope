@@ -9,6 +9,7 @@ namespace Hope.Domain.Model
         public string City { get; set; }
         public string? DisplayName { get; set; }
 
+        public DateTime CreationDate { get; set; } = DateTime.Now;
         public string? UserImage { get; set; }
         public virtual List<PostOfLostThings>? lostThings { get; set; } 
 
