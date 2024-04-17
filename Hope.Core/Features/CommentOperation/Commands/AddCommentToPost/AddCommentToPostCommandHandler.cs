@@ -4,6 +4,7 @@ using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 

@@ -10,6 +10,5 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
 {
     public class GetProfileQuery:IRequest<Response>
     {
-        public string UserId { get; set; }
     }
 }

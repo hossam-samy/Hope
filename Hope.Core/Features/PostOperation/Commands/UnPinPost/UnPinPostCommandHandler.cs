@@ -3,6 +3,7 @@ using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -14,12 +15,15 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
         private readonly IStringLocalizer<UnPinPostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IValidator<UnPinPostCommand> validator;
-        public UnPinPostCommandHandler(IUnitofWork work, IStringLocalizer<UnPinPostCommandHandler> localizer, UserManager<User> userManager, IValidator<UnPinPostCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+
+        public UnPinPostCommandHandler(IUnitofWork work, IStringLocalizer<UnPinPostCommandHandler> localizer, UserManager<User> userManager, IValidator<UnPinPostCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.validator = validator;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(UnPinPostCommand command, CancellationToken cancellationToken)
         {
@@ -29,10 +33,13 @@ namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
             {
                 return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
+
             if (command.IsPeople)
-                return await UnPinPost<PostOfLostPeople>(command.UserId, command.PostId);
+                return await UnPinPost<PostOfLostPeople>(userid!, command.PostId);
             else
-                return await UnPinPost<PostOfLostThings>(command.UserId, command.PostId);
+                return await UnPinPost<PostOfLostThings>(userid!, command.PostId);
         }
         private async Task<Response> UnPinPost<T>(string UserId, int PostId) where T : Post
         {

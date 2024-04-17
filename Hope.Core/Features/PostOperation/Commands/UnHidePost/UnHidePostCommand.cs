@@ -10,7 +10,6 @@ namespace Hope.Core.Features.PostOperation.Commands.UnHidePost
 {
     public class UnHidePostCommand:IRequest<Response>
     {
-        public string? UserId { get; set; }
         public int PostId { get; set; }
         public bool IsPeople { get; set; }
     }

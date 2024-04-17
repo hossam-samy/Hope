@@ -7,7 +7,6 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
     public class CreatePostForThingsCommand:IRequest<Response>
     {
 
-        public string? UserId { get; set; }
         public IFormFile? ImageFile { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }

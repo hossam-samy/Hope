@@ -1,11 +1,12 @@
 ﻿using Hope.Core.Common;
 using MediatR;
 
-namespace Hope.Core.Features.PostOperation.Commands.UnPinPost
+namespace Hope.Core.Features.PostOperation.Queries.GetPostByPostId
 {
-    public class UnPinPostCommand:IRequest<Response>
+    public class GetPostByPostIdQuery:IRequest<Response>
     {
         public int PostId { get; set; }
         public bool IsPeople { get; set; }
+
     }
 }

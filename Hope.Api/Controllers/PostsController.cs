@@ -21,6 +21,8 @@ using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
 using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
 using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
 using Hope.Core.Features.PostOperation.Queries.GetArchivedPosts;
+using Hope.Core.Features.PostOperation.Commands.UnHidePost;
+using Hope.Core.Features.PostOperation.Queries.GetPostByPostId;
 
 namespace Hope.Api.Controllers
 {
@@ -38,22 +40,19 @@ namespace Hope.Api.Controllers
         [HttpPost]
         public async  Task<IActionResult> AddPostPeople ([FromForm]CreatePostForPeopleCommand  command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> AddPostThings( [FromForm]CreatePostForThingsCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpGet]
         public async Task<IActionResult> GetPostThings(int PageNumber)
         {
             
-            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { PageNumber = PageNumber, UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
+            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { PageNumber = PageNumber }));
 
         }
         [HttpGet]
@@ -61,13 +60,13 @@ namespace Hope.Api.Controllers
         public async Task<IActionResult> GetAllPosts(int PageNumber)
         {
             
-            return Ok(await _mediator.Send(new GetAllPostsQuery { PageNumber = PageNumber,UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsQuery { PageNumber = PageNumber }));
             
         }
         [HttpGet]
         public async Task<IActionResult> GetPostOfShelters(int PageNumber)
         {
-            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { PageNumber = PageNumber }));
            
         }
         [HttpGet]
@@ -75,13 +74,13 @@ namespace Hope.Api.Controllers
         {
           
 
-            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { PageNumber = PageNumber }));
         }
         [HttpGet]
         public async Task<IActionResult> GetPostOfLosties(int PageNumber)
         {
            
-            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { PageNumber = PageNumber, UserId = User.Claims.Where(i => i.Type == "uid").First().Value}));
+            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { PageNumber = PageNumber}));
         }
 
         [HttpGet]
@@ -95,7 +94,6 @@ namespace Hope.Api.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeletePost(DeletePostCommand  command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
             return Ok(await _mediator.Send(command));
             
         }
@@ -103,65 +101,49 @@ namespace Hope.Api.Controllers
         public async Task<IActionResult> UpdatePostOfThingsPost(UpdatePostOfThingsCommand command)
         {
 
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
           
         [HttpPut]
         public async Task<IActionResult> UpdatePostOfPeoplePost(UpdatePostOfPeopleCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> HidePost(HidePostsCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> PinPost(PinPostCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> UnPinPost(UnPinPostCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> AddCommentToPost(AddCommentToPostCommand  command)
         {
-            command.UserId=User.Claims.Where(i=>i.Type== "uid").First().Value;  
             return Ok(await _mediator.Send(command));
         }
         [HttpPost]
         public async Task<IActionResult> AddCommentToComment(AddCommentToCommentCommand command)
         {
 
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
         [HttpPut]
         public async Task<IActionResult> UpdateComment(UpdateCommentCommand  command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
 
             return Ok(await _mediator.Send(command));
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteComment(DeleteCommentCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
         }
 
@@ -175,7 +157,18 @@ namespace Hope.Api.Controllers
         public async Task<IActionResult> GetArchivedPosts()
         {
 
-            return Ok(await _mediator.Send(new GetArchivedPostsQuery() {UserId= User.Claims.Where(i => i.Type == "uid").First().Value }));
+            return Ok(await _mediator.Send(new GetArchivedPostsQuery()));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostByPostId(int postId,bool IsPeople)
+        {
+
+            return Ok(await _mediator.Send(new GetPostByPostIdQuery() {PostId=postId,IsPeople=IsPeople }));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnHidePosts(UnHidePostCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
 
 

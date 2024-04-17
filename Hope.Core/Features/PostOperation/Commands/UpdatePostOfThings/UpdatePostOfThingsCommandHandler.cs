@@ -3,6 +3,7 @@ using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -14,16 +15,19 @@ namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings
         private readonly IStringLocalizer<UpdatePostOfThingsCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IMediaService mediaService;
-        public UpdatePostOfThingsCommandHandler(IUnitofWork work, IStringLocalizer<UpdatePostOfThingsCommandHandler> localizer, UserManager<User> userManager, IMediaService mediaService)
+        private readonly IHttpContextAccessor accessor;
+        public UpdatePostOfThingsCommandHandler(IUnitofWork work, IStringLocalizer<UpdatePostOfThingsCommandHandler> localizer, UserManager<User> userManager, IMediaService mediaService, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.mediaService = mediaService;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(UpdatePostOfThingsCommand command, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByIdAsync(command.UserId);
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
+            var user = await userManager.FindByIdAsync(userid!);
             if (user == null)
             {
 

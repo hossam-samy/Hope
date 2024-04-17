@@ -10,7 +10,6 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 {
     public class CreatePostForPeopleCommand:IRequest<Response>
     {
-        public  string? UserId { get; set; }
      
         public int? Age { get; set; }
 

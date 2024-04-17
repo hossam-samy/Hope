@@ -6,7 +6,6 @@ namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
 {
     public class DeleteCommentCommand:IRequest<Response>
     {
-        public string? UserId { get; set; }
         public int CommentId { get; set; }
     }
 }

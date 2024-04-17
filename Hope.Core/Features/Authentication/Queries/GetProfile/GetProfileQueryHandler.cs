@@ -1,16 +1,8 @@
 ﻿using Hope.Core.Common;
-using Hope.Core.Dtos;
-using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
-using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
-using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings;
-using Hope.Core.Interfaces;
-using Hope.Core.Service;
 using Hope.Domain.Model;
-using Mapster;
-using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.Authentication.Queries.GetProfile
@@ -19,23 +11,19 @@ namespace Hope.Core.Features.Authentication.Queries.GetProfile
     {
         private readonly UserManager<User> userManager;
         private readonly IStringLocalizer<GetProfileQueryHandler> localizer;
-        private readonly IMapper mapper;
-        private readonly IConfiguration configuration;
-        private readonly IUnitofWork unitofWork;
-        private readonly IMediaService mediaService;
+        private readonly IHttpContextAccessor accessor;
 
-        public GetProfileQueryHandler(UserManager<User> userManager, IMapper mapper, IStringLocalizer<GetProfileQueryHandler> localizer, IConfiguration configuration, IUnitofWork unitofWork, IMediaService mediaService)
+        public GetProfileQueryHandler(UserManager<User> userManager, IStringLocalizer<GetProfileQueryHandler> localizer, IHttpContextAccessor accessor)
         {
             this.userManager = userManager;
-            this.mapper = mapper;
             this.localizer = localizer;
-            this.configuration = configuration;
-            this.unitofWork = unitofWork;
-            this.mediaService = mediaService;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(GetProfileQuery query, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByIdAsync(query.UserId);
+            var userId = accessor.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value ?? Guid.NewGuid().ToString();
+           
+            var user = await userManager.FindByIdAsync(userId);
 
             if (user == null)
             {

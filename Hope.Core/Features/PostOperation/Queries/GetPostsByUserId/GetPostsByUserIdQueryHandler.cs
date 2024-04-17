@@ -3,15 +3,9 @@ using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
 using Hope.Domain.Model;
 using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-using NuGet.Protocol.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Hope.Core.Features.PostOperation.Queries.GetPostsByUserId
 {
@@ -19,15 +13,18 @@ namespace Hope.Core.Features.PostOperation.Queries.GetPostsByUserId
     {
         private readonly UserManager<User> userManager;
         private readonly IStringLocalizer<GetPostsByUserIdQueryHandler> localizer;
-        public GetPostsByUserIdQueryHandler(UserManager<User> userManager, IStringLocalizer<GetPostsByUserIdQueryHandler> localizer)
+        private readonly IHttpContextAccessor accessor;
+        public GetPostsByUserIdQueryHandler(UserManager<User> userManager, IStringLocalizer<GetPostsByUserIdQueryHandler> localizer, IHttpContextAccessor accessor)
         {
             this.userManager = userManager;
             this.localizer = localizer;
+            this.accessor = accessor;
         }
 
         public async Task<Response> Handle(GetPostsByUserIdQuery query, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByIdAsync(query.UserId!);
+            var userid=accessor?.HttpContext?.User.Claims.FirstOrDefault(i=>i.Type=="uid")?.Value;
+            var user = await userManager.FindByIdAsync(userid!);
 
             if (user == null)
             {

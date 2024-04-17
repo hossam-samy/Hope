@@ -11,7 +11,6 @@ namespace Hope.Core.Features.Authentication.Commands.UpdateUserData
     public class UpdateUserDataCommand:IRequest<Response>
     {
 
-        public string? UserId { get; set; }
         public string DisplayName { get; set; }
 
         public string City { get; set; }

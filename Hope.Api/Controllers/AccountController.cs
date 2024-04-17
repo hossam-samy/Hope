@@ -8,6 +8,7 @@ using Hope.Core.Features.Authentication.Queries.GetAllCities;
 using Hope.Core.Features.Authentication.Queries.GetAllTownsByCityId;
 using Hope.Core.Features.Authentication.Queries.GetAllUsers;
 using Hope.Core.Features.Authentication.Queries.GetProfile;
+using Hope.Core.Features.Authentication.Queries.GetProfileOfAnotherUser;
 using Hope.Core.Features.Authentication.Queries.Login;
 using Hope.Core.Features.PostOperation.Queries.GetPinnedPostsByUserId;
 using Hope.Core.Features.PostOperation.Queries.GetPostsByUserId;
@@ -57,15 +58,21 @@ namespace Hope.Api.Controllers
 
 
 
-            return Ok(await _mediator.Send(new GetProfileQuery() {UserId= User.Claims.Where(i => i.Type == "uid").First().Value })) ;
+            return Ok(await _mediator.Send(new GetProfileQuery())) ;
 
+        }
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetProfileOfAnotherUser(string userId)
+        {
+            return Ok(await _mediator.Send(new GetProfileOfAnotherUserQuery() { UserId=userId}));
         }
         [HttpGet]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetPostsByUserId()
         {
 
-            return Ok(await _mediator.Send(new GetPostsByUserIdQuery() { UserId = User.Claims.Where(i => i.Type == "uid").First().Value }));
+            return Ok(await _mediator.Send(new GetPostsByUserIdQuery()));
 
         }
         [HttpGet]
@@ -73,16 +80,14 @@ namespace Hope.Api.Controllers
         public async Task<IActionResult> GetPinnedPostsByUserId()
         {
 
-            return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery() { UserId = User.Claims.Where(i => i.Type == "uid").First().Value }));
+            return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery()));
 
         }
         [HttpPut]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateUserData(UpdateUserDataCommand command)
         {
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
             return Ok(await _mediator.Send(command));
-
         }
 
         [HttpGet]

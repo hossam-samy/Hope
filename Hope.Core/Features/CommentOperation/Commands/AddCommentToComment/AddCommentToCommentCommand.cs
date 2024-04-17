@@ -10,7 +10,6 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
 {
     public class AddCommentToCommentCommand:IRequest<Response>
     {
-        public string? UserId { get; set; }
         public int CommentId { get; set; }
         public string Content { get; set; }
     }

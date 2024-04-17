@@ -2,6 +2,7 @@
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -12,16 +13,19 @@ namespace Hope.Core.Features.Authentication.Commands.UpdateUserData
         private readonly UserManager<User> userManager;
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<UpdateUserDataCommandHandler> localizer;
-        public UpdateUserDataCommandHandler(UserManager<User> userManager, IUnitofWork unitofWork, IStringLocalizer<UpdateUserDataCommandHandler> localizer)
+        private readonly IHttpContextAccessor accessor;
+        public UpdateUserDataCommandHandler(UserManager<User> userManager, IUnitofWork unitofWork, IStringLocalizer<UpdateUserDataCommandHandler> localizer, IHttpContextAccessor accessor)
         {
             this.userManager = userManager;
             work = unitofWork;
             this.localizer = localizer;
+            this.accessor = accessor;
         }
 
         public async Task<Response> Handle(UpdateUserDataCommand command, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByIdAsync(command.UserId);
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
+            var user = await userManager.FindByIdAsync(userid!);
 
             if (user == null||!await userManager.CheckPasswordAsync(user,command.Password))
                 return await Response.FailureAsync(localizer["WrongPassword"].Value);

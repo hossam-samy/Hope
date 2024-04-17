@@ -3,6 +3,7 @@ using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -14,12 +15,14 @@ namespace Hope.Core.Features.PostOperation.Commands.PinPost
         private readonly IStringLocalizer<PinPostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IValidator<PinPostCommand> validator;
-        public PinPostCommandHandler(IUnitofWork work, IStringLocalizer<PinPostCommandHandler> localizer, UserManager<User> userManager, IValidator<PinPostCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+        public PinPostCommandHandler(IUnitofWork work, IStringLocalizer<PinPostCommandHandler> localizer, UserManager<User> userManager, IValidator<PinPostCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.validator = validator;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(PinPostCommand command, CancellationToken cancellationToken)
         {
@@ -29,10 +32,11 @@ namespace Hope.Core.Features.PostOperation.Commands.PinPost
             {
                 return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
             if (command.IsPeople) 
-                return await PinPost<PostOfLostPeople>(command.UserId,command.PostId);
+                return await PinPost<PostOfLostPeople>(userid!,command.PostId);
             else
-                return await PinPost<PostOfLostThings>(command.UserId,command.PostId);
+                return await PinPost<PostOfLostThings>(userid!,command.PostId);
 
         }
         private async Task<Response> PinPost<T>(string UserId, int PostId) where T : Post

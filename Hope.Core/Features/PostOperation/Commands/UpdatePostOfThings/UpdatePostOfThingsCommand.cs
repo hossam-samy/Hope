@@ -1,19 +1,11 @@
 ﻿using Hope.Core.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings
 {
     public class UpdatePostOfThingsCommand:IRequest<Response>
     {
-
-        public string? UserId { get; set; }
         public int Id { get; set; }
         public string? Type { get; set; }
 

@@ -5,6 +5,7 @@ using Hope.Core.Features.PostOperation.Commands.PinPost;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -17,12 +18,14 @@ namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
         private readonly IStringLocalizer<DeleteCommentCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IValidator<DeleteCommentCommand> validator;
-        public DeleteCommentCommandHandler(IUnitofWork work, IStringLocalizer<DeleteCommentCommandHandler> localizer, UserManager<User> userManager, IValidator<DeleteCommentCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+        public DeleteCommentCommandHandler(IUnitofWork work, IStringLocalizer<DeleteCommentCommandHandler> localizer, UserManager<User> userManager, IValidator<DeleteCommentCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.validator = validator;
+            this.accessor = accessor;
         }
         public async  Task<Response> Handle(DeleteCommentCommand command, CancellationToken cancellationToken)
         {
@@ -33,7 +36,9 @@ namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
                 return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
 
-            var user = await userManager.FindByIdAsync(command.UserId);
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
+
+            var user = await userManager.FindByIdAsync(userid!);
             if (user == null)
             {
                 return await Response.FailureAsync(localizer["UserNotExist"].Value);

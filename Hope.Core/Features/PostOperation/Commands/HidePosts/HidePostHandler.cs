@@ -3,6 +3,7 @@ using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -14,12 +15,14 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
         private readonly IStringLocalizer<HidePostHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IValidator<HidePostsCommand> validator;
-        public HidePostHandler(IUnitofWork work, IStringLocalizer<HidePostHandler> localizer, UserManager<User> userManager, IValidator<HidePostsCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+        public HidePostHandler(IUnitofWork work, IStringLocalizer<HidePostHandler> localizer, UserManager<User> userManager, IValidator<HidePostsCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.validator = validator;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(HidePostsCommand command, CancellationToken cancellationToken)
         {
@@ -29,12 +32,13 @@ namespace Hope.Core.Features.PostOperation.Commands.HidePosts
             {
                 return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
-            
+
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
 
             if (command.IsPeople)
-                return await HidePost<PostOfLostPeople>(command.UserId!, command.PostId);
+                return await HidePost<PostOfLostPeople>(userid!, command.PostId);
             else
-                return await HidePost<PostOfLostThings>(command.UserId!, command.PostId);
+                return await HidePost<PostOfLostThings>(userid!, command.PostId);
 
         }
         public async Task<Response> HidePost<T>(string UserId, int PostId) where T : Post

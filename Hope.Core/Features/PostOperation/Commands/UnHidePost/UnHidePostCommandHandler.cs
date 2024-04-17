@@ -3,6 +3,7 @@ using Hope.Core.Common;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -14,12 +15,14 @@ namespace Hope.Core.Features.PostOperation.Commands.UnHidePost
         private readonly IStringLocalizer<UnHidePostCommandHandler> localizer;
         private readonly UserManager<User> userManager;
         private readonly IValidator<UnHidePostCommand> validator;
-        public UnHidePostCommandHandler(IUnitofWork work, IStringLocalizer<UnHidePostCommandHandler> localizer, UserManager<User> userManager, IValidator<UnHidePostCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+        public UnHidePostCommandHandler(IUnitofWork work, IStringLocalizer<UnHidePostCommandHandler> localizer, UserManager<User> userManager, IValidator<UnHidePostCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.validator = validator;
+            this.accessor = accessor;
         }
 
         public async Task<Response> Handle(UnHidePostCommand command, CancellationToken cancellationToken)
@@ -30,10 +33,13 @@ namespace Hope.Core.Features.PostOperation.Commands.UnHidePost
             {
                 return await Response.FailureAsync(validationresult.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+
+            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
+
             if (command.IsPeople)
-                return await UnHidePost<PostOfLostPeople>(command.UserId!, command.PostId);
+                return await UnHidePost<PostOfLostPeople>(userid!, command.PostId);
             else
-                return await UnHidePost<PostOfLostThings>(command.UserId!, command.PostId);
+                return await UnHidePost<PostOfLostThings>(userid!, command.PostId);
 
         }
         public async Task<Response> UnHidePost<T>(string UserId, int PostId) where T : Post
