@@ -28,14 +28,14 @@ namespace Hope.Core.ExternalService
 
         public async Task<Response> GetPostOfPeopleByTown(string town)
         {
-            var posts = work.Repository<PostOfLostPeople>().IgnoreFilter().Result.Where(i => i.Town == town).ToList().Adapt<List<AiPostPeopleResposnse>>();
+            var posts = work.Repository<PostOfLostPeople>().IgnoreFilter().Result.Where(i => i.City == town).ToList().Adapt<List<AiPostPeopleResposnse>>();
            
 
             return await Response.SuccessAsync(posts,"Success");
         }
         public async Task<Response> GetPostOfPeopleByTownandAge(int age,string town)
         {
-            var posts = work.Repository<PostOfLostPeople>().IgnoreFilter().Result.Where(i => i.Town == town&&i.Age==age).ToList().Adapt<List<AiPostPeopleResposnse>>();
+            var posts = work.Repository<PostOfLostPeople>().IgnoreFilter().Result.Where(i => i.City == town&&i.Age==age).ToList().Adapt<List<AiPostPeopleResposnse>>();
            
 
             return await Response.SuccessAsync(posts,"Success");
@@ -43,7 +43,7 @@ namespace Hope.Core.ExternalService
         
         public async Task<Response> GetPostOfThingsByTown(string town)
         {
-            var posts = work.Repository<PostOfLostThings>().IgnoreFilter().Result.Where(i => i.Town == town).ToList().Adapt<List<AiPostThingsResposnse>>();
+            var posts = work.Repository<PostOfLostThings>().IgnoreFilter().Result.Where(i => i.City == town).ToList().Adapt<List<AiPostThingsResposnse>>();
           
 
             return await Response.SuccessAsync(posts, "Success");
