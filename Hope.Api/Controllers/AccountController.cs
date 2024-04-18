@@ -69,18 +69,18 @@ namespace Hope.Api.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetPostsByUserId()
+        public async Task<IActionResult> GetPostsByUserId(string userId)
         {
 
-            return Ok(await _mediator.Send(new GetPostsByUserIdQuery()));
+            return Ok(await _mediator.Send(new GetPostsByUserIdQuery() {UserId=userId }));
 
         }
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetPinnedPostsByUserId()
+        public async Task<IActionResult> GetPinnedPostsByUserId(string userId)
         {
 
-            return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery()));
+            return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery() { UserId=userId }));
 
         }
         [HttpPut]

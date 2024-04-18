@@ -13,18 +13,15 @@ namespace Hope.Core.Features.PostOperation.Queries.GetPinnedPostsByUserId
     {
         private readonly UserManager<User> userManager;
         private readonly IStringLocalizer<GetPinnedPostsByUserIdQueryHandler> localizer;
-        private readonly IHttpContextAccessor accessor;
-        public GetPinnedPostsByUserIdQueryHandler(UserManager<User> userManager, IStringLocalizer<GetPinnedPostsByUserIdQueryHandler> localizer, IHttpContextAccessor accessor)
+        public GetPinnedPostsByUserIdQueryHandler(UserManager<User> userManager, IStringLocalizer<GetPinnedPostsByUserIdQueryHandler> localizer)
         {
             this.userManager = userManager;
             this.localizer = localizer;
-            this.accessor = accessor;
         }
 
         public async Task<Response> Handle(GetPinnedPostsByUserIdQuery query, CancellationToken cancellationToken)
         {
-            var userid = accessor?.HttpContext?.User.Claims.FirstOrDefault(i => i.Type == "uid")?.Value;
-            var user = await userManager.FindByIdAsync(userid!);
+            var user = await userManager.FindByIdAsync(query.UserId);
 
             if (user == null)
             {
