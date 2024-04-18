@@ -1,6 +1,5 @@
 ﻿using Hope.Core.Common;
 using MediatR;
-using System.Runtime.Serialization;
 
 namespace Hope.Core.Features.CommentOperation.Commands.DeleteComment
 {

@@ -17,13 +17,16 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
         private readonly IValidator<AddCommentToPostCommand> validator;
-        public AddCommentToPostCommandHandler(IUnitofWork work, IStringLocalizer<AddCommentToPostCommandHandler> localizer, UserManager<User> userManager, IMapper mapper, IValidator<AddCommentToPostCommand> validator)
+        private readonly IHttpContextAccessor accessor;
+
+        public AddCommentToPostCommandHandler(IUnitofWork work, IStringLocalizer<AddCommentToPostCommandHandler> localizer, UserManager<User> userManager, IMapper mapper, IValidator<AddCommentToPostCommand> validator, IHttpContextAccessor accessor)
         {
             this.work = work;
             this.localizer = localizer;
             this.userManager = userManager;
             this.mapper = mapper;
             this.validator = validator;
+            this.accessor = accessor;
         }
         public async Task<Response> Handle(AddCommentToPostCommand command, CancellationToken cancellationToken)
         {
@@ -33,6 +36,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
             {
                 return await Response.FailureAsync(result.Errors.Select(i => i.ErrorMessage), localizer["Faild"].Value);
             }
+
 
             if (command.IsPeople)
                 return await AddCommentToPost<PostOfLostPeople>(command);
@@ -52,7 +56,7 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToPost
             }
 
             var commnet = mapper.Map<Comment>(command);
-
+            commnet.UserId = accessor.HttpContext!.User.FindFirst("uid")!.Value;
             if (typeof(T).Name == nameof(PostOfLostPeople))
             {
 

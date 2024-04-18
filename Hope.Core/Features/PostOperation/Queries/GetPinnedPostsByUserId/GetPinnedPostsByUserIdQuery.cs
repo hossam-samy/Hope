@@ -10,7 +10,7 @@ namespace Hope.Core.Features.PostOperation.Queries.GetPinnedPostsByUserId
 {
     public class GetPinnedPostsByUserIdQuery : IRequest<Response>
     {
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
     }
 }

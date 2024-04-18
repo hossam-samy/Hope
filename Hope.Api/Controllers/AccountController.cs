@@ -43,23 +43,14 @@ namespace Hope.Api.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddUserImage([FromForm]AddUserImageCommand  command)
         {
-
-            command.UserId = User.Claims.Where(i => i.Type == "uid").First().Value;
-
             return Ok(await _mediator.Send(command));
-
-
         }
 
         [HttpGet]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetProfile()
         {
-
-
-
             return Ok(await _mediator.Send(new GetProfileQuery())) ;
-
         }
         [HttpGet]
         [Authorize(Roles = "User")]
@@ -69,7 +60,7 @@ namespace Hope.Api.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetPostsByUserId(string userId)
+        public async Task<IActionResult> GetPostsByUserId(string? userId)
         {
 
             return Ok(await _mediator.Send(new GetPostsByUserIdQuery() {UserId=userId }));
@@ -77,7 +68,7 @@ namespace Hope.Api.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetPinnedPostsByUserId(string userId)
+        public async Task<IActionResult> GetPinnedPostsByUserId(string? userId)
         {
 
             return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery() { UserId=userId }));

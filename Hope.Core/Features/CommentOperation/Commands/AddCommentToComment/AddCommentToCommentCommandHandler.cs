@@ -4,6 +4,7 @@ using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -15,13 +16,16 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
         private readonly IStringLocalizer<AddCommentToCommentCommandHandler> localizer;
         private readonly IMapper mapper;
         private readonly IValidator<AddCommentToCommentCommand> validator;
+        private readonly IHttpContextAccessor accessor;
 
-        public AddCommentToCommentCommandHandler(IMapper mapper, IStringLocalizer<AddCommentToCommentCommandHandler> localizer, IUnitofWork work, IValidator<AddCommentToCommentCommand> validator)
+
+        public AddCommentToCommentCommandHandler(IMapper mapper, IStringLocalizer<AddCommentToCommentCommandHandler> localizer, IUnitofWork work, IValidator<AddCommentToCommentCommand> validator, IHttpContextAccessor accessor)
         {
             this.mapper = mapper;
             this.localizer = localizer;
             this.work = work;
             this.validator = validator;
+            this.accessor = accessor;
         }
 
         public async Task<Response> Handle(AddCommentToCommentCommand command, CancellationToken cancellationToken)
@@ -40,7 +44,9 @@ namespace Hope.Core.Features.CommentOperation.Commands.AddCommentToComment
             }
 
             var newcomment = mapper.Map<Comment>(command);
-
+            
+            newcomment.UserId = accessor.HttpContext!.User.FindFirst("uid")!.Value;
+            
             comment.Comments.Add(newcomment);
 
             await work.SaveAsync();

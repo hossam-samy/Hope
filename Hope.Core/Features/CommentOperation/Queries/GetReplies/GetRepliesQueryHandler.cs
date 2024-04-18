@@ -1,11 +1,9 @@
 ﻿using Hope.Core.Common;
-using Hope.Core.Dtos;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using Mapster;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
@@ -15,12 +13,10 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
     {
         private readonly IUnitofWork work;
         private readonly IStringLocalizer<GetRepliesQueryHandler> localizer;
-        private readonly IMapper  mapper;
-        public GetRepliesQueryHandler(IUnitofWork work, IStringLocalizer<GetRepliesQueryHandler> localizer, IMapper mapper)
+        public GetRepliesQueryHandler(IUnitofWork work, IStringLocalizer<GetRepliesQueryHandler> localizer)
         {
             this.work = work;
             this.localizer = localizer;
-            this.mapper = mapper;
         }
         public async Task<Response> Handle(GetRepliesQuery query, CancellationToken cancellationToken)
         {
@@ -32,7 +28,7 @@ namespace Hope.Core.Features.CommentOperation.Queries.GetReplies
             }
 
           // var comments = comment.Comments.Adapt<GetRepliesQueryResponse>();
-           var response = comment?.Comments.Adapt<List<GetRepliesQueryResponse>>();
+           var response = comment?.Comments?.Adapt<List<GetRepliesQueryResponse>>();
 
 
            

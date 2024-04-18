@@ -10,6 +10,6 @@ namespace Hope.Core.Features.PostOperation.Queries.GetPostsByUserId
 {
     public class GetPostsByUserIdQuery : IRequest<Response>
     {
-        public string  UserId { get; set; }
+        public string?  UserId { get; set; }
     }
 }
