@@ -1,9 +1,13 @@
 ﻿using FluentValidation;
 using Hope.Core.Dtos;
+using Hope.Core.Features.Authentication.Commands.AddAdminRoleToUser;
 using Hope.Core.Features.Authentication.Commands.AddUserImage;
+using Hope.Core.Features.Authentication.Commands.AddUserRoleToAdmin;
 using Hope.Core.Features.Authentication.Commands.ChangePassword;
 using Hope.Core.Features.Authentication.Commands.Register;
+using Hope.Core.Features.Authentication.Commands.RegisterAsAdmin;
 using Hope.Core.Features.Authentication.Commands.UpdateUserData;
+using Hope.Core.Features.Authentication.Queries.GetAllAdmins;
 using Hope.Core.Features.Authentication.Queries.GetAllCities;
 using Hope.Core.Features.Authentication.Queries.GetAllTownsByCityId;
 using Hope.Core.Features.Authentication.Queries.GetAllUsers;
@@ -38,6 +42,27 @@ namespace Hope.Api.Controllers
              return Ok(await _mediator.Send(command)); 
             
          }
+        [HttpPost]
+        public async Task<IActionResult> AdminRegister([FromForm] RegisterAsAdminCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddAdminRole([FromForm] AddAdminRoleToUserCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddUserRole([FromForm] AddUserRoleToAdminCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+
+        }
 
         [HttpPost]
         [Authorize(Roles = "User")]
@@ -86,6 +111,13 @@ namespace Hope.Api.Controllers
         {
 
             return Ok(await _mediator.Send(new GetAllUsersQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdmins()
+        {
+
+            return Ok(await _mediator.Send(new GetAllAdminsQuery()));
 
         }
         [HttpGet]

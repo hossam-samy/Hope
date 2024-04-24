@@ -32,6 +32,7 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
                 return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
 
+            await userManager.RemoveFromRolesAsync(user, new List<string> { "User", "Admin" });
             user.Comments?.Clear();
             user.HiddingPeoples?.Clear();   
             user.HiddingThings?.Clear();    
