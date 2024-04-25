@@ -3,6 +3,7 @@ using Hope.Core.Features.AdminOperation.Commands.DeleteUser;
 using Hope.Core.Features.AdminOperation.Queries.GetAllUsers;
 using Hope.Core.Features.AdminOperation.Queries.GetCountOfCreatedPosts;
 using Hope.Core.Features.AdminOperation.Queries.GetCountOfCreatedUsers;
+using Hope.Core.Features.AdminOperation.Queries.GetNumberOfNewAccountsForWeek;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,11 @@ namespace Hope.Api.Controllers
         public async Task<IActionResult> GetAllUsers( )
         {
             return Ok(await _mediator.Send(new AdminGetAllUsersQuery()));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetNumberOfNewUserPerWeek()
+        {
+            return Ok(await _mediator.Send(new GetNumberOfNewAccountsForWeekQuery()));
         }
 
     }
