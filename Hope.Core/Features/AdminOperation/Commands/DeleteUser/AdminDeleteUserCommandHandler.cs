@@ -1,4 +1,5 @@
 ﻿using Hope.Core.Common;
+using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +17,14 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
     {
         private readonly UserManager<User> userManager;
         private readonly IStringLocalizer<AdminDeleteUserCommandHandler> localizer;
+        private readonly IUnitofWork work;
 
-        public AdminDeleteUserCommandHandler(UserManager<User> userManager, IStringLocalizer<AdminDeleteUserCommandHandler> localizer)
+
+        public AdminDeleteUserCommandHandler(UserManager<User> userManager, IStringLocalizer<AdminDeleteUserCommandHandler> localizer, IUnitofWork work)
         {
             this.userManager = userManager;
             this.localizer = localizer;
+            this.work = work;
         }
 
         public async Task<Response> Handle(AdminDeleteUserCommand command, CancellationToken cancellationToken)
@@ -46,6 +50,7 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
 
             await userManager.DeleteAsync(user);
 
+            await work.SaveAsync();
             
             return await Response.SuccessAsync(localizer["Success"].Value);
 
