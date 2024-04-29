@@ -18,7 +18,7 @@ namespace Hope.Core.Features.Authentication.Queries.GetAllAdmins
 
         public async Task<Response> Handle(GetAllAdminsQuery request, CancellationToken cancellationToken)
         {
-            var admins = userManager.GetUsersInRoleAsync("Admin").Result.Select(i => new {i.DisplayName,i.UserImage,i.Email});
+            var admins = userManager.GetUsersInRoleAsync("Admin").Result.Select(i => new {i.DisplayName,i.UserImage,i.Email,i.Id});
 
             return await Response.SuccessAsync(admins, localizer["Success"]); 
         }

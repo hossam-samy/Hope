@@ -20,7 +20,7 @@ namespace Hope.Core.Features.AdminOperation.Queries.GetAllUsers
 
         public async Task<Response> Handle(AdminGetAllUsersQuery query, CancellationToken cancellationToken)
         {
-            var user = unitofWork.Repository<User>().Get(i => i).Result.Select(i => new { i.DisplayName, i.Email, i.UserImage });
+            var user = unitofWork.Repository<User>().Get(i => i).Result.Select(i => new { i.DisplayName, i.Email, i.UserImage,i.Id });
 
             return await Response.SuccessAsync(user, localizer["Success"].Value);
         }
