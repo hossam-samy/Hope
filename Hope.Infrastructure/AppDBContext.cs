@@ -34,7 +34,20 @@ namespace Hope.Infrastructure
             builder.Entity<PostOfLostPeople>().HasQueryFilter(i => !i.IsDeleted);
             builder.Entity<PostOfLostThings>().HasQueryFilter(i => !i.IsDeleted);
 
-       
+            builder.Entity<Message>()
+          .HasOne(m => m.Sender)
+          .WithMany(u => u.SentMessages)
+          .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Recipient)
+                .WithMany(u => u.RecievedMessages)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UserConnection>().HasOne(i => i.User);
+
+            builder.Entity<UserConnection>().HasKey(i => new { i.UserId, i.ConnectionId });
+
             //builder.Entity<User>().HasMany(b=>b.lostThings).WithMany(b=>b.Users);    
 
 
@@ -48,6 +61,7 @@ namespace Hope.Infrastructure
          public DbSet<Message>  Messages { get; set; }
          public DbSet<Hospital>  Hospitals  { get; set; }
          public DbSet<Notification>  Notifications  { get; set; }
+         public DbSet<UserConnection>   UserConnections  { get; set; }
          //public DbSet<Comment>  Comments  { get; set; }
         
     }

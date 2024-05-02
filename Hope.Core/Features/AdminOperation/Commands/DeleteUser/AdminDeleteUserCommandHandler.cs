@@ -40,12 +40,13 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
             user.Comments?.Clear();
             user.HiddingPeoples?.Clear();   
             user.HiddingThings?.Clear();    
-            user.lostPeople?.Clear();
-            user.lostThings?.Clear();
-            user.Messages?.Clear();
             user.PinningPeoples?.Clear();
             user.PinningThings?.Clear();
+            user.lostPeople?.Clear();
+            user.lostThings?.Clear();
             user.Notifications?.Clear();    
+            user.RecievedMessages?.Clear(); 
+            user.SentMessages?.Clear(); 
            
 
             await userManager.DeleteAsync(user);

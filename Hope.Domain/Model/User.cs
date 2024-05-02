@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Hope.Domain.Model
 {
@@ -20,9 +18,11 @@ namespace Hope.Domain.Model
 
         public virtual List<PostOfLostPeople> PinningPeoples { get; set; } 
         public virtual List<PostOfLostThings> PinningThings { get; set; } 
-        public virtual List<Message> Messages { get; set; } 
         public virtual List<Notification> Notifications { get; set; }
-        public virtual List<Comment> Comments { get; set; } 
+        public virtual List<Comment> Comments { get; set; }
+        public virtual List<Message> SentMessages { get; set; } = new(); 
+        public virtual List<Message> RecievedMessages { get; set; } = new(); 
+        public virtual List<UserConnection>  UserConnections { get; set; } 
 
     }
    

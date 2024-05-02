@@ -4,6 +4,7 @@ using Hope.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hope.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240502082204_EditSomeModels")]
+    partial class EditSomeModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Comment", b =>
@@ -80,7 +83,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment", (string)null);
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Hospital", b =>
@@ -109,7 +112,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hospitals", (string)null);
+                    b.ToTable("Hospitals");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Message", b =>
@@ -147,7 +150,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.Notification", b =>
@@ -167,7 +170,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.PostOfLostPeople", b =>
@@ -231,7 +234,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("postOfLostPeoples", (string)null);
+                    b.ToTable("postOfLostPeoples");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.PostOfLostThings", b =>
@@ -286,7 +289,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("postOfLostthings", (string)null);
+                    b.ToTable("postOfLostthings");
                 });
 
             modelBuilder.Entity("Hope.Domain.Model.User", b =>
@@ -377,7 +380,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasKey("UserId", "ConnectionId");
 
-                    b.ToTable("UserConnections", (string)null);
+                    b.ToTable("UserConnections");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -525,7 +528,7 @@ namespace Hope.Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("NotificationUser", (string)null);
+                    b.ToTable("NotificationUser");
                 });
 
             modelBuilder.Entity("PostOfLostPeopleUser", b =>
@@ -590,7 +593,7 @@ namespace Hope.Infrastructure.Migrations
 
             modelBuilder.Entity("Hope.Domain.Model.Cities", b =>
                 {
-                    b.OwnsMany("Hope.Domain.Model.Cities.Towns#Hope.Domain.Model.Towns", "Towns", b1 =>
+                    b.OwnsMany("Hope.Domain.Model.Towns", "Towns", b1 =>
                         {
                             b1.Property<int>("CitiesId")
                                 .HasColumnType("int");
@@ -607,7 +610,7 @@ namespace Hope.Infrastructure.Migrations
 
                             b1.HasKey("CitiesId", "Id");
 
-                            b1.ToTable("Towns", (string)null);
+                            b1.ToTable("Towns");
 
                             b1.WithOwner()
                                 .HasForeignKey("CitiesId");

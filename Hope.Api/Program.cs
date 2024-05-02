@@ -5,6 +5,7 @@ using System.Text;
 using Hope.Api.Middlewares;
 using Hope.Infrastructure.Extensions;
 using Hope.Core.Extensions;
+using Hope.Core.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,5 +102,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/Chat");
 
 app.Run();

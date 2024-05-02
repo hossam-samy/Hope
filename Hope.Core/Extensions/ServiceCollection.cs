@@ -16,7 +16,7 @@ namespace Hope.Core.Extensions
         {
             
 
-           services.AddMapping().AddCollection().Addasd().AddMediator(); 
+           services.AddMapping().AddCollection().Addasd().AddMediator().AddSignalR(); 
 
             
 
