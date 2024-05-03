@@ -1,5 +1,7 @@
-﻿using Hope.Core.Interfaces;
+﻿using Hope.Core.Dtos;
+using Hope.Core.Interfaces;
 using Hope.Domain.Model;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,11 +16,14 @@ namespace Hope.Core.Hubs
             this.work = work;
             this.userManager = userManager;
         }
-        public async Task SendMessage(Message message)
+        public async Task SendMessage(SendMessageDto input)
         {
             var userId = Context.User!.Claims.First(i => i.Type == "uid").Value;
-            var user=await userManager.FindByIdAsync(userId);   
-            
+            var user=await userManager.FindByIdAsync(userId);
+
+            var message = input.Adapt<Message>();
+            message.SenderId= userId;       
+
             user?.SentMessages.Add(message);
 
             var  reciver=await userManager.FindByIdAsync(message.RecipientId);
@@ -26,8 +31,9 @@ namespace Hope.Core.Hubs
             reciver?.RecievedMessages.Add(message);
            
             var conId=await work.Repository<UserConnection>().GetItem(i=>i.UserId==message.RecipientId);
+            var response = message.Adapt<SendMessageResponse>();
 
-            await  Clients.Client(conId.ConnectionId).SendAsync("newMessage",message);
+            await  Clients.Client(conId.ConnectionId).SendAsync("newMessage",response);
         }
         public override async Task OnConnectedAsync()
         {
