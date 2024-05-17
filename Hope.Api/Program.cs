@@ -68,8 +68,40 @@ builder.Services.AddAuthentication(options =>
                });
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("reactapp",
+        builder =>
+        {
+            builder.WithOrigins(
+                "http://localhost:5173/"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+    options.AddPolicy("react",
+        builder =>
+        {
+            builder.WithOrigins(
+                "http://localhost:5173/Chat"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+    options.AddPolicy("app",
+        builder =>
+        {
+            builder.WithOrigins(
+                "https://hope-social.vercel.app/"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+});
 
-builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -95,8 +127,9 @@ app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
 
-app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
+app.UseCors("reactapp");
+app.UseCors("app");
+app.UseCors("react");
 app.UseAuthentication();
 
 app.UseAuthorization();

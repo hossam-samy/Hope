@@ -2,11 +2,13 @@
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Hope.Core.Hubs
 {
+    [Authorize]
     public class ChatHub:Hub
     {
         private readonly IUnitofWork work;

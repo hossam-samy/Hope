@@ -48,10 +48,10 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
             user.RecievedMessages?.Clear(); 
             user.SentMessages?.Clear(); 
            
+            await work.SaveAsync();
 
             await userManager.DeleteAsync(user);
 
-            await work.SaveAsync();
             
             return await Response.SuccessAsync(localizer["Success"].Value);
 
