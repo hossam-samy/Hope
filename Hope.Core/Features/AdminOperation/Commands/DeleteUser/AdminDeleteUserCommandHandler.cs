@@ -42,11 +42,23 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
             user.HiddingThings?.Clear();    
             user.PinningPeoples?.Clear();
             user.PinningThings?.Clear();
-            user.lostPeople?.Clear();
-            user.lostThings?.Clear();
-            user.Notifications?.Clear();    
-            user.RecievedMessages?.Clear(); 
-            user.SentMessages?.Clear(); 
+            user?.lostPeople?.ForEach(i =>
+            {
+                i?.PinnedPeoples?.Clear();
+                i?.Comments?.Clear();
+                i?.HiddenPeoples?.Clear();
+                i?.PinnedPeoples?.Clear();
+            });
+
+            user?.lostThings?.ForEach(i =>
+            {
+                i?.HiddenThings?.Clear();    
+                i?.Comments?.Clear();
+                i?.PinnedThings?.Clear();   
+            });
+            user?.Notifications?.Clear();    
+            user?.RecievedMessages?.Clear(); 
+            user?.SentMessages?.Clear(); 
            
             await work.SaveAsync();
 
