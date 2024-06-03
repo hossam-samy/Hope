@@ -100,6 +100,14 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials();
         });
+   
+        options.AddPolicy("asd",builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
 });
 
 var app = builder.Build();
@@ -130,12 +138,13 @@ app.UseRouting();
 app.UseCors("reactapp");
 app.UseCors("app");
 app.UseCors("react");
+app.UseCors("asd");
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatHub>("/Chat");
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

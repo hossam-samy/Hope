@@ -35,7 +35,7 @@ namespace Hope.Core.Hubs
             var conId=await work.Repository<UserConnection>().GetItem(i=>i.UserId==message.RecipientId);
             var response = message.Adapt<SendMessageResponse>();
 
-            await  Clients.Client(conId.ConnectionId).SendAsync("newMessage",response);
+            await  Clients.Client(conId.ConnectionId).SendAsync("NewMessage",response);
         }
         public override async Task OnConnectedAsync()
         {
