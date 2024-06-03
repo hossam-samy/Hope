@@ -127,7 +127,6 @@ app.UseRouting();
 
 app.UseCors("reactapp");
 app.UseCors("app");
-app.UseCors("react");
 app.UseCors("asd");
 app.UseAuthentication();
 
