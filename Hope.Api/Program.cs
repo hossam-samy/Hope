@@ -80,16 +80,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials();
         });
-    options.AddPolicy("react",
-        builder =>
-        {
-            builder.WithOrigins(
-                "http://localhost:5173/Chat"
-            )
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
-        });
     options.AddPolicy("app",
         builder =>
         {
@@ -103,7 +93,7 @@ builder.Services.AddCors(options =>
    
         options.AddPolicy("asd",builder =>
         {
-            builder.WithOrigins("http://localhost:3000")
+            builder.WithOrigins("http://localhost:3000/")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
