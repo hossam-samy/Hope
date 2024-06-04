@@ -74,29 +74,13 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins(
-                "http://localhost:5173"
+                //"http://localhost:5173",
+                "https://hope-social.vercel.app",
+                "http://localhost:3000"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
-        });
-    options.AddPolicy("app",
-        builder =>
-        {
-            builder.WithOrigins(
-                "https://hope-social.vercel.app"
-            )
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
-        });
-   
-        options.AddPolicy("asd",builder =>
-        {
-            builder.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
         });
 });
 
@@ -104,7 +88,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -126,14 +110,13 @@ app.UseRequestLocalization(localizationOptions);
 app.UseRouting();
 
 app.UseCors("reactapp");
-app.UseCors("app");
-app.UseCors("asd");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatHub>("/chat");
+app.MapHub<ChatHub>("/Chat");
 
 app.Run();
