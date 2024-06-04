@@ -74,7 +74,6 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins(
-                //"http://localhost:5173",
                 "https://hope-social.vercel.app",
                 "http://localhost:3000"
             )
