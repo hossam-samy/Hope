@@ -74,9 +74,9 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins(
-                "http://localhost:5173",
+                "http://localhost:3000",
                 "https://hope-social.vercel.app",
-                "http://localhost:3000"
+                "http://localhost:5173"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()
