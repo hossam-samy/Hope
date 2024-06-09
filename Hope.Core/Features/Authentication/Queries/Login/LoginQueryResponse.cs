@@ -14,6 +14,7 @@ namespace Hope.Core.Features.Authentication.Queries.Login
         public string? Email { get; set; }
         public string? Username { get; set; }
         public string? UserImage { get; set; }
+        public string? City { get; set; }
         public List<string>? Roles { get; set; }
         public string? Token { get; set; }
     }

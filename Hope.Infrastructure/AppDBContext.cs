@@ -62,6 +62,7 @@ namespace Hope.Infrastructure
          public DbSet<Hospital>  Hospitals  { get; set; }
          public DbSet<Notification>  Notifications  { get; set; }
          public DbSet<UserConnection>   UserConnections  { get; set; }
+         public DbSet<Location>   Locations  { get; set; }
          //public DbSet<Comment>  Comments  { get; set; }
         
     }

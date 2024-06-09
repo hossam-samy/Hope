@@ -19,14 +19,16 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
         private readonly IMediaService mediaService;
         private readonly IValidator<CreatePostForPeopleCommand> validator;
         private readonly IHttpContextAccessor accessor;
+        private readonly IRecommendationService recommendationService;
 
-        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager, IValidator<CreatePostForPeopleCommand> validator, IHttpContextAccessor accessor)
+        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager, IValidator<CreatePostForPeopleCommand> validator, IHttpContextAccessor accessor, IRecommendationService recommendationService)
         {
             this.work = work;
             this.localizer = localizer;
             this.mediaService = mediaService;
             this.validator = validator;
             this.accessor = accessor;
+            this.recommendationService = recommendationService;
         }
         public async Task<Response> Handle(CreatePostForPeopleCommand command, CancellationToken cancellationToken)
         {
@@ -47,6 +49,10 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 
             DateTime.TryParse(command.MissigDate, out DateTime missingDate);
             post.MissigDate = missingDate;
+
+            var location=await work.Repository<Location>().GetItem(i=>i.City==command.City); 
+
+            post.Cluster =await  recommendationService.predict(location.Longitude, location.Latitude);
 
             await work.SaveAsync();
 

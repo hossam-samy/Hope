@@ -11,19 +11,20 @@ namespace Hope.Domain.Model
    
     public abstract class Post:BaseEntity
     {
-        //
+        
         public string? ImageUrl { get; set; }
         public string Description { get; set; }
-        public DateTime CreationDate { get; set; }= DateTime.UtcNow;   
+        public DateTime CreationDate { get; set; }= DateTime.Now;   
         public bool IsDeleted { get; set; }=false;  
         public bool IsFound { get; set; }=false;
         public string? Town { get; set; }
         public DateTime? MissigDate { get; set; }
-        //
+        
         public string? PhoneNumber { get; set; }
-        //
+        
         public string City { get; set; }
         public bool IsSearcher { get; set; }=true;
+        public int? Cluster { get; set; }=null;
 
        
     }

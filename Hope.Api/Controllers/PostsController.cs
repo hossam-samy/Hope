@@ -23,6 +23,7 @@ using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
 using Hope.Core.Features.PostOperation.Queries.GetArchivedPosts;
 using Hope.Core.Features.PostOperation.Commands.UnHidePost;
 using Hope.Core.Features.PostOperation.Queries.GetPostByPostId;
+using Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts;
 
 namespace Hope.Api.Controllers
 {
@@ -164,6 +165,12 @@ namespace Hope.Api.Controllers
         {
 
             return Ok(await _mediator.Send(new GetPostByPostIdQuery() {PostId=postId,IsPeople=IsPeople }));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetRecommendedPosts(double Longitude, double Latitude)
+        {
+
+            return Ok(await _mediator.Send(new GetRecommendedPostsQuery() { Latitude=Latitude, Longitude=Longitude}));
         }
         [HttpPost]
         public async Task<IActionResult> UnHidePosts(UnHidePostCommand command)

@@ -47,6 +47,7 @@ namespace Hope.Core.Extensions
             services.AddScoped<IAiPostServices, AiPostServices>();
 
             services.AddTransient<IMailService, MailService>();
+            services.AddTransient<IRecommendationService, RecommendationService>();
 
 
             return services;

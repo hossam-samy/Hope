@@ -1,10 +1,6 @@
 ﻿using Hope.Core.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 {
