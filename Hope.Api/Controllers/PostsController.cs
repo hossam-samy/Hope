@@ -29,7 +29,7 @@ namespace Hope.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles ="User")]
+    [Authorize]
     public class PostsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -167,10 +167,10 @@ namespace Hope.Api.Controllers
             return Ok(await _mediator.Send(new GetPostByPostIdQuery() {PostId=postId,IsPeople=IsPeople }));
         }
         [HttpGet]
-        public async Task<IActionResult> GetRecommendedPosts(double Longitude, double Latitude)
+        public async Task<IActionResult> GetRecommendedPosts(string city)
         {
 
-            return Ok(await _mediator.Send(new GetRecommendedPostsQuery() { Latitude=Latitude, Longitude=Longitude}));
+            return Ok(await _mediator.Send(new GetRecommendedPostsQuery() {  City=city}));
         }
         [HttpPost]
         public async Task<IActionResult> UnHidePosts(UnHidePostCommand command)
