@@ -10,7 +10,6 @@ namespace Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts
 {
     public class GetRecommendedPostsQuery:IRequest<Response>
     {
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public string City { get; set; }
     }
 }

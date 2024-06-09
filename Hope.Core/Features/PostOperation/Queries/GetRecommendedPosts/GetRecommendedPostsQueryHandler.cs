@@ -23,7 +23,9 @@ namespace Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts
 
         public async Task<Response> Handle(GetRecommendedPostsQuery query, CancellationToken cancellationToken)
         {
-            var cluster=await recommendationService.predict(query.Longitude, query.Latitude);   
+            var location=await work.Repository<Location>().GetItem(i=>i.City==query.City);  
+
+            var cluster=await recommendationService.predict(location.Longitude, location.Latitude);   
 
             var peopleposts= work.Repository<PostOfLostPeople>().Get(i=>i.Cluster==cluster).Result.ToList();   
             var Thingposts= work.Repository<PostOfLostThings>().Get(i=>i.Cluster==cluster).Result.ToList();
