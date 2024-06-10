@@ -29,10 +29,13 @@ namespace Hope.Core.Service
 
             var uniqueFileName = name + extension;
 
-            
 
             var uploadsFolder = Path.Combine("wwwroot", $"{dest}Images");
 
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
 
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
             using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))

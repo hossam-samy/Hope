@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Hope.Core.Common;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
 using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using Mapster;
@@ -20,8 +21,9 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
         private readonly IValidator<CreatePostForPeopleCommand> validator;
         private readonly IHttpContextAccessor accessor;
         private readonly IRecommendationService recommendationService;
+        private readonly IFaceRecognitionService faceRecognitionService;
 
-        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager, IValidator<CreatePostForPeopleCommand> validator, IHttpContextAccessor accessor, IRecommendationService recommendationService)
+        public CreatePostForPeopleCommandHandler(IUnitofWork work, IMapper mapper, IStringLocalizer<CreatePostForPeopleCommandHandler> localizer, IMediaService mediaService, UserManager<User> userManager, IValidator<CreatePostForPeopleCommand> validator, IHttpContextAccessor accessor, IRecommendationService recommendationService, IFaceRecognitionService faceRecognitionService)
         {
             this.work = work;
             this.localizer = localizer;
@@ -29,6 +31,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             this.validator = validator;
             this.accessor = accessor;
             this.recommendationService = recommendationService;
+            this.faceRecognitionService = faceRecognitionService;
         }
         public async Task<Response> Handle(CreatePostForPeopleCommand command, CancellationToken cancellationToken)
         {
@@ -56,7 +59,12 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 
             await work.SaveAsync();
 
-            return await Response.SuccessAsync(localizer["Success"].Value);
+            //var pic = await faceRecognitionService.predict(Path.GetFullPath($"{ post.Id}.jpg"));
+
+            //var matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(pic));
+
+
+            return await Response.SuccessAsync(,localizer["Success"].Value);
         }
     }
 }

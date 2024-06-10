@@ -48,6 +48,7 @@ namespace Hope.Core.Extensions
 
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<IRecommendationService, RecommendationService>();
+            services.AddTransient<IFaceRecognitionService, FaceRecognitionService>();
 
 
             return services;
