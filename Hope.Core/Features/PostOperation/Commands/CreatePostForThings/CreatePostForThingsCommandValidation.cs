@@ -36,7 +36,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
 
             RuleFor(i => i.City).MustAsync(async (city, _) => {
 
-                if (work.Repository<Location>().GetItem(i => i.City == city) == null) return false;
+                if (await work.Repository<Location>().GetItem(i => i.City == city) == null) return false;
 
                 return true;
 
