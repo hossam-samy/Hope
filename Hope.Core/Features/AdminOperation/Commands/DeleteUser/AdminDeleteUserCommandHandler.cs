@@ -36,12 +36,12 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
                 return await Response.FailureAsync(localizer["UserNotExist"].Value);
             }
 
-            await userManager.RemoveFromRolesAsync(user, new List<string> { "User", "Admin" });
             user.Comments?.Clear();
             user.HiddingPeoples?.Clear();   
             user.HiddingThings?.Clear();    
             user.PinningPeoples?.Clear();
             user.PinningThings?.Clear();
+            await work.SaveAsync();
             user?.lostPeople?.ForEach(i =>
             {
                 i?.PinnedPeoples?.Clear();
@@ -50,18 +50,21 @@ namespace Hope.Core.Features.AdminOperation.Commands.DeleteUser
                 i?.PinnedPeoples?.Clear();
             });
 
+            await work.SaveAsync();
             user?.lostThings?.ForEach(i =>
             {
                 i?.HiddenThings?.Clear();    
                 i?.Comments?.Clear();
                 i?.PinnedThings?.Clear();   
             });
-            user?.Notifications?.Clear();    
-            user?.RecievedMessages?.Clear(); 
+            //user?.Notifications?.Clear();
+            user?.RecievedMessages?.Clear();
             user?.SentMessages?.Clear(); 
-           
+
             await work.SaveAsync();
 
+            await userManager.RemoveFromRolesAsync(user, new List<string> { "User", "Admin" });
+            
             await userManager.DeleteAsync(user);
 
             

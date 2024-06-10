@@ -14,6 +14,6 @@ namespace Hope.Core.Common.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Message,GetLatiestMessagesQueryResponse>().Map(i=>i,i=>i.Recipient);
-                }
+         }
     }
 }

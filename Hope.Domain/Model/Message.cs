@@ -10,11 +10,11 @@ namespace Hope.Domain.Model
        
         [ForeignKey("Recipient")]
         public string RecipientId { get; set; }
-       public virtual User Recipient { get; set; }
+       public virtual User? Recipient { get; set; }
        
         [ForeignKey("Sender")]
         public string SenderId { get; set; }
-        public virtual User Sender { get; set; }
+        public virtual User? Sender { get; set; }
         public bool IsRead { get; set; }=false;
         public bool IsDeleted { get; set; }=false ;
 

@@ -34,13 +34,14 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
                 return false;
             }).WithMessage(localizer["PhoneNumberInvalid"].Value);
 
-            RuleFor(i => i.City).MustAsync(async (city, _) => { 
-            
-              if(work.Repository<Location>().GetItem(i=>i.City==city)==null)return false;
+            RuleFor(i => i.City).MustAsync(async (city, _) => {
+               
+
+              if (await work.Repository<Location>().GetItem(i=>i.City==city)==null)return false;
 
                return true;
 
-            }).WithMessage(localizer["Un Known City"].Value).NotEmpty().WithMessage(localizer["CityRequired"].Value);
+            }).WithMessage(localizer["UnKnownCity"].Value).NotEmpty().WithMessage(localizer["CityRequired"].Value);
             RuleFor(i => i.Town).NotEmpty().WithMessage(localizer["TownRequired"].Value);
             RuleFor(i => i.IsSearcher).NotNull().WithMessage(localizer["IsSearcherRequired"].Value);
             RuleFor(i => i.Condition).MustAsync(async (con, _) => { 
@@ -48,7 +49,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 
               return false; 
             
-            }).WithMessage(localizer["Un Known Condition"].Value).NotEmpty().WithMessage(localizer["ConditionRequired"].Value);
+            }).WithMessage("UnKnown Condition").NotEmpty().WithMessage(localizer["ConditionRequired"].Value);
             RuleFor(i => i.Gendre).NotEmpty().WithMessage(localizer["GendreRequired"].Value);
             RuleFor(i => i.Description).NotEmpty().WithMessage(localizer["DescriptionRequired"].Value);
 
