@@ -35,22 +35,14 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
 
 
             var peopleposts = work.Repository<PostOfLostPeople>().
-                Get(i => !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.ToList();
+                Get(i => !i.HiddenPeoples.Contains(user), new[] { "HiddenPeoples" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList()?.Adapt<List<GetAllPostsQueryResponse>>();
 
 
-            foreach (var item in peopleposts)
-            {
-                var l = loca.FirstOrDefault(i => i.City == item.City);
-                if(l == null) continue; 
-                item.Cluster = await recommendationService.predict(l.Longitude,l.Latitude);
-            }
-
-            await work.SaveAsync();
-
-            //var thingsposts = work.Repository<PostOfLostThings>().
-            //   Get(i => !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList()?.Adapt<List<GetAllPostsQueryResponse>>();
+            var thingsposts = work.Repository<PostOfLostThings>().
+               Get(i => !i.HiddenThings.Contains(user), new[] { "HiddenThings" }).Result.Skip((query.PageNumber - 1) * 16).Take(16).ToList()?.Adapt<List<GetAllPostsQueryResponse>>();
 
 
+            
 
 
 
@@ -64,10 +56,10 @@ namespace Hope.Core.Features.PostOperation.Queries.GetAllPosts
 
             //thingsposts.ForEach(x => x.UserName = thingsEntities.Where(i=>i.Id==x.Id).Select(i => i.User.DisplayName??i.User.UserName)?.FirstOrDefault()!);
 
-            //  List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
+              List<GetAllPostsQueryResponse> allposts = [.. peopleposts, .. thingsposts];
 
 
-            return await Response.SuccessAsync( localizer["Success"].Value);
+            return await Response.SuccessAsync(allposts, localizer["Success"].Value);
         }
     }
 }
