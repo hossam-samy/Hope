@@ -59,12 +59,12 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
 
             await work.SaveAsync();
 
-            //var pic = await faceRecognitionService.predict(Path.GetFullPath($"{ post.Id}.jpg"));
+            //var pic = await faceRecognitionService.predict(Path.GetFullPath($"{post.Id}.jpg"));
 
             //var matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(pic));
 
 
-            return await Response.SuccessAsync(,localizer["Success"].Value);
+            return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }
 }
