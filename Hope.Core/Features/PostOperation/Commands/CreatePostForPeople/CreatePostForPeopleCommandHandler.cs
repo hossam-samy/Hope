@@ -53,17 +53,19 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             DateTime.TryParse(command.MissigDate, out DateTime missingDate);
             post.MissigDate = missingDate;
 
-            var location=await work.Repository<Location>().GetItem(i=>i.City==command.City); 
+            //var location=await work.Repository<Location>().GetItem(i=>i.City==command.City); 
 
-            post.Cluster =await  recommendationService.predict(location.Longitude, location.Latitude);
+            //post.Cluster =await  recommendationService.predict(location.Longitude, location.Latitude);
 
             await work.SaveAsync();
 
-            //var pic = await faceRecognitionService.predict(Path.GetFullPath($"{post.Id}.jpg"));
+           // var pic = await faceRecognitionService.predict(Path.GetFullPath($"wwwroot/PostOfLostPeopleImages/{post.Id}.jpg"));
 
-            //var matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(pic));
-
-
+            //PostOfLostPeople? matchPost=null;
+            
+            //if (pic != $"wwwroot/PostOfLostPeopleImages/{post.Id}.jpg") 
+            //    matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(pic));
+            
             return await Response.SuccessAsync(localizer["Success"].Value);
         }
     }

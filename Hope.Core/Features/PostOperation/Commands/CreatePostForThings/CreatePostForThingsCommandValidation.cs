@@ -34,13 +34,7 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
                 return false;
             }).WithMessage(localizer["PhoneNumberInvalid"].Value);
 
-            RuleFor(i => i.City).MustAsync(async (city, _) => {
-
-                if (await work.Repository<Location>().GetItem(i => i.City == city) == null) return false;
-
-                return true;
-
-            }).WithMessage(localizer["UnKnownCity"].Value).NotEmpty().WithMessage(localizer["CityRequired"].Value);
+            RuleFor(i => i.City).NotEmpty().WithMessage(localizer["CityRequired"].Value);
             RuleFor(i => i.Town).NotEmpty().WithMessage(localizer["TownRequired"].Value);
             RuleFor(i => i.Type).NotEmpty().WithMessage(localizer["TypeRequired"].Value);
             RuleFor(i => i.Description).NotEmpty().WithMessage(localizer["DescriptionRequired"].Value);
