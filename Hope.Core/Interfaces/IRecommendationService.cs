@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hope.Core.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Hope.Core.Interfaces
 {
     public interface IRecommendationService
     {
-        public Task<int> predict(double longitude, double latitude);
+        public Task<Response> predict(double longitude, double latitude);
     }
 }

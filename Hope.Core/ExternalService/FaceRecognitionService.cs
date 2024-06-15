@@ -11,36 +11,40 @@ namespace Hope.Core.ExternalService
 {
     public class FaceRecognitionService : IFaceRecognitionService
     {
-        public async Task<string> predict(string path)
+        public async Task<Response> predict(string path)
         {
-            string filePath = path; 
+            string filePath = path;
 
-            using (var client = new HttpClient())
+            using var client = new HttpClient();
+            using var content = new MultipartFormDataContent
             {
-                using (var content = new MultipartFormDataContent())
-                {
-                    content.Add(new StreamContent(File.OpenRead(filePath)), "file", Path.GetFileName(filePath));
+                { new StreamContent(File.OpenRead(filePath)), "file", Path.GetFileName(filePath) }
+            };
 
-                    using (var response = await client.PostAsync("https://883d-197-38-27-204.ngrok-free.app/upload", content))
-                    {
-                      
-                            var htmlContent = await response.Content.ReadAsStringAsync();
+            using var response = await client.PostAsync("https://883d-197-38-27-204.ngrok-free.app/upload", content);
 
-                            var htmlDocument = new HtmlDocument();
-                            htmlDocument.LoadHtml(htmlContent);
-                            var predictedLabelNode = htmlDocument.DocumentNode.SelectSingleNode("//h2[contains(text(), 'Recognized Name:')]");
-                           
-                                string label = predictedLabelNode.InnerText
-                                                                .Replace("Recognized Name:", "")
-                                                                .Trim();
+            if (response.IsSuccessStatusCode)
+            {
 
-                                return label;
+                var htmlContent = await response.Content.ReadAsStringAsync();
 
-                            
-                    }
-                }
+                var htmlDocument = new HtmlDocument();
+                htmlDocument.LoadHtml(htmlContent);
+                var predictedLabelNode = htmlDocument.DocumentNode.SelectSingleNode("//h2[contains(text(), 'Recognized Name:')]");
+
+                string label = predictedLabelNode.InnerText
+                                                .Replace("Recognized Name:", "")
+                                                .Trim();
+                if(label=="UnKnown")
+                  return await Response.FailureAsync("SomeThing wrong about image");
+
+                return await Response.SuccessAsync(label);
             }
-           
+            else
+            {
+                return await Response.FailureAsync("Remote Server Error");
+            }
+
         }
     }
 }

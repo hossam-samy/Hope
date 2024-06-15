@@ -1,11 +1,12 @@
-﻿using Hope.Core.Interfaces;
+﻿using Hope.Core.Common;
+using Hope.Core.Interfaces;
 using HtmlAgilityPack;
 
 namespace Hope.Core.ExternalService
 {
     public class RecommendationService:IRecommendationService
     {
-         public async Task<int> predict(double longitude, double latitude)
+         public async Task<Response> predict(double longitude, double latitude)
         {
 
             string baseUrl = "https://hope-recommendation-app.onrender.com"; 
@@ -34,25 +35,18 @@ namespace Hope.Core.ExternalService
                
                 var predictedLabelNode = htmlDocument.DocumentNode.SelectSingleNode("//h2[contains(text(), 'Predicted Label:')]");
 
-                
-                if (predictedLabelNode != null)
-                {
-                    string label = predictedLabelNode.InnerText
+               
+                string label = predictedLabelNode.InnerText
                                                     .Replace("Predicted Label:", "")
                                                     .Trim();
 
-                   return int.Parse(label);
-                }
-                else
-                {
-                    return -1;
-                }
+                return await Response.SuccessAsync(label);
+                
             }
             else
             {
-                return int.Parse(response.StatusCode.ToString());
+                return await Response.FailureAsync("Remote Server Error");
             }
-            return 0;
         }
 
        

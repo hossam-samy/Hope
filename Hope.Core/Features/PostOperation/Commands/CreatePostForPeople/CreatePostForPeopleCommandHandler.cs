@@ -53,20 +53,29 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForPeople
             DateTime.TryParse(command.MissigDate, out DateTime missingDate);
             post.MissigDate = missingDate;
 
-            //var location=await work.Repository<Location>().GetItem(i=>i.City==command.City); 
+            var location = await work.Repository<Location>().GetItem(i => i.City == command.City);
 
-            //post.Cluster =await  recommendationService.predict(location.Longitude, location.Latitude);
+            var res = await recommendationService.predict(location.Longitude, location.Latitude);
 
+            if (res.IsSuccess)
+                post.Cluster = int.Parse(res.Data.ToString());
+            else return res;
+
+
+
+            var faceRecRes = await faceRecognitionService.predict(Path.GetFullPath($"wwwroot/PostOfLostPeopleImages/{post.Id}.jpg"));
+
+            if (!faceRecRes.IsSuccess)
+                return faceRecRes;
+
+            PostOfLostPeople? matchPost = null;
+
+          if(faceRecRes.Data.ToString()!= post.Id.ToString())
+            matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(faceRecRes.Data.ToString()));
+            
             await work.SaveAsync();
 
-           // var pic = await faceRecognitionService.predict(Path.GetFullPath($"wwwroot/PostOfLostPeopleImages/{post.Id}.jpg"));
-
-            //PostOfLostPeople? matchPost=null;
-            
-            //if (pic != $"wwwroot/PostOfLostPeopleImages/{post.Id}.jpg") 
-            //    matchPost = await work.Repository<PostOfLostPeople>().GetItem(i => i.ImageUrl.Contains(pic));
-            
-            return await Response.SuccessAsync(localizer["Success"].Value);
+            return await Response.SuccessAsync(matchPost,localizer["Success"].Value);
         }
     }
 }

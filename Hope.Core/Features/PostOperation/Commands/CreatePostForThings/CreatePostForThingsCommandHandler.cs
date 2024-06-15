@@ -48,9 +48,14 @@ namespace Hope.Core.Features.PostOperation.Commands.CreatePostForThings
             DateTime.TryParse(command.MissigDate,out DateTime missingDate);
             post.MissigDate = missingDate;
 
-            //var location = await work.Repository<Location>().GetItem(i => i.City == command.City);
+            var location = await work.Repository<Location>().GetItem(i => i.City == command.City);
 
-            //post.Cluster = await recommendationService.predict(location.Longitude, location.Latitude);
+            var res = await recommendationService.predict(location.Longitude, location.Latitude);
+
+            if (res.IsSuccess)
+                post.Cluster = int.Parse(res.Data.ToString());
+            else return res;
+                 
 
             await work.SaveAsync();
 

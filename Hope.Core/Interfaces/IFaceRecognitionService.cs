@@ -1,8 +1,10 @@
-﻿namespace Hope.Core.Interfaces
+﻿using Hope.Core.Common;
+
+namespace Hope.Core.Interfaces
 {
     public interface IFaceRecognitionService
     {
-        public Task<string> predict(string path);
+        public  Task<Response> predict(string path);
 
     }
 }

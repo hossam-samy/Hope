@@ -4,6 +4,7 @@ using Hope.Core.Interfaces;
 using Hope.Domain.Model;
 using Mapster;
 using MediatR;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts
@@ -23,9 +24,14 @@ namespace Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts
 
         public async Task<Response> Handle(GetRecommendedPostsQuery query, CancellationToken cancellationToken)
         {
-            var location=await work.Repository<Location>().GetItem(i=>i.City==query.City);  
+            var location=await work.Repository<Location>().GetItem(i=>i.City==query.City);
 
-            var cluster=await recommendationService.predict(location.Longitude, location.Latitude);   
+            var res = await recommendationService.predict(location.Longitude, location.Latitude);
+
+            if (!res.IsSuccess)
+                return res;
+               
+            var cluster = int.Parse(res.Data.ToString());
 
             var peopleposts= work.Repository<PostOfLostPeople>().Get(i=>i.Cluster==cluster).Result.ToList();   
             var Thingposts= work.Repository<PostOfLostThings>().Get(i=>i.Cluster==cluster).Result.ToList();
