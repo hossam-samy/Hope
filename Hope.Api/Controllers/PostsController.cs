@@ -1,67 +1,192 @@
-﻿using Hope.Core.Interfaces;
-using Hope.Core.Dtos;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using Hope.Core.Features.PostOperation.Commands.CreatePostForPeople;
+using Hope.Core.Features.PostOperation.Commands.CreatePostForThings;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfThings;
+using Hope.Core.Features.PostOperation.Queries.GetAllPosts;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfShelters;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfAccidents;
+using Hope.Core.Features.PostOperation.Queries.GetAllPostsOfLosties;
+using Hope.Core.Features.CommentOperation.Queries.GetReplies;
+using Hope.Core.Features.PostOperation.Commands.DeletePost;
+using Hope.Core.Features.PostOperation.Commands.UpdatePostOfPeople;
+using Hope.Core.Features.PostOperation.Commands.UpdatePostOfThings;
+using Hope.Core.Features.PostOperation.Commands.HidePosts;
+using Hope.Core.Features.PostOperation.Commands.PinPost;
+using Hope.Core.Features.PostOperation.Commands.UnPinPost;
+using Hope.Core.Features.CommentOperation.Commands.AddCommentToPost;
+using Hope.Core.Features.CommentOperation.Commands.AddCommentToComment;
+using Hope.Core.Features.CommentOperation.Commands.UpdateComment;
+using Hope.Core.Features.CommentOperation.Commands.DeleteComment;
+using Hope.Core.Features.CommentOperation.Queries.GetCommentsByPostId;
+using Hope.Core.Features.PostOperation.Queries.GetArchivedPosts;
+using Hope.Core.Features.PostOperation.Commands.UnHidePost;
+using Hope.Core.Features.PostOperation.Queries.GetPostByPostId;
+using Hope.Core.Features.PostOperation.Queries.GetRecommendedPosts;
 
 namespace Hope.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-   // [Authorize(Roles ="User")]
+    [Authorize]
     public class PostsController : ControllerBase
     {
-        private readonly IPostService _postService; 
-        public PostsController( IPostService postService)
+        private readonly IMediator _mediator;
+        public PostsController(IMediator mediator)
         {
-            _postService = postService;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public async  Task<IActionResult> AddPostPeople ([FromForm]PostPeopleRequest dto)
+        public async  Task<IActionResult> AddPostPeople ([FromForm]CreatePostForPeopleCommand  command)
         {
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }
-            
-            
 
-            return Ok(await _postService.AddPostPeople(dto));
+            return Ok(await _mediator.Send(command));
         }
         [HttpPost]
-        public async Task<IActionResult> AddPostThings([FromForm]PostThingsRequest dto)
+        public async Task<IActionResult> AddPostThings( [FromForm]CreatePostForThingsCommand command)
         {
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostThings(int PageNumber)
+        {
             
-             
+            return Ok(await _mediator.Send(new GetAllPostsOfThingsQuery { PageNumber = PageNumber }));
 
-            return Ok(await _postService.AddPostThings(dto));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPostThings()
-        {
-              
-            return Ok(await _postService.GetPostThings());
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetPostsOfAllPeople()
-        {
-
-
-            return Ok(await _postService.GetPostsOfAllPeople());
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetPostOfShelters()
-        {
-            return Ok(await _postService.GetPostOfShelters());
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetPostOfAccidents()
-        {
-            return Ok(await _postService.GetPostOfAccidents());
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetPostOfLosties()
-        {
-            return Ok(await _postService.GetPostOfLosties());
-        }
        
+        public async Task<IActionResult> GetAllPosts(int PageNumber)
+        {
+            
+            return Ok(await _mediator.Send(new GetAllPostsQuery { PageNumber = PageNumber }));
+            
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostOfShelters(int PageNumber)
+        {
+            return Ok(await _mediator.Send(new GetAllPostsOfSheltersQuery { PageNumber = PageNumber }));
+           
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostOfAccidents(int PageNumber)
+        {
+          
+
+            return Ok(await _mediator.Send(new GetAllPostsOfAccidentsQuery { PageNumber = PageNumber }));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostOfLosties(int PageNumber)
+        {
+           
+            return Ok(await _mediator.Send(new GetAllPostsOfLostiesQuery { PageNumber = PageNumber}));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReplies(int id)
+        {
+            
+            return Ok(await _mediator.Send(new GetRepliesQuery {Id=id }));
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePost(DeletePostCommand  command)
+        {
+            return Ok(await _mediator.Send(command));
+            
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdatePostOfThingsPost(UpdatePostOfThingsCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+        }
+          
+        [HttpPut]
+        public async Task<IActionResult> UpdatePostOfPeoplePost(UpdatePostOfPeopleCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> HidePost(HidePostsCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> PinPost(PinPostCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnPinPost(UnPinPostCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCommentToPost(AddCommentToPostCommand  command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCommentToComment(AddCommentToCommentCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateComment(UpdateCommentCommand  command)
+        {
+
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteComment(DeleteCommentCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>GetCommentsByPostId (int PostId,bool IsPeople )
+        {
+                    
+            return Ok(await _mediator.Send(new GetCommentsByPostIdQuery() { PostId=PostId,IsPeople=IsPeople}));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetArchivedPosts()
+        {
+
+            return Ok(await _mediator.Send(new GetArchivedPostsQuery()));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPostByPostId(int postId,bool IsPeople)
+        {
+
+            return Ok(await _mediator.Send(new GetPostByPostIdQuery() {PostId=postId,IsPeople=IsPeople }));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetRecommendedPosts(string city)
+        {
+
+            return Ok(await _mediator.Send(new GetRecommendedPostsQuery() {  City=city}));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnHidePosts(UnHidePostCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+
+
+
+
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteFilePost(string url)
+        //{
+        //    return Ok(await _postService.DeleteFileAsync(url));
+        //}
+
     }
 }

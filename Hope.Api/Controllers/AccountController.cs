@@ -1,8 +1,25 @@
-﻿using Hope.Core.Dtos;
+﻿using FluentValidation;
+using Hope.Core.Dtos;
+using Hope.Core.Features.Authentication.Commands.AddAdminRoleToUser;
+using Hope.Core.Features.Authentication.Commands.AddUserImage;
+using Hope.Core.Features.Authentication.Commands.AddUserRoleToAdmin;
+using Hope.Core.Features.Authentication.Commands.ChangePassword;
+using Hope.Core.Features.Authentication.Commands.Register;
+using Hope.Core.Features.Authentication.Commands.RegisterAsAdmin;
+using Hope.Core.Features.Authentication.Commands.UpdateUserData;
+using Hope.Core.Features.Authentication.Queries.GetAllAdmins;
+using Hope.Core.Features.Authentication.Queries.GetAllCities;
+using Hope.Core.Features.Authentication.Queries.GetAllTownsByCityId;
+using Hope.Core.Features.Authentication.Queries.GetAllUsers;
+using Hope.Core.Features.Authentication.Queries.GetProfile;
+using Hope.Core.Features.Authentication.Queries.GetProfileOfAnotherUser;
+using Hope.Core.Features.Authentication.Queries.Login;
+using Hope.Core.Features.PostOperation.Queries.GetPinnedPostsByUserId;
+using Hope.Core.Features.PostOperation.Queries.GetPostsByUserId;
 using Hope.Core.Interfaces;
-using MapsterMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace Hope.Api.Controllers
 {
@@ -10,61 +27,144 @@ namespace Hope.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAuthService authService;
-        private readonly IMailService mailService;
+        private readonly IMediator _mediator;   
+        private readonly IMailService _mailService;
 
-        public AccountController(IAuthService authService, IMailService mailService)
+        public AccountController(IMediator mediator, IMailService mailService)
         {
-            this.authService = authService;
-            this.mailService = mailService;
+
+            _mediator = mediator;
+            _mailService = mailService;
         }
         [HttpPost]
-        public async Task<IActionResult> UserRegister(UserDto dto) { 
-             
-            if(!ModelState.IsValid) { return BadRequest(ModelState); }  
-
-             return Ok(await authService.UserRegister(dto)); 
+        public async Task<IActionResult> UserRegister([FromForm]RegisterCommand command) { 
+            
+             return Ok(await _mediator.Send(command)); 
             
          }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> AdminRegister([FromForm] UserDto User)
-        //{
-        //    if (!ModelState.IsValid) { return BadRequest(ModelState); }
-        //    var result = await authService.AdminRegister(User);
-        //    if (!result.IsAuthenticated) return BadRequest(result.Message);
-        //    return Ok(result);
-        //}
         [HttpPost]
-        //[Authorize(Roles ="User")]
-        public async Task<IActionResult> Login( LoginRequest dto)
+        public async Task<IActionResult> AdminRegister([FromForm] RegisterAsAdminCommand command)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            return Ok(await authService.Login(dto));
+            return Ok(await _mediator.Send(command));
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddAdminRole([FromForm] AddAdminRoleToUserCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddUserRole([FromForm] AddUserRoleToAdminCommand command)
+        {
+
+            return Ok(await _mediator.Send(command));
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendEmail( string userEmail )
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddUserImage([FromForm]AddUserImageCommand  command)
         {
-            await mailService.SendEmailAsync(userEmail);
+            return Ok(await _mediator.Send(command));
+        }
 
-            return Ok("good");
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetProfile()
+        {
+            return Ok(await _mediator.Send(new GetProfileQuery())) ;
+        }
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetProfileOfAnotherUser(string userId)
+        {
+            return Ok(await _mediator.Send(new GetProfileOfAnotherUserQuery() { UserId=userId}));
+        }
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetPostsByUserId(string? userId)
+        {
+
+            return Ok(await _mediator.Send(new GetPostsByUserIdQuery() {UserId=userId }));
 
         }
         [HttpGet]
-        public async Task<IActionResult> GetConfirmationNumber(string num)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetPinnedPostsByUserId(string? userId)
         {
-                 return Ok( await mailService.GetConfirmationNumber(num));
+
+            return Ok(await _mediator.Send(new GetPinnedPostsByUserIdQuery() { UserId=userId }));
+
+        }
+        [HttpPut]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateUserData(UpdateUserDataCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+
+            return Ok(await _mediator.Send(new GetAllUsersQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdmins()
+        {
+
+            return Ok(await _mediator.Send(new GetAllAdminsQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllCities()
+        {
+
+            return Ok(await _mediator.Send(new GetAllCitiesQuery()));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllTownsByCityId(int id)
+        {
+
+            return Ok(await _mediator.Send(new GetAllTownsByCityIdQuery() { Id=id}));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login( LoginQuery query)
+        {
+
+            return Ok(await _mediator.Send(query));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendVerfingEmailCode(SendVerfingEmailCodeRequest request )
+        {
+            return Ok( await _mailService.SendEmailAsync(request.userEmail));
+
+            
         }
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(string userEmail,string password)
+        public async Task<IActionResult> SendCodeForChangePasswordAsync(SendEmailForChangePasswordRequest request)
         {
-            await authService.ChangePassword(userEmail,password);
+            return Ok(await _mailService.SendEmailForChangePasswordAsync(request.userEmail));
 
-            return Ok("good");
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetConfirmationNumber(GetConfirmationNumberRequest request)
+        {
+                 return Ok( await _mailService.GetConfirmationNumber(request.UserEmail,request.num));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
+        {
+           return Ok(await _mediator.Send(command));    
         }
 
 

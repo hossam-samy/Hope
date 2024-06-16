@@ -4,7 +4,9 @@ namespace Hope.Core.Interfaces
 {
     public interface IMailService
     {
-        Task SendEmailAsync(string UserEmail);
-        Task<Response> GetConfirmationNumber(string num);
+        Task<Response> SendEmailAsync(string UserEmail);
+
+        Task<Response> SendEmailForChangePasswordAsync(string UserEmail);
+        Task<Response> GetConfirmationNumber(string UserEmail, string num);
     }
 }

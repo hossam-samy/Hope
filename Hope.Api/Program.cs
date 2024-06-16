@@ -5,6 +5,7 @@ using System.Text;
 using Hope.Api.Middlewares;
 using Hope.Infrastructure.Extensions;
 using Hope.Core.Extensions;
+using Hope.Core.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pharmacy API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hope API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -29,6 +30,7 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT",
         Scheme = "bearer"
     });
+   
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -66,19 +68,41 @@ builder.Services.AddAuthentication(options =>
                });
 
 
-
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("reactapp",
+        builder =>
+        {
+            builder.WithOrigins(
+                "http://localhost:3000",
+                "https://hope-social.vercel.app",
+                "http://localhost:5173"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+else
+{
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseMiddleware<GlobleErrorHandlerMiddleware>();
 
@@ -92,12 +116,14 @@ app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
 
-app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors("reactapp");
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/Chat");
 
 app.Run();

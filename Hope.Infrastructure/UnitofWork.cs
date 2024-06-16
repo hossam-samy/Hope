@@ -7,8 +7,8 @@ namespace Hope.Infrastructure
     public class UnitofWork:IUnitofWork
     {
         private readonly AppDBContext context;
-       
         
+       
        
         private Hashtable _repositries;
 
@@ -41,6 +41,12 @@ namespace Hope.Infrastructure
 
             context.Dispose();
         }
+
+        public async Task<int> SaveAsync()
+        {
+           return await context.SaveChangesAsync();
+        }
+
     }
 }
         

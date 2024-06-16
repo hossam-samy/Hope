@@ -22,12 +22,12 @@ namespace Hope.Api.Middlewares
                 var statuscode=context.Response.StatusCode;
                 
                 if(statuscode==401)
-                     throw new UnAuthrizedException(localizer["UnAuthorized"]); 
+                     throw new UnAuthrizedException("UnAuthorized"); 
                 
             }
             catch(Exception e) {
 
-                var json = JsonSerializer.Serialize(await Response.FailureAsync(localizer["Faild"],e.Message));
+                var json = JsonSerializer.Serialize(await Response.FailureAsync(e.Message));
                 context.Response.ContentType = "application/json";
                 context?.Response.WriteAsync(json);
             }

@@ -10,9 +10,8 @@ namespace Hope.Core.Interfaces
     public interface IMediaService
     {
 
-        Task AddFileAsync(IFormFile file,string name);
+        Task<string> AddFileAsync(IFormFile file,string dest,string name);
         Task DeleteFileAsync(string url);   
-        Task UpdateDeleteFileAsync(string url,IFormFile file,string name);   
-        string GetUrl();
-    }
+        Task<string> UpdateFileAsync(string url,IFormFile file,string dest, string name);   
+        }
 }

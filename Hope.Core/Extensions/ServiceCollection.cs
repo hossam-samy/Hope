@@ -1,4 +1,6 @@
-﻿using Hope.Core.Interfaces;
+﻿using FluentValidation;
+using Hope.Core.ExternalService;
+using Hope.Core.Interfaces;
 using Hope.Core.Service;
 using Mapster;
 using MapsterMapper;
@@ -14,7 +16,7 @@ namespace Hope.Core.Extensions
         {
             
 
-           services.AddMapping().AddCollection(); 
+           services.AddMapping().AddCollection().Addasd().AddMediator().AddSignalR(); 
 
             
 
@@ -23,7 +25,7 @@ namespace Hope.Core.Extensions
             return services;
         }
 
-        public static IServiceCollection AddMapping(this IServiceCollection services) {
+        private static IServiceCollection AddMapping(this IServiceCollection services) {
 
             services.AddMapster();
             var config = TypeAdapterConfig.GlobalSettings;
@@ -35,21 +37,30 @@ namespace Hope.Core.Extensions
 
         }
 
-        public static IServiceCollection AddCollection(this IServiceCollection services)
+        private static IServiceCollection AddCollection(this IServiceCollection services)
         {
 
-            services.AddScoped<IAuthService, AuthService>();
 
 
             services.AddScoped<IMediaService, MediaService>();
-
-            services.AddScoped<IPostService, PostService>();
+           
+            services.AddScoped<IAiPostServices, AiPostServices>();
 
             services.AddTransient<IMailService, MailService>();
+            services.AddTransient<IRecommendationService, RecommendationService>();
+            services.AddTransient<IFaceRecognitionService, FaceRecognitionService>();
 
 
             return services;
 
+        }
+        private static IServiceCollection Addasd(this IServiceCollection services)
+        {
+            return services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+        private static IServiceCollection AddMediator(this IServiceCollection services)
+        {
+            return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         }
     }
 }
